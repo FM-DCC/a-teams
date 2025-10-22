@@ -16792,24 +16792,23 @@ function $c_Lateams_frontend_CaosConfig$() {
   }));
   this.Lateams_frontend_CaosConfig$__f_parser = $f_F1__andThen__F1__F1(this$3, g);
   $n($m_s_package$().s_package$__f_List);
-  var elems = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lcaos_frontend_Configurator$Example.getArrayOf().constr)([new $c_Lcaos_frontend_Configurator$Example("act\n  default: sync, 1->1;\n  coin; coffee;\n  pub: 1->0;\n\nlet\n CM = coin!.tau.coffee?.CM\n CS = pub!.coin?.coffee!.CS\nin\n CM||CS", "ex1", "Example of a program in A-Teams"), new $c_Lcaos_frontend_Configurator$Example("act\n  default: sync, 2->1;\n  coin: 1->1;\n  coffee;\n  pub: 1->0;\n\nlet\n CM = coin!.tau.coffee?.CM\n CS = coin?.(coffee!.CS|coin? .CS)\nin\n CM||CS", "ex2", "Experiment"), new $c_Lcaos_frontend_Configurator$Example("act\n\tdefault: sync;\n  start: 1->2;\n  finish: 1->1;\n  run: 1->0;\n\nlet\n Ctr = start!.finish?.finish?.Ctr\n R = start?.run!.finish!.R\nin\n Ctr || R || R", "race", "Ususal runner example")]));
+  var elems = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lcaos_frontend_Configurator$Example.getArrayOf().constr)([new $c_Lcaos_frontend_Configurator$Example("act\n  default: sync, 1->1;\n  coin; coffee;\n  pub: 1->0;\n  // other supported examples:\n  // fifo\n  // unsorted\n  // fifo @ rcv,\n  // fifo @ snd\n  // fifo @ snd-rcv\n  // fifo @ global\n  // 1..3 -> 4...5\n  // 1 -> 0..*\n\nlet\n CM = coin!.tau.coffee?.CM\n CS = pub!.coin?.coffee!.CS\nin\n CM||CS", "ex1", "Example of a program in A-Teams"), new $c_Lcaos_frontend_Configurator$Example("act\n  default: sync, 2->1;\n  coin: 1->1;\n  coffee;\n  pub: 1->0;\n\nlet\n CM = coin!.tau.coffee?.CM\n CS = coin?.(coffee!.CS|coin? .CS)\nin\n CM||CS", "ex2", "Experiment"), new $c_Lcaos_frontend_Configurator$Example("act\n\tdefault: sync;\n  start: 1->2;\n  finish: 1->1;\n  run: 1->0;\n\nlet\n Ctr = start!.finish?.finish?.Ctr\n R = start?.run!.finish!.R\nin\n Ctr || R || R", "race", "Ususal runner example")]));
   this.Lateams_frontend_CaosConfig$__f_examples = $m_sci_Nil$().prependedAll__sc_IterableOnce__sci_List(elems);
   $n($m_s_package$().s_package$__f_List);
   var $$x3 = $m_sr_ScalaRunTime$();
-  var this$25 = $n($m_Lcaos_frontend_Configurator$().view__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((s) => {
+  var y = $m_Lcaos_frontend_Configurator$().view__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((s) => {
     var s$1 = $as_Lateams_syntax_Program$ASystem(s);
     return $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$ASystem__T(s$1)
-  })), new $c_Lcaos_view_Code("haskell")));
-  var y = $f_Lcaos_frontend_widgets_WidgetInfo__expand__Lcaos_frontend_widgets_WidgetInfo(this$25);
+  })), new $c_Lcaos_view_Code("haskell"));
   var $$x2 = new $c_T2("View pretty data", y);
-  var this$31 = $n($m_Lcaos_frontend_Configurator$().steps__F1__Lcaos_sos_SOS__F1__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((e) => {
+  var this$30 = $n($m_Lcaos_frontend_Configurator$().steps__F1__Lcaos_sos_SOS__F1__F1__Lcaos_view_ViewType__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((e) => {
     var e$1 = $as_Lateams_syntax_Program$ASystem(e);
-    var this$28 = $n($m_s_Predef$().s_Predef$__f_Map);
+    var this$27 = $n($m_s_Predef$().s_Predef$__f_Map);
     var elems$1 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T2.getArrayOf().constr)([]));
-    var fifos = this$28.from__sc_IterableOnce__sci_Map(elems$1);
-    var this$29 = $n($m_s_Predef$().s_Predef$__f_Map);
+    var fifos = this$27.from__sc_IterableOnce__sci_Map(elems$1);
+    var this$28 = $n($m_s_Predef$().s_Predef$__f_Map);
     var elems$2 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T2.getArrayOf().constr)([]));
-    var msets = this$29.from__sc_IterableOnce__sci_Map(elems$2);
+    var msets = this$28.from__sc_IterableOnce__sci_Map(elems$2);
     return new $c_Lateams_backend_Semantics$St(e$1, fifos, msets)
   })), $m_Lateams_backend_Semantics$(), new $c_sjsr_AnonFunction1(((x) => {
     var x$1 = $as_Lateams_backend_Semantics$St(x);
@@ -16818,16 +16817,16 @@ function $c_Lateams_frontend_CaosConfig$() {
     var _$1$1 = $as_Lateams_syntax_Program$Act(_$1);
     return $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$Act__T(_$1$1)
   })), $m_Lcaos_view_Text$()));
-  var y$1 = $f_Lcaos_frontend_widgets_WidgetInfo__expand__Lcaos_frontend_widgets_WidgetInfo(this$31);
+  var y$1 = $f_Lcaos_frontend_widgets_WidgetInfo__expand__Lcaos_frontend_widgets_WidgetInfo(this$30);
   var $$x1 = new $c_T2("Run semantics", y$1);
   var y$2 = $m_Lcaos_frontend_Configurator$().lts__F1__Lcaos_sos_SOS__F1__F1__I__Lcaos_frontend_widgets_WidgetInfo(new $c_sjsr_AnonFunction1(((e$2) => {
     var e$3 = $as_Lateams_syntax_Program$ASystem(e$2);
-    var this$34 = $n($m_s_Predef$().s_Predef$__f_Map);
+    var this$33 = $n($m_s_Predef$().s_Predef$__f_Map);
     var elems$3 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T2.getArrayOf().constr)([]));
-    var fifos$1 = this$34.from__sc_IterableOnce__sci_Map(elems$3);
-    var this$35 = $n($m_s_Predef$().s_Predef$__f_Map);
+    var fifos$1 = this$33.from__sc_IterableOnce__sci_Map(elems$3);
+    var this$34 = $n($m_s_Predef$().s_Predef$__f_Map);
     var elems$4 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T2.getArrayOf().constr)([]));
-    var msets$1 = this$35.from__sc_IterableOnce__sci_Map(elems$4);
+    var msets$1 = this$34.from__sc_IterableOnce__sci_Map(elems$4);
     return new $c_Lateams_backend_Semantics$St(e$3, fifos$1, msets$1)
   })), $m_Lateams_backend_Semantics$(), new $c_sjsr_AnonFunction1(((x$2) => {
     $as_Lateams_backend_Semantics$St(x$2);
@@ -16838,7 +16837,7 @@ function $c_Lateams_frontend_CaosConfig$() {
   })), 80);
   var elems$5 = $n($$x3).wrapRefArray__AO__sci_ArraySeq(new ($d_T2.getArrayOf().constr)([$$x2, $$x1, new $c_T2("Build LTS", y$2)]));
   this.Lateams_frontend_CaosConfig$__f_widgets = $m_sci_Nil$().prependedAll__sc_IterableOnce__sci_List(elems$5);
-  this.Lateams_frontend_CaosConfig$__f_footer = ($m_sc_StringOps$(), $m_sc_StringOps$().stripMargin$extension__T__C__T("Simple animator of A-Teams, using the\n      | CAOS libraries. Source code available online:\n      | <a target=\"_blank\" href=\"https://github.com/arcalab/CAOS\">\n      | https://github.com/arcalab/CAOS</a> (CAOS).", 124));
+  this.Lateams_frontend_CaosConfig$__f_footer = ($m_sc_StringOps$(), $m_sc_StringOps$().stripMargin$extension__T__C__T("Simple animator of A-Teams, using the\n      | CAOS libraries. Source code available online:\n      | <a target=\"_blank\" href=\"https://github.com/FM-DCC/a-teams\">\n      | https://github.com/FM-DCC/a-teams</a>.", 124));
   var $$x4 = $m_Lcaos_frontend_Configurator$();
   $n($m_s_package$().s_package$__f_List);
   var elems$6 = $m_sr_ScalaRunTime$().genericWrapArray__O__sci_ArraySeq(new ($d_sr_Nothing$.getArrayOf().constr)([]));
