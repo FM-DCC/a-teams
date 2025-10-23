@@ -10,6 +10,11 @@ object Show:
 
   //def justTerm(s: CCSSystem): String = apply(s.main)
 
+  def apply(st: St): String =
+    short(st.sys) + (if st.fifos.isEmpty then "" else "\n") +
+      showFifos(st) + (if st.msets.isEmpty then "" else "\n") +
+      showMSets(st)
+
   def apply(s: ASystem): String = {
     (if s.msgs.nonEmpty then s"msgs:\n${showMsgs(s.msgs)}\n" else "") +
     (if s.defs.nonEmpty then s"defs:\n${showDefs(s.defs)}\n" else "") +
@@ -70,7 +75,16 @@ object Show:
     case (false, true) => "receiver"
     case (true,true) => "sender&receiver"
 
-  ////
+  //////////
+  // Runtime semantics
+  ///////////
+  def showFifos(st: St): String =
+    (for (loc,queue) <- st.fifos yield s"${apply(loc)} => [${queue.mkString(",")}]")
+      .mkString("\n")
+
+  def showMSets(st: St): String =
+    (for (loc,mset) <- st.msets yield s"${apply(loc)} => {${mset}}")
+      .mkString("\n")
 
   def apply(l:Loc): String = (l.snd,l.rcv) match
     case (None,None) => "globally"
