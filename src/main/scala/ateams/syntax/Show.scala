@@ -64,10 +64,10 @@ object Show:
     case _ => s"(${apply(p)})"
 
   def apply(a:Act): String = a match
-    case Act.In(s) => s"$s?"
-    case Act.Out(s) => s"$s!"
-    case Act.IO("tau") => "τ"
-    case Act.IO(s) => s
+    case Act.In(s,from) => s"$s?${from.mkString(",")}"
+    case Act.Out(s,to) => s"$s!${to.mkString(",")}"
+    case Act.IO("tau",_,_) => s"τ"
+    case Act.IO(s,from,to) => s"${from.mkString(",")}→${to.mkString(",")}:$s"
 
   def apply(l:LocInfo): String = (l.snd,l.rcv) match
     case (false,false) => "globally"

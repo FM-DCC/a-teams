@@ -6,9 +6,13 @@ package ateams.syntax
 
 object Program:
 
-  case class ASystem(msgs: Map[String,MsgInfo], // message declarations
-                     defs: Map[String,Proc], // definitions of processes
-                     main: Map[String,Proc]): // running (named) agents
+  type Agent = String // helper
+  type ActName = String // helper
+  type ProcName = String // helper
+
+  case class ASystem(msgs: Map[ActName,MsgInfo], // message declarations
+                     defs: Map[ProcName,Proc], // definitions of processes
+                     main: Map[Agent,Proc]): // running (named) agents
     def ++(other:ASystem): ASystem =
       ASystem(msgs++other.msgs, defs++other.defs, main++other.main)
 
@@ -18,16 +22,16 @@ object Program:
   /** Basic process (with recursive calls) */
   enum Proc:
     case End
-    case ProcCall(p:String)
+    case ProcCall(p:ProcName)
     case Prefix(act:Act,p:Proc)
     case Choice(p1:Proc, p2:Proc)
     case Par(p1:Proc, p2:Proc)
 
   /** Action (in, out, or tau) */
   enum Act:
-    case In(s:String)
-    case Out(s: String)
-    case IO(s:String)
+    case In(a:ActName, from:Set[Agent])
+    case Out(a:ActName, to:Set[Agent])
+    case IO(a:ActName, from:Set[Agent],to:Set[Agent])
 
   /** Fields for the declaration of a message */
   case class MsgInfo(arity: Option[(Intrv,Intrv)], st:Option[SyncType])

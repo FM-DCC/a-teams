@@ -29,6 +29,12 @@ object CaosConfig extends Configurator[ASystem]:
     "race"
       -> "act\n\tdefault: sync;\n  start: 1->2;\n  finish: 1->1;\n  run: 1->0;\n\nlet\n Ctr = start!.finish?.finish?.Ctr\n R = start?.run!.finish!.R\nin\n Ctr || R || R"
       -> "Ususal runner example",
+    "race-finish@snd"
+      -> "act\n\tdefault: sync;\n  start: 1->2;\n  finish: 2->1, fifo @ snd;\n  run: 1->0;\n\nlet\n Ctr = start!.finish?.Ctr\n R = start?.run!.finish!.R\nin\n  Ctr || R || R"
+      -> "Race async experiment - still incomplete",
+    "race-finish@rcv"
+      -> "act\n\tdefault: sync;\n  start: 1->2;\n  finish: 2->1, fifo @ rcv;\n  run: 1->0;\n\nlet\n Ctr = start!.finish?.Ctr\n R = start?.run!.finish!c.R\nin\n  c:Ctr || R || R"
+      -> "Race async experiment - still incomplete",
   )
 
   /** Description of the widgets that appear in the dashboard. */

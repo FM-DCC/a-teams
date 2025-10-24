@@ -7,6 +7,7 @@ import ateams.syntax.{Program, Show}
 import Program.*
 import Proc.*
 import ateams.syntax.Program.Act.Out
+import ateams.syntax.Program.SyncType.{Fifo, Sync, Unsorted}
 
 //import scala.collection.{immutable, mutable}
 import scala.collection.immutable.Queue
@@ -15,7 +16,9 @@ import scala.language.implicitConversions
 /** Small-step semantics for both commands and boolean+integer expressions.  */
 object Semantics extends SOS[Act,St]:
 
-  case class St(sys: ASystem, fifos:Map[Loc,Queue[String]], msets:Map[Loc,MSet[String]])
+  case class St(sys: ASystem,
+                fifos:Map[Loc,Queue[String]],
+                msets:Map[Loc,MSet[String]])
 
   case class Loc(snd: Option[String], rcv: Option[String])
   type Defs = Map[String,Proc]
@@ -24,12 +27,6 @@ object Semantics extends SOS[Act,St]:
   /** What are the set of possible evolutions (label and new state) */
   def next[A>:Act](st: St): Set[(A, St)] =
     nextPr(st.sys.main)(using st)
-//    for (a,ps) <- next(st.sys.main)(using st)
-//    yield a -> st.copy(sys = st.sys.copy(main = ps))
-
-  def nextOld(procs:Procs)(using st:St): Set[(Act,Procs)] =
-    for (n,p) <- procs.toSet; (a,p2) <- nextProc(p)
-    yield a -> (procs+(n->p2))
 
   def nextPr[A>:Act](procs:Procs)(using st:St): Set[(A,St)] =
     val canGo =
@@ -49,7 +46,7 @@ object Semantics extends SOS[Act,St]:
   ///////////////////////////////////
 
   def nextTau(canGo: Set[(Act,(String,Proc))])(using st:St): Set[(Act,Procs)] =
-    for (a,(n,p)) <- canGo if a == Act.IO("tau")
+    for (a,(n,p)) <- canGo if a == Act.IO("tau",Set(),Set())
       yield  a -> Map(n->p) // just the updates
 
   ///////////////////////////////////////
@@ -57,23 +54,23 @@ object Semantics extends SOS[Act,St]:
   ///////////////////////////////////////
 
   def nextSync(canGo: Set[(Act,(String,Proc))])(using st:St): Set[(Act,Procs)] = {
-    var syncsMap = Map[String,(List[(String,Proc)],List[(String,Proc)])]()
+    // compile map "action-name" -> ([("snd-agent","nextProc","rcv-agt?"), ...] , [("rcv-agent","nextProc","snd-agt?"), ...])
+    var syncsMap = Map[String,(List[(String,Proc,Set[String])],List[(String,Proc,Set[String])])]()
     for (a,(n,p)) <- canGo if stype(a) == SyncType.Sync
         do {
-      a match {
-        case Act.In(s) if syncsMap.contains(s) =>
-          syncsMap = syncsMap + (s -> (syncsMap(s)._1,(n,p)::syncsMap(s)._2))
-        case Act.In(s) =>
-          syncsMap = syncsMap + (s -> (Nil,List(n->p)))
-        case Act.Out(s) if syncsMap.contains(s) =>
-          syncsMap = syncsMap + (s -> ((n,p)::syncsMap(s)._1,syncsMap(s)._2 ))
-        case Act.Out(s) =>
-          syncsMap = syncsMap + (s -> (List(n->p),Nil))
-        case _ => {}
-      }
+      a match
+        case Act.In(s,from) if syncsMap.contains(s) =>
+          syncsMap = syncsMap + (s -> (syncsMap(s)._1,(n,p,from)::syncsMap(s)._2))
+        case Act.In(s,from) =>
+          syncsMap = syncsMap + (s -> (Nil,List((n,p,from))))
+        case Act.Out(s,to) if syncsMap.contains(s) =>
+          syncsMap = syncsMap + (s -> ((n,p,to)::syncsMap(s)._1,syncsMap(s)._2 ))
+        case Act.Out(s,to) =>
+          syncsMap = syncsMap + (s -> (List((n,p,to)),Nil))
+        case _ =>
     }
 
-    val combs: Iterable[(String, List[(String,Proc)], List[(String,Proc)])] =
+    val combs: Iterable[(String, List[(String,Proc,Set[String])], List[(String,Proc,Set[String])])] =
       (for
         (a,(snds,rcvs)) <- syncsMap
       yield
@@ -85,38 +82,111 @@ object Semantics extends SOS[Act,St]:
             rsize <- rmin to rmax
             sset <- snds combinations ssize
             rset <- rcvs combinations rsize
-        yield
+            // only if all non-empty sets in sset are represented in rset and vice-versa!
+            if sset.forall( (_,_,tos)   => tos.isEmpty   || tos==rset.map(_._1).toSet) &&
+               rset.forall( (_,_,froms) => froms.isEmpty || froms==sset.map(_._1).toSet)
+        yield {
           (a,sset,rset)
+        }
         ).flatten
 
     val combss = combs.toSet
     for (a,snds,rcvs) <- combs.toSet yield
-      Act.IO(a) -> (snds ++ rcvs).toMap // just the updates
+      Act.IO(a,snds.map(_._1).toSet++rcvs.flatMap(_._3).toSet,
+               rcvs.map(_._1).toSet++snds.flatMap(_._3).toSet)
+        -> (snds.map((a,b,_)=>(a,b)) ++ rcvs.map((a,b,_)=>(a,b))).toMap // just the updates
   }
 
   //////////////////////////////////////////
   // Semantics of the FIFO/unsorted sends //
   //////////////////////////////////////////
 
-  def nextSend(canGo: Set[(Act,(String,Proc))])(using st:St): Set[(Act,St)] =
+  def nextSend(canGo: Set[(Act,(Agent,Proc))])(using st:St): Set[(Act,St)] =
     println(s"can send? ${canGo.mkString("\n")}\nstype(${canGo.tail.head._1}) = ${stype(canGo.tail.head._1)}")
-    (for case (a@Act.Out(s), (n, p)) <- canGo
+    (for case (a@Act.Out(s,to), (n, p)) <- canGo
         if isFifo(stype(s)) //  List(SyncType.Fifo,SyncType.Unsorted) contains stype(a)
      yield {
-       println(s"SENDING $a...")
-       val queue = st.fifos.getOrElse(getLoc(a,Some(n),None),Queue[String]())
-         .enqueue(getActName(a))
-       a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
-                     fifos = st.fifos + (getLoc(a,Some(n),None) -> queue))
-     }
-      )++
-    (for case (a@Act.Out(s), (n, p)) <- canGo
-             if isUnsorted(stype(s)) //  List(SyncType.Fifo,SyncType.Unsorted) contains stype(a)
-     yield
-      a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
-        msets = st.msets + (getLoc(a,Some(n),None) ->
-          (st.msets.getOrElse(getLoc(a,Some(n),None),MSet()) + getActName(a))))
-    )
+        //checkType(a,stype(s)) // proper runtime error if not enough information in Act
+       //println(s"SENDING $a...")
+       // need to send one message for each destination. Options:
+       //  - 1. we do not care to who - need to count sends (arity or to - error if not possible)
+       //  - we do care to who, but not know them (to={}) - error (not possible)
+       //  - we do care to who, and to!={}, but arity does not match "to" - error (not possible)
+       //  - we do care to who, and to!={}, and arity matches "to" - send to each "to"
+       (stype(s),arit(s),to.isEmpty) match
+         // case 1: do not care to who, "to" exists, arity must match
+         case (Fifo(LocInfo(locSnd,false)), art, false)  =>
+           //println("-- case 1")
+           if !inInterval(to.size,art._2) then
+             sys.error(s"Trying to send '${Show(a)}' to {${to.mkString}} but expected # in interval {${Show.showIntrv(art._2)}}.")
+           val loc = getLoc(s, if locSnd then Some(n) else None, None)
+           var queue = st.fifos.getOrElse(loc, Queue[String]())
+           for _ <- to  do queue = queue.enqueue(s)
+           a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
+                         fifos = st.fifos + (loc -> queue))
+
+         // case 2: do not care to who, "to" does not exists, arity must be precise
+         case (Fifo(LocInfo(locSnd,false)), art, true)  =>
+           println("-- case 2")
+           if !art._2._2.contains(art._2._1) then
+             sys.error(s"Trying to send '${Show(a)}' to {${Show.showIntrv(art._2)}} without having a single number of destinations (${Show.showIntrv(art._2)}).")
+           val loc = getLoc(s, if locSnd then Some(n) else None, None)
+           var queue = st.fifos.getOrElse(loc, Queue[String]())
+           for _ <- 1 to art._2._1 do queue = queue.enqueue(s)
+           a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
+                         fifos = st.fifos + (loc -> queue))
+
+         // case 3: care to who, but "to" does not exists - error unless it is meant to send to none (state unchanged)
+         case (Fifo(LocInfo(locSnd,true)), art, true)  =>
+           println("-- case 3")
+           if art._2._1 == 0 && art._2._2 == Some(0) then
+             a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)) )
+           else
+            sys.error(s"Trying to send '${Show(a)}' to {${Show.showIntrv(art._2)}} - missing precise destinations")
+
+         // case 4: care to who, and "to" exists, arity must match
+         case (Fifo(LocInfo(locSnd,true)), art, false)  =>
+           println("-- case 4")
+           if !inInterval(to.size,art._2) then
+             sys.error(s"Trying to send '${Show(a)}' to {${to.mkString}} but expected # in interval {${Show.showIntrv(art._2)}}.")
+           //var queues: List[(Loc,Queue[ActName])] = Nil
+           val newQueues = for ag <- to yield
+             val loc = getLoc(s, if locSnd then Some(n) else None, Some(ag))
+             val queue = st.fifos.getOrElse(loc, Queue[String]()).enqueue(s)
+             loc -> queue
+           a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
+                         fifos = st.fifos ++ newQueues)
+
+         // any other case (fifo or sync)
+         case _ => sys.error(s"case not supported for sending ${Show(a)}")
+     })
+//    ++
+//    (for case (a@Act.Out(s,to), (n, p)) <- canGo
+//             if isUnsorted(stype(s)) //  List(SyncType.Fifo,SyncType.Unsorted) contains stype(a)
+//     yield
+//      a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
+//        msets = st.msets + (getLoc(a,Some(n),None) ->
+//          (st.msets.getOrElse(getLoc(a,Some(n),None),MSet()) + getActName(a))))
+//    )
+
+  private def inInterval(n: Int, intr: Intrv): Boolean =
+    n >= intr._1 && (intr._2.isEmpty || n <= intr._2.get)
+
+  private def getRcv(ag: String, styp: SyncType): Option[String] =
+    styp match
+      case Fifo(LocInfo(_,true)) => Some(ag)
+      case Unsorted(LocInfo(_,true)) => Some(ag)
+      case _ => None
+
+
+//  private def checkType(act: Act, styp: SyncType, art: (Intrv,Intrv)): Unit = {
+//    (act,styp,art) match {
+//      case (Act.In(a, from),st: (Fifo|Unsorted), art) => ???
+//      case Act.Out(a, to) => ???
+//      case Act.IO(a, from, to) => ???
+//    }
+//    ???
+//  }
 
 
   ////////////////////////////
@@ -141,9 +211,9 @@ object Semantics extends SOS[Act,St]:
   //////////////////////////
 
   private implicit def getActName(a:Act): String = a match
-    case Act.In(s) => s
-    case Act.Out(s) => s
-    case Act.IO(s) => s
+    case Act.In(s,_) => s
+    case Act.Out(s,_) => s
+    case Act.IO(s,_,_) => s
 
   private def getLoc(act: String, snd:Option[String], rcv: Option[String])(using st:St): Loc =
     stype(act) match

@@ -85,10 +85,10 @@ object Parser :
     (notKw.with1 *> (procName <* sps <* char('=') <* sps) ~ proc)
       .map((v, i) => ASystem(Map(),Map(v -> i), Map()))
   lazy val main: P[ASystem] =
-    proc.repSep(sps *> string("||") *> sps)
+    namedProc.repSep(sps *> string("||") *> sps)
       .map(l => ASystem(Map(),Map(),
 //        l.toList.zipWithIndex.map((x,i)=>(Show(x)+"_"+i) -> x).toMap))
-        l.toList.zipWithIndex.map((x,i)=> i.toString -> x).toMap))
+        l.toList.zipWithIndex.map((x,i)=> x._1.getOrElse(i.toString) -> x._2).toMap))
 
 
   // Message declarations
@@ -125,6 +125,13 @@ object Parser :
     procSum(more).repSep(sps *> char('|') <* sps)
       .map(l => l.toList.tail.foldLeft(l.head)((t1, t2) => Proc.Par(t1, t2)))
   )
+  lazy val namedProc:P[(Option[String],Proc)] =
+    ((varName <* sps) ~ namedProcCont).map((v,cont) => cont(v)) |
+    procName.map(p => (None,Proc.ProcCall(p)))
+
+  lazy val namedProcCont:P[String => (Option[String],Proc)] =
+    char(':') *> sps *> proc.map(p => (str:String) => (Some(str),p))
+
   private def procSum(more:P[Proc]): P[Proc] =
     (procSeq(more)<*sps).repSep(char('+') <* sps)
       .map(l=>l.toList.tail.foldLeft(l.head)((t1,t2)=>Proc.Choice(t1,t2)))
@@ -144,12 +151,12 @@ object Parser :
       .map(x => Proc.Prefix(x._1,x._2.getOrElse(Proc.End)))
 
   private def action: P[Act] =
-    string("tau").as(Act.IO("tau")) |
+    string("tau").as(Act.IO("tau",Set(),Set())) |
     ((varName <* sps) ~ inOut).map(vi => vi._2(vi._1))
 
   private def inOut: P[String => Act] =
-    char('?').as(Act.In.apply) |
-    char('!').as(Act.Out.apply)
+    char('?') *> varName.repSep0(char(',')).map(lst => (a:String) => Act.In(a,lst.toList.toSet)) |
+    char('!') *> varName.repSep0(char(',')).map(lst => (a:String) => Act.Out(a,lst.toList.toSet))
 
   //  private def system: P[CCSSystem] =
 //    string("let") *> sps *>
