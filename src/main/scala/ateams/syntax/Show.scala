@@ -11,9 +11,12 @@ object Show:
   //def justTerm(s: CCSSystem): String = apply(s.main)
 
   def apply(st: St): String =
-    short(st.sys) + (if st.fifos.isEmpty then "" else "\n") +
-      showFifos(st) + (if st.msets.isEmpty then "" else "\n") +
-      showMSets(st)
+    short(st.sys) + (if st.buffers.isEmpty then "" else "\n") +
+      showBuffers(st)
+//      (if st.fifos.isEmpty then "" else "\n") +
+//      showFifos(st) + (if st.msets.isEmpty then "" else "\n") +
+//      showMSets(st) +
+//      "\n-- "+st.buffers.mkString("/")
 
   def apply(s: ASystem): String = {
     (if s.msgs.nonEmpty then s"msgs:\n${showMsgs(s.msgs)}\n" else "") +
@@ -35,8 +38,8 @@ object Show:
     s"${showIntrv(miArity._1)} → ${showIntrv(miArity._2)}, " +
     miST.match {
       case Program.SyncType.Sync => "sync"
-      case Program.SyncType.Fifo(where) => s"FIFO @ ${apply(where)}"
-      case Program.SyncType.Unsorted(where) => s"Unsorted @ ${apply(where)}"
+      case Program.SyncType.Async(where,buf:Fifo) => s"Fifo @ ${apply(where)}"
+      case Program.SyncType.Async(where,_:Unsorted) => s"Unsorted @ ${apply(where)}"
     }
   }
 
@@ -78,13 +81,21 @@ object Show:
   //////////
   // Runtime semantics
   ///////////
-  def showFifos(st: St): String =
-    (for (loc,queue) <- st.fifos yield s"${apply(loc)} => [${queue.mkString(",")}]")
+  def showBuffers(st: St): String =
+    (for (loc,buf) <- st.buffers yield s"${apply(loc)} => ${showBuf(buf)}")
       .mkString("\n")
+  def showBuf(b:Buffer): String = b match
+    case Fifo(q) => s"[${q.mkString(",")}]"
+    case Unsorted(m) => s"{$m}"
 
-  def showMSets(st: St): String =
-    (for (loc,mset) <- st.msets yield s"${apply(loc)} => {${mset}}")
-      .mkString("\n")
+
+//  def showFifos(st: St): String =
+//    (for (loc,queue) <- st.fifos yield s"${apply(loc)} => [${queue.mkString(",")}]")
+//      .mkString("\n")
+//
+//  def showMSets(st: St): String =
+//    (for (loc,mset) <- st.msets yield s"${apply(loc)} => {${mset}}")
+//      .mkString("\n")
 
   def apply(l:Loc): String = (l.snd,l.rcv) match
     case (None,None) => "globally"

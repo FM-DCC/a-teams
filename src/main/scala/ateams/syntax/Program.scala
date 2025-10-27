@@ -1,5 +1,7 @@
 package ateams.syntax
 
+import scala.collection.immutable.Queue
+import caos.common.Multiset as MSet
 /**
  * Internal structure to represent terms in A-Teams.
  */
@@ -17,7 +19,7 @@ object Program:
       ASystem(msgs++other.msgs, defs++other.defs, main++other.main)
 
   object ASystem:
-    val default = ASystem(Map(),Map(),Map())
+    val default: ASystem = ASystem(Map(),Map(),Map())
 
   /** Basic process (with recursive calls) */
   enum Proc:
@@ -42,10 +44,36 @@ object Program:
   type Intrv = (Int,Option[Int])
   enum SyncType:
     case Sync
-    case Fifo(where:LocInfo)
-    case Unsorted(where: LocInfo)
+    case Async(where:LocInfo, buf: Buffer)
+    // case Fifo(where:LocInfo)
+    // case Unsorted(where: LocInfo)
 
   case class LocInfo(snd:Boolean, rcv:Boolean)
+
+  sealed trait Buffer:
+    def +(el:ActName): Buffer
+    def peek: MSet[ActName]
+    def -(el:ActName): Option[Buffer]
+
+  case class Fifo(q:Queue[ActName]) extends Buffer:
+    def +(el:ActName) = Fifo(q.enqueue(el))
+    def peek: MSet[ActName] = q.headOption match
+      case Some(e) => MSet()+e
+      case None => MSet()
+    def -(el:ActName): Option[Buffer] = q.dequeueOption match
+      case Some((a,q2)) if a==el => Some(Fifo(q2))
+      case _ => None
+  object Fifo:
+    def apply():Fifo = Fifo(Queue[ActName]())
+
+  case class Unsorted(m:MSet[ActName]) extends Buffer:
+    def +(el:ActName) = Unsorted(m+el)
+    def peek: MSet[ActName] = m
+    def -(el:ActName): Option[Buffer] =
+      if m.contains(el) then Some(Unsorted(m-el)) else None
+  object Unsorted:
+    def apply():Unsorted = Unsorted(MSet[ActName]())
+
 
 
   //// Preprocess

@@ -7,7 +7,7 @@ import ateams.syntax.{Program, Show}
 import Program.*
 import Proc.*
 import ateams.syntax.Program.Act.Out
-import ateams.syntax.Program.SyncType.{Fifo, Sync, Unsorted}
+import ateams.syntax.Program.SyncType.{Async, Sync}
 
 //import scala.collection.{immutable, mutable}
 import scala.collection.immutable.Queue
@@ -17,8 +17,9 @@ import scala.language.implicitConversions
 object Semantics extends SOS[Act,St]:
 
   case class St(sys: ASystem,
-                fifos:Map[Loc,Queue[String]],
-                msets:Map[Loc,MSet[String]])
+                buffers: Map[Loc,Buffer])
+//                fifos:Map[Loc,Queue[String]],
+//                msets:Map[Loc,MSet[String]])
 
   case class Loc(snd: Option[String], rcv: Option[String])
   type Defs = Map[String,Proc]
@@ -34,7 +35,8 @@ object Semantics extends SOS[Act,St]:
       yield a -> (n->p2)
     updateSt(nextTau(canGo)) ++
     updateSt(nextSync(canGo)) ++
-    nextSend(canGo)
+    nextSend(canGo) ++
+    nextRcv(canGo)
 
   def updateSt(aps: Set[(Act,Procs)])(using st:St): Set[(Act,St)] =
     for (a,ps) <- aps yield
@@ -102,9 +104,9 @@ object Semantics extends SOS[Act,St]:
   //////////////////////////////////////////
 
   def nextSend(canGo: Set[(Act,(Agent,Proc))])(using st:St): Set[(Act,St)] =
-    println(s"can send? ${canGo.mkString("\n")}\nstype(${canGo.tail.head._1}) = ${stype(canGo.tail.head._1)}")
+    println(s"## can send? ${canGo.map((a,ag)=>s"\n  - ${Show(a)} @ ${ag._1}").mkString}") //\nstype(${canGo.tail.head._1}) = ${stype(canGo.tail.head._1)}")
     (for case (a@Act.Out(s,to), (n, p)) <- canGo
-        if isFifo(stype(s)) //  List(SyncType.Fifo,SyncType.Unsorted) contains stype(a)
+        if isAsync(stype(s)) //  List(SyncType.Fifo,SyncType.Unsorted) contains stype(a)
      yield {
         //checkType(a,stype(s)) // proper runtime error if not enough information in Act
        //println(s"SENDING $a...")
@@ -115,29 +117,29 @@ object Semantics extends SOS[Act,St]:
        //  - we do care to who, and to!={}, and arity matches "to" - send to each "to"
        (stype(s),arit(s),to.isEmpty) match
          // case 1: do not care to who, "to" exists, arity must match
-         case (Fifo(LocInfo(locSnd,false)), art, false)  =>
-           //println("-- case 1")
+         case (Async(LocInfo(locSnd,false), buff), art, false)  =>
+           println("-- case 1")
            if !inInterval(to.size,art._2) then
              sys.error(s"Trying to send '${Show(a)}' to {${to.mkString}} but expected # in interval {${Show.showIntrv(art._2)}}.")
            val loc = getLoc(s, if locSnd then Some(n) else None, None)
-           var queue = st.fifos.getOrElse(loc, Queue[String]())
-           for _ <- to  do queue = queue.enqueue(s)
-           a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
-                         fifos = st.fifos + (loc -> queue))
+           var buffer = st.buffers.getOrElse[Buffer](loc, buff)
+           for _ <- to  do buffer = buffer + s
+           a -> st.copy(sys = st.sys.copy(main = st.sys.main + (n -> p)),
+                        buffers = st.buffers + (loc -> buffer))
 
          // case 2: do not care to who, "to" does not exists, arity must be precise
-         case (Fifo(LocInfo(locSnd,false)), art, true)  =>
+         case (Async(LocInfo(locSnd,false), buf), art, true)  =>
            println("-- case 2")
            if !art._2._2.contains(art._2._1) then
              sys.error(s"Trying to send '${Show(a)}' to {${Show.showIntrv(art._2)}} without having a single number of destinations (${Show.showIntrv(art._2)}).")
            val loc = getLoc(s, if locSnd then Some(n) else None, None)
-           var queue = st.fifos.getOrElse(loc, Queue[String]())
-           for _ <- 1 to art._2._1 do queue = queue.enqueue(s)
+           var buffer = st.buffers.getOrElse(loc, buf)
+           for _ <- 1 to art._2._1 do buffer = buffer + s
            a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
-                         fifos = st.fifos + (loc -> queue))
+                         buffers = st.buffers + (loc -> buffer))
 
          // case 3: care to who, but "to" does not exists - error unless it is meant to send to none (state unchanged)
-         case (Fifo(LocInfo(locSnd,true)), art, true)  =>
+         case (Async(LocInfo(locSnd,true), buf), art, true)  =>
            println("-- case 3")
            if art._2._1 == 0 && art._2._2 == Some(0) then
              a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)) )
@@ -145,48 +147,105 @@ object Semantics extends SOS[Act,St]:
             sys.error(s"Trying to send '${Show(a)}' to {${Show.showIntrv(art._2)}} - missing precise destinations")
 
          // case 4: care to who, and "to" exists, arity must match
-         case (Fifo(LocInfo(locSnd,true)), art, false)  =>
+         case (Async(LocInfo(locSnd,true), buf), art, false)  =>
            println("-- case 4")
            if !inInterval(to.size,art._2) then
              sys.error(s"Trying to send '${Show(a)}' to {${to.mkString}} but expected # in interval {${Show.showIntrv(art._2)}}.")
            //var queues: List[(Loc,Queue[ActName])] = Nil
-           val newQueues = for ag <- to yield
+           val newBuffers = for ag <- to yield
              val loc = getLoc(s, if locSnd then Some(n) else None, Some(ag))
-             val queue = st.fifos.getOrElse(loc, Queue[String]()).enqueue(s)
-             loc -> queue
+             val buffer = st.buffers.getOrElse(loc, buf) + s
+             loc -> buffer
            a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
-                         fifos = st.fifos ++ newQueues)
+                         buffers = st.buffers ++ newBuffers)
 
          // any other case (fifo or sync)
          case _ => sys.error(s"case not supported for sending ${Show(a)}")
      })
-//    ++
-//    (for case (a@Act.Out(s,to), (n, p)) <- canGo
-//             if isUnsorted(stype(s)) //  List(SyncType.Fifo,SyncType.Unsorted) contains stype(a)
-//     yield
-//      a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
-//        msets = st.msets + (getLoc(a,Some(n),None) ->
-//          (st.msets.getOrElse(getLoc(a,Some(n),None),MSet()) + getActName(a))))
-//    )
 
   private def inInterval(n: Int, intr: Intrv): Boolean =
     n >= intr._1 && (intr._2.isEmpty || n <= intr._2.get)
 
   private def getRcv(ag: String, styp: SyncType): Option[String] =
     styp match
-      case Fifo(LocInfo(_,true)) => Some(ag)
-      case Unsorted(LocInfo(_,true)) => Some(ag)
+      case Async(LocInfo(_,true),_) => Some(ag)
+//      case Unsorted(LocInfo(_,true)) => Some(ag)
       case _ => None
 
+  //////////////////////////////////////////
+  // Semantics of the FIFO/unsorted sends //
+  //////////////////////////////////////////
 
-//  private def checkType(act: Act, styp: SyncType, art: (Intrv,Intrv)): Unit = {
-//    (act,styp,art) match {
-//      case (Act.In(a, from),st: (Fifo|Unsorted), art) => ???
-//      case Act.Out(a, to) => ???
-//      case Act.IO(a, from, to) => ???
-//    }
-//    ???
-//  }
+  def nextRcv(canGo: Set[(Act,(Agent,Proc))])(using st:St): Set[(Act,St)] =
+    println(s"## can receive?") // ${canGo.map((a,ag)=>s"\n  - ${Show(a)} @ ${ag._1}").mkString}") //\nstype(${canGo.tail.head._1}) = ${stype(canGo.tail.head._1)}")
+    (for case (a@Act.In(s,from), (n, p)) <- canGo
+        if isAsync(stype(s))
+     yield {
+       //println(s"RECEIVING $a...")
+       // need to receive one message for each sender. Options:
+       //  - we do not care from who - need to count receives (arity or to - error if not possible)
+       //  - we do care from who, but not know them (from={}) - error (not possible)
+       //  - we do care from who, and from!={}, but arity does not match "from" - error (not possible)
+       //  - we do care from who, and from!={}, and arity matches "from" - receive from each available "from"
+       (stype(s),arit(s),from.isEmpty) match {
+         // case 1: do not care from who, "from" exists, arity must match
+         case (Async(LocInfo(false,locRcv), buf), art, false)  =>
+           println("-- case 1")
+           if !inInterval(from.size,art._1) then
+             sys.error(s"Trying to get '${Show(a)}' from {${from.mkString}} but expected #{${from.mkString}} ∈ {${Show.showIntrv(art._1)}}.")
+           val loc = getLoc(s, None, if locRcv then Some(n) else None)
+           var buffer: Option[Buffer] = Some(st.buffers.getOrElse[Buffer](loc, buf))
+           for _ <- from  do buffer = buffer.flatMap(_-s)
+//           getFromBuffers(a,n,p,Map(loc->buffer))
+           buffer match
+             case Some(okBuff) =>
+               Set(a -> st.copy(sys = st.sys.copy(main = st.sys.main + (n -> p)),
+                                buffers = st.buffers + (loc -> okBuff)))
+             case None => Set() // failed to get buffer
+
+         // case 2: do not care from who, "from" does not exists, arity must be precise
+         case (Async(LocInfo(false,locSnd), buf), art, true)  =>
+           println("-- case 2")
+           if !art._1._2.contains(art._1._1) then
+             sys.error(s"Trying to get '${Show(a)}' from {${Show.showIntrv(art._1)}} without having a single number of sources (${Show.showIntrv(art._1)}).")
+           val loc = getLoc(s, None, if locSnd then Some(n) else None)
+           var buffer: Option[Buffer] = Some(st.buffers.getOrElse(loc, buf))
+           for _ <- 1 to art._1._1 do buffer = buffer.flatMap(_ - s)
+           buffer match
+             case Some(okBuff) =>
+               Set(a -> st.copy(sys = st.sys.copy(main = st.sys.main + (n -> p)),
+                                buffers = st.buffers + (loc -> okBuff)))
+             case None => Set() // failed to get buffer
+
+         // case 3: care to who, but "to" does not exists - error unless it is meant to send to none (state unchanged)
+         case (Async(LocInfo(true,locSnd), buf), art, true)  =>
+           println("-- case 3")
+           if art._1._1 == 0 && art._1._2 == Some(0) then
+             Set(a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)) ))
+           else
+            sys.error(s"Trying to get '${Show(a)}' from {${Show.showIntrv(art._1)}} - missing precise sources")
+
+         // case 4: care to who, and "to" exists, arity must match
+         case (Async(LocInfo(true,locSnd), buf), art, false)  =>
+           println("-- case 4")
+           if !inInterval(from.size,art._1) then
+             sys.error(s"Trying to get '${Show(a)}' from {${from.mkString}} but expected #{${from.mkString}} ∈ {${Show.showIntrv(art._1)}}.")
+           //var queues: List[(Loc,Queue[ActName])] = Nil
+           val newBuffers = for ag <- from yield
+             val loc = getLoc(s, Some(ag), if locSnd then Some(n) else None)
+             val buffer = Some(st.buffers.getOrElse(loc, buf)).flatMap(_ - s)
+             buffer.map(loc -> _)
+           println(s"!!! new buffers: ${newBuffers}")
+             // need to fix...
+           if newBuffers.contains(None) then Set()
+           else
+             Set(a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
+                           buffers = st.buffers ++ newBuffers.flatten.toMap))
+
+
+         case _ => sys.error(s"case not supported for receiving: ${Show(a)}")
+       }
+     }).flatten
 
 
   ////////////////////////////
@@ -217,9 +276,9 @@ object Semantics extends SOS[Act,St]:
 
   private def getLoc(act: String, snd:Option[String], rcv: Option[String])(using st:St): Loc =
     stype(act) match
-      case SyncType.Sync => sys.error(s"Cannot get buffer of sync message \"$act\"")
-      case SyncType.Fifo(locInfo)     => getLocInfo(locInfo,act,snd,rcv)
-      case SyncType.Unsorted(locInfo) => getLocInfo(locInfo,act,snd,rcv)
+      case Sync => sys.error(s"Cannot get buffer of sync message \"$act\"")
+      case Async(locInfo,_)     => getLocInfo(locInfo,act,snd,rcv)
+//      case SyncType.Unsorted(locInfo) => getLocInfo(locInfo,act,snd,rcv)
 
   private def getLocInfo(linfo: LocInfo, act:String,
                          snd: Option[String],
@@ -237,12 +296,12 @@ object Semantics extends SOS[Act,St]:
   private def stype(act: String)(using st:St) =
     st.sys.msgs.get(act).flatMap(_.st).getOrElse(MsgInfo.defaultST)
 
-  private def isFifo(syncType: Program.SyncType): Boolean =
+  private def isAsync(syncType: Program.SyncType): Boolean =
     syncType match
-      case SyncType.Fifo(_) => true
-      case _ => false
+      case SyncType.Async(_, _) => true
+      case SyncType.Sync => false
 
-  private def isUnsorted(syncType: Program.SyncType): Boolean =
-    syncType match
-      case SyncType.Unsorted(_) => true
-      case _ => false
+//  private def isUnsorted(syncType: Program.SyncType): Boolean =
+//    syncType match
+//      case SyncType.Unsorted(_) => true
+//      case _ => false

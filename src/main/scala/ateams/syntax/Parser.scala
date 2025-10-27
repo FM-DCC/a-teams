@@ -107,10 +107,10 @@ object Parser :
     string("sync").as((mi:MsgInfo) => mi.copy(st = Some(SyncType.Sync))) |
     (string("fifo") *> sps *> optLoc.?)
       .map(l=> (mi:MsgInfo) =>
-        mi.copy(st = Some(SyncType.Fifo(l.getOrElse(LocInfo(false,true)))))) |
+        mi.copy(st = Some(SyncType.Async(l.getOrElse(LocInfo(false,true)),Fifo())))) |
     (string("unsorted") *> sps *> optLoc.?)
       .map(l=> (mi:MsgInfo) =>
-        mi.copy(st = Some(SyncType.Unsorted(l.getOrElse(LocInfo(false,true)))))) //|
+        mi.copy(st = Some(SyncType.Async(l.getOrElse(LocInfo(false,true)),Unsorted())))) //|
 
   lazy val optLoc: P[LocInfo] =
     char('@') *> sps *> (
