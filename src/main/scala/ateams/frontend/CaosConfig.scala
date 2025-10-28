@@ -7,6 +7,7 @@ import ateams.backend.*
 import ateams.syntax.Program.{ASystem, preProcess}
 import ateams.syntax.{Program, Show}
 import ateams.backend.Semantics.St
+import caos.sos.SOS
 
 /** Object used to configure which analysis appear in the browser */
 object CaosConfig extends Configurator[ASystem]:
@@ -46,6 +47,20 @@ object CaosConfig extends Configurator[ASystem]:
 //    "View structure" -> view(Show.mermaid, Mermaid),
      "Run semantics" -> steps(e=>St(e,Map()), Semantics, x=>Show/*.short*/(x), Show(_), Text).expand,
      "Build LTS" -> lts((e:ASystem)=>St(e,Map ()), Semantics, x=>"", Show(_)),
+     "Local component" ->
+       viewMerms((sy: ASystem) =>
+          for (nm,proc) <- sy.main.toList yield
+              s"$nm:${Show(proc)}" -> SOS.toMermaid[Program.Act,Program.Proc](
+                new SOS[Program.Act,Program.Proc] {
+                  override def next[A >: Program.Act](p: Program.Proc): Set[(A, Program.Proc)] =
+                    Semantics.nextProc(p)(using St(sy,Map()))
+                      .map((ap:(Program.Act,Program.Proc))=>(ap._1.asInstanceOf[A],ap._2))
+                }  ,
+                proc, // initial state
+                x=>"", // displaying states
+                Show(_), // displaying labels
+                80 // max size
+              )).expand,
 //     "Build LTS (explore)" -> ltsExplore(e=>e, Semantics, x=>Show(x.main), _.toString),
 //    "Find strong bisimulation (given a program \"A ~ B\")" ->
 //      compareStrongBisim(Semantics, Semantics,
