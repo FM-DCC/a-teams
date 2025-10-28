@@ -52,25 +52,23 @@ object Program:
 
   sealed trait Buffer:
     def +(el:ActName): Buffer
-    def peek: MSet[ActName]
     def -(el:ActName): Option[Buffer]
+    def isEmpty: Boolean
 
   case class Fifo(q:Queue[ActName]) extends Buffer:
     def +(el:ActName) = Fifo(q.enqueue(el))
-    def peek: MSet[ActName] = q.headOption match
-      case Some(e) => MSet()+e
-      case None => MSet()
     def -(el:ActName): Option[Buffer] = q.dequeueOption match
       case Some((a,q2)) if a==el => Some(Fifo(q2))
       case _ => None
+    def isEmpty = q.isEmpty
   object Fifo:
     def apply():Fifo = Fifo(Queue[ActName]())
 
   case class Unsorted(m:MSet[ActName]) extends Buffer:
     def +(el:ActName) = Unsorted(m+el)
-    def peek: MSet[ActName] = m
     def -(el:ActName): Option[Buffer] =
       if m.contains(el) then Some(Unsorted(m-el)) else None
+    def isEmpty = m.isEmpty
   object Unsorted:
     def apply():Unsorted = Unsorted(MSet[ActName]())
 

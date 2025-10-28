@@ -39,6 +39,9 @@ object CaosConfig extends Configurator[ASystem]:
     "race-finish@rcv"
       -> "act\n\tdefault: sync;\n  start: 1->2;\n  finish: 2->1, fifo @ rcv;\n  run: 1->0;\n\nlet\n Ctr = start!.finish?.Ctr\n R = start?.run!.finish!c.R\nin\n  c:Ctr || R || R"
       -> "Race async experiment - finish sends asynchronously, with a single buffer for the receiver (controller)",
+    "race-async"
+      -> "act\n\tdefault: fifo;\n  start: 1->2;\n  finish: 2->1;\n  run: 1->0;\n\nlet\n Ctr = start!r1,r2.finish?.Ctr\n R = start?.run!.finish!c.R\nin\n  c:Ctr || r1:R || r2:R"
+      -> "Race async - all channels are asynchronous",
   )
 
   /** Description of the widgets that appear in the dashboard. */
@@ -46,21 +49,30 @@ object CaosConfig extends Configurator[ASystem]:
      "View pretty data" -> view[ASystem](Show.apply, Code("haskell")), //.moveTo(1),
 //    "View structure" -> view(Show.mermaid, Mermaid),
      "Run semantics" -> steps(e=>St(e,Map()), Semantics, x=>Show/*.short*/(x), Show(_), Text).expand,
-     "Build LTS" -> lts((e:ASystem)=>St(e,Map ()), Semantics, x=>"", Show(_)),
+     "Build LTS" -> lts((e:ASystem)=>St(e,Map ()), Semantics, Show.showBuffers, Show(_)),
      "Local component" ->
        viewMerms((sy: ASystem) =>
           for (nm,proc) <- sy.main.toList yield
               s"$nm:${Show(proc)}" -> SOS.toMermaid[Program.Act,Program.Proc](
+                // SOS semantics
                 new SOS[Program.Act,Program.Proc] {
                   override def next[A >: Program.Act](p: Program.Proc): Set[(A, Program.Proc)] =
-                    Semantics.nextProc(p)(using St(sy,Map()))
-                      .map((ap:(Program.Act,Program.Proc))=>(ap._1.asInstanceOf[A],ap._2))
+                    Semantics.nextProc(p)(using St(sy,Map())).asInstanceOf[Set[(A,Program.Proc)]]
                 }  ,
                 proc, // initial state
                 x=>"", // displaying states
                 Show(_), // displaying labels
                 80 // max size
               )).expand,
+     "Number of states and edges"
+      -> view((sy:ASystem) => {
+          val (st,eds,done) = SOS.traverse(Semantics,St(sy,Map()),2000)
+          //s"== Full state space ==" +
+          (if !done then s"(Stopped after traversing 2000 states)"
+           else s"States: ${st.size}\nEdges: $eds")
+        },
+        Text),
+
 //     "Build LTS (explore)" -> ltsExplore(e=>e, Semantics, x=>Show(x.main), _.toString),
 //    "Find strong bisimulation (given a program \"A ~ B\")" ->
 //      compareStrongBisim(Semantics, Semantics,

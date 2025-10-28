@@ -124,8 +124,7 @@ object Semantics extends SOS[Act,St]:
            val loc = getLoc(s, if locSnd then Some(n) else None, None)
            var buffer = st.buffers.getOrElse[Buffer](loc, buff)
            for _ <- to  do buffer = buffer + s
-           a -> st.copy(sys = st.sys.copy(main = st.sys.main + (n -> p)),
-                        buffers = st.buffers + (loc -> buffer))
+           updateSt(a,loc,buffer,n,p)
 
          // case 2: do not care to who, "to" does not exists, arity must be precise
          case (Async(LocInfo(locSnd,false), buf), art, true)  =>
@@ -135,8 +134,7 @@ object Semantics extends SOS[Act,St]:
            val loc = getLoc(s, if locSnd then Some(n) else None, None)
            var buffer = st.buffers.getOrElse(loc, buf)
            for _ <- 1 to art._2._1 do buffer = buffer + s
-           a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
-                         buffers = st.buffers + (loc -> buffer))
+           updateSt(a,loc,buffer,n,p)
 
          // case 3: care to who, but "to" does not exists - error unless it is meant to send to none (state unchanged)
          case (Async(LocInfo(locSnd,true), buf), art, true)  =>
@@ -156,8 +154,7 @@ object Semantics extends SOS[Act,St]:
              val loc = getLoc(s, if locSnd then Some(n) else None, Some(ag))
              val buffer = st.buffers.getOrElse(loc, buf) + s
              loc -> buffer
-           a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
-                         buffers = st.buffers ++ newBuffers)
+           updateSt(a,newBuffers,n,p)
 
          // any other case (fifo or sync)
          case _ => sys.error(s"case not supported for sending ${Show(a)}")
@@ -177,7 +174,7 @@ object Semantics extends SOS[Act,St]:
   //////////////////////////////////////////
 
   def nextRcv(canGo: Set[(Act,(Agent,Proc))])(using st:St): Set[(Act,St)] =
-    println(s"## can receive?") // ${canGo.map((a,ag)=>s"\n  - ${Show(a)} @ ${ag._1}").mkString}") //\nstype(${canGo.tail.head._1}) = ${stype(canGo.tail.head._1)}")
+    //println(s"## can receive?") // ${canGo.map((a,ag)=>s"\n  - ${Show(a)} @ ${ag._1}").mkString}") //\nstype(${canGo.tail.head._1}) = ${stype(canGo.tail.head._1)}")
     (for case (a@Act.In(s,from), (n, p)) <- canGo
         if isAsync(stype(s))
      yield {
@@ -190,36 +187,28 @@ object Semantics extends SOS[Act,St]:
        (stype(s),arit(s),from.isEmpty) match {
          // case 1: do not care from who, "from" exists, arity must match
          case (Async(LocInfo(false,locRcv), buf), art, false)  =>
-           println("-- case 1")
+           //println("-- case 1")
            if !inInterval(from.size,art._1) then
              sys.error(s"Trying to get '${Show(a)}' from {${from.mkString}} but expected #{${from.mkString}} ∈ {${Show.showIntrv(art._1)}}.")
            val loc = getLoc(s, None, if locRcv then Some(n) else None)
            var buffer: Option[Buffer] = Some(st.buffers.getOrElse[Buffer](loc, buf))
            for _ <- from  do buffer = buffer.flatMap(_-s)
 //           getFromBuffers(a,n,p,Map(loc->buffer))
-           buffer match
-             case Some(okBuff) =>
-               Set(a -> st.copy(sys = st.sys.copy(main = st.sys.main + (n -> p)),
-                                buffers = st.buffers + (loc -> okBuff)))
-             case None => Set() // failed to get buffer
+           updateOptSt(a,loc,buffer,n,p)
 
          // case 2: do not care from who, "from" does not exists, arity must be precise
          case (Async(LocInfo(false,locSnd), buf), art, true)  =>
-           println("-- case 2")
+           //println("-- case 2")
            if !art._1._2.contains(art._1._1) then
              sys.error(s"Trying to get '${Show(a)}' from {${Show.showIntrv(art._1)}} without having a single number of sources (${Show.showIntrv(art._1)}).")
            val loc = getLoc(s, None, if locSnd then Some(n) else None)
            var buffer: Option[Buffer] = Some(st.buffers.getOrElse(loc, buf))
            for _ <- 1 to art._1._1 do buffer = buffer.flatMap(_ - s)
-           buffer match
-             case Some(okBuff) =>
-               Set(a -> st.copy(sys = st.sys.copy(main = st.sys.main + (n -> p)),
-                                buffers = st.buffers + (loc -> okBuff)))
-             case None => Set() // failed to get buffer
+           updateOptSt(a,loc,buffer,n,p)
 
          // case 3: care to who, but "to" does not exists - error unless it is meant to send to none (state unchanged)
          case (Async(LocInfo(true,locSnd), buf), art, true)  =>
-           println("-- case 3")
+           //println("-- case 3")
            if art._1._1 == 0 && art._1._2 == Some(0) then
              Set(a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)) ))
            else
@@ -227,26 +216,39 @@ object Semantics extends SOS[Act,St]:
 
          // case 4: care to who, and "to" exists, arity must match
          case (Async(LocInfo(true,locSnd), buf), art, false)  =>
-           println("-- case 4")
+           //println("-- case 4")
            if !inInterval(from.size,art._1) then
              sys.error(s"Trying to get '${Show(a)}' from {${from.mkString}} but expected #{${from.mkString}} ∈ {${Show.showIntrv(art._1)}}.")
-           //var queues: List[(Loc,Queue[ActName])] = Nil
            val newBuffers = for ag <- from yield
              val loc = getLoc(s, Some(ag), if locSnd then Some(n) else None)
              val buffer = Some(st.buffers.getOrElse(loc, buf)).flatMap(_ - s)
              buffer.map(loc -> _)
-           println(s"!!! new buffers: ${newBuffers}")
-             // need to fix...
-           if newBuffers.contains(None) then Set()
-           else
-             Set(a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
-                           buffers = st.buffers ++ newBuffers.flatten.toMap))
-
+           //println(s"!!! new buffers: ${newBuffers}")
+           updateOptSt(a,newBuffers,n,p)
 
          case _ => sys.error(s"case not supported for receiving: ${Show(a)}")
        }
      }).flatten
 
+  private def updateSt(a:Act, loc:Loc, buffer: Buffer
+                       ,n:ActName, p:Proc)(using st:St): (Act,St) =
+    a -> st.copy(sys = st.sys.copy(main = st.sys.main + (n -> p)),
+                 buffers = if buffer.isEmpty then st.buffers - loc
+                           else st.buffers + (loc -> buffer))
+  private def updateOptSt(a:Act, loc:Loc, buffer: Option[Buffer]
+                      ,n:ActName, p:Proc)(using st:St): Option[(Act,St)] =
+    buffer.map(updateSt(a,loc,_,n,p))
+
+  private def updateSt(a:Act, buffers: Set[(Loc,Buffer)]
+                      ,n:ActName, p:Proc)(using st:St): (Act,St) =
+    a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
+                  buffers = (st.buffers ++ buffers) -- buffers.filter(_._2.isEmpty).map(_._1))
+  private def updateOptSt(a:Act, buffers: Set[Option[(Loc,Buffer)]]
+                      ,n:ActName, p:Proc)(using st:St): Set[(Act,St)] =
+    if buffers.contains(None) then Set()
+    else Set(updateSt(a,buffers.flatten,n,p))
+      //Set(a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)),
+        //          buffers = st.buffers ++ buffers.flatten.toMap))
 
   ////////////////////////////
   // Semantics of a process //
