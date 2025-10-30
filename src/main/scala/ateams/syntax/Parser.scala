@@ -69,12 +69,12 @@ object Parser :
     case Nil => ASystem.default
 
   private def oneProgram: P[ASystem] =
-    string("act") *> sps *> msg.repSep(sps).map(joinASystems) |
-    string("let") *> sps *> defs.repSep(sps).map(joinASystems) |
-    string("in") *> sps *> main
+    string("acts") *> sps *> msg.repSep(sps).map(joinASystems) |
+    string("proc") *> sps *> defs.repSep(sps).map(joinASystems) |
+    string("init") *> sps *> main
 
   lazy val notKw: P0[Unit] =
-    not(string("in")|string("let")|string("act"))
+    not(string("acts")|string("proc")|string("init"))
 
   lazy val msg: P[ASystem] =
     (((notKw.with1 *> varName) <* sps) ~

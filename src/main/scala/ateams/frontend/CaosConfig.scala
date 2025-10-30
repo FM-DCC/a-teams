@@ -22,25 +22,25 @@ object CaosConfig extends Configurator[ASystem]:
   /** Examples of programs that the user can choose from. The first is the default one. */
   val examples = List(
 //    "ex0"
-//      -> "act\n  default: fifo, 1->1;\n  coin; coffee;\n\nlet\n CM = coin!cs.coffee?.CM\n CS = coin?.coffee!.CS\nin\n CM||cs:CS"
+//      -> "acts\n  default: fifo, 1->1;\n  coin; coffee;\n\nproc\n CM = coin!cs.coffee?.CM\n CS = coin?.coffee!.CS\nin\n CM||cs:CS"
 //      -> "Experiment",
     "coffee-sync"
-      -> "act\n  default: sync, 1->1;\n  coin; coffee;\n  pub: 1->0;\n  // other supported examples:\n  // fifo\n  // unsorted\n  // fifo @ rcv,\n  // fifo @ snd\n  // fifo @ snd-rcv\n  // fifo @ global\n  // 1..3 -> 4...5\n  // 1 -> 0..*\n\nlet\n CM = coin!.tau.coffee?.CM\n CS = pub!.coin?.coffee!.CS\nin\n CM||CS"
+      -> "acts\n  default: sync, 1->1;\n  coin; coffee;\n  pub: 1->0;\n  // other supported examples:\n  // fifo\n  // unsorted\n  // fifo @ rcv,\n  // fifo @ snd\n  // fifo @ snd-rcv\n  // fifo @ global\n  // 1..3 -> 4...5\n  // 1 -> 0..*\n\nproc\n CM = coin!.tau.coffee?.CM\n CS = pub!.coin?.coffee!.CS\ninit\n CM||CS"
       -> "Simple coffee with synchronous channels",
     "coffee-async"
-      -> "act\n  default: fifo, 1->1;\n  coin; coffee;\n  pub: 1->0;\n\nlet\n CM = coin!cs.coffee?.CM\n CS = pub!.coin?.coffee!cm.CS\nin\n cm:CM||cs:CS"
+      -> "acts\n  default: fifo, 1->1;\n  coin; coffee;\n  pub: 1->0;\n\nproc\n CM = coin!cs.coffee?.CM\n CS = pub!.coin?.coffee!cm.CS\ninit\n cm:CM||cs:CS"
       -> "Asynchronous version of the coffee machine with FIFO channels",
     "race-sync"
-      -> "act\n\tdefault: sync;\n  start: 1->2;\n  finish: 1->1;\n  run: 1->0;\n\nlet\n Ctr = start!.finish?.finish?.Ctr\n R = start?.run!.finish!.R\nin\n Ctr || R || R"
+      -> "acts\n\tdefault: sync;\n  start: 1->2;\n  finish: 1->1;\n  run: 1->0;\n\nproc\n Ctr = start!.finish?.finish?.Ctr\n R = start?.run!.finish!.R\ninit\n Ctr || R || R"
       -> "Ususal runner example",
     "race-finish@snd"
-      -> "act\n\tdefault: sync;\n  start: 1->2;\n  finish: 2->1, fifo @ snd;\n  run: 1->0;\n\nlet\n Ctr = start!.finish?r1,r2.Ctr\n R = start?.run!.finish!.R\nin\n  Ctr || r1:R || r2:R"
+      -> "acts\n\tdefault: sync;\n  start: 1->2;\n  finish: 2->1, fifo @ snd;\n  run: 1->0;\n\nproc\n Ctr = start!.finish?r1,r2.Ctr\n R = start?.run!.finish!.R\ninit\n  Ctr || r1:R || r2:R"
       -> "Race async experiment - finish sends asynchronously, with a buffer for each sender (runner)",
     "race-finish@rcv"
-      -> "act\n\tdefault: sync;\n  start: 1->2;\n  finish: 2->1, fifo @ rcv;\n  run: 1->0;\n\nlet\n Ctr = start!.finish?.Ctr\n R = start?.run!.finish!c.R\nin\n  c:Ctr || R || R"
+      -> "acts\n\tdefault: sync;\n  start: 1->2;\n  finish: 2->1, fifo @ rcv;\n  run: 1->0;\n\nproc\n Ctr = start!.finish?.Ctr\n R = start?.run!.finish!c.R\ninit\n  c:Ctr || R || R"
       -> "Race async experiment - finish sends asynchronously, with a single buffer for the receiver (controller)",
     "race-async"
-      -> "act\n\tdefault: fifo;\n  start: 1->2;\n  finish: 2->1;\n  run: 1->0;\n\nlet\n Ctr = start!r1,r2.finish?.Ctr\n R = start?.run!.finish!c.R\nin\n  c:Ctr || r1:R || r2:R"
+      -> "acts\n\tdefault: fifo;\n  start: 1->2;\n  finish: 2->1;\n  run: 1->0;\n\nproc\n Ctr = start!r1,r2.finish?.Ctr\n R = start?.run!.finish!c.R\ninit\n  c:Ctr || r1:R || r2:R"
       -> "Race async - all channels are asynchronous",
   )
 

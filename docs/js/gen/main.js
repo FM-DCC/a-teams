@@ -1567,7 +1567,7 @@ function $p_Lateams_syntax_Parser$__joinASystems__Lcats_data_NonEmptyList__Latea
   return $as_Lateams_syntax_Program$ASystem(acc)
 }
 function $p_Lateams_syntax_Parser$__oneProgram__Lcats_parse_Parser($thiz) {
-  var $$x1 = $n($m_Lcats_parse_Parser$().string__T__Lcats_parse_Parser("act")).$times$greater__Lcats_parse_Parser0__Lcats_parse_Parser($thiz.Lateams_syntax_Parser$__f_sps);
+  var $$x1 = $n($m_Lcats_parse_Parser$().string__T__Lcats_parse_Parser("acts")).$times$greater__Lcats_parse_Parser0__Lcats_parse_Parser($thiz.Lateams_syntax_Parser$__f_sps);
   var this$1 = $n($thiz.msg__Lcats_parse_Parser());
   var sep = $thiz.Lateams_syntax_Parser$__f_sps;
   var this$2 = $m_Lcats_parse_Parser$();
@@ -1577,7 +1577,7 @@ function $p_Lateams_syntax_Parser$__oneProgram__Lcats_parse_Parser($thiz) {
     return $p_Lateams_syntax_Parser$__joinASystems__Lcats_data_NonEmptyList__Lateams_syntax_Program$ASystem($thiz, l$1)
   }));
   var this$8 = $n($n($$x1).$times$greater__Lcats_parse_Parser0__Lcats_parse_Parser($m_Lcats_parse_Parser$().map__Lcats_parse_Parser__F1__Lcats_parse_Parser(this$4, fn)));
-  var $$x2 = $n($n($m_Lcats_parse_Parser$().string__T__Lcats_parse_Parser("let")).$times$greater__Lcats_parse_Parser0__Lcats_parse_Parser($thiz.Lateams_syntax_Parser$__f_sps));
+  var $$x2 = $n($n($m_Lcats_parse_Parser$().string__T__Lcats_parse_Parser("proc")).$times$greater__Lcats_parse_Parser0__Lcats_parse_Parser($thiz.Lateams_syntax_Parser$__f_sps));
   var this$5 = $n($thiz.defs__Lcats_parse_Parser());
   var sep$1 = $thiz.Lateams_syntax_Parser$__f_sps;
   var this$6 = $m_Lcats_parse_Parser$();
@@ -1588,7 +1588,7 @@ function $p_Lateams_syntax_Parser$__oneProgram__Lcats_parse_Parser($thiz) {
   }));
   var that = $n($$x2).$times$greater__Lcats_parse_Parser0__Lcats_parse_Parser($m_Lcats_parse_Parser$().map__Lcats_parse_Parser__F1__Lcats_parse_Parser(this$7, fn$1));
   var this$9 = $n(this$8.orElse__Lcats_parse_Parser__Lcats_parse_Parser(that));
-  var that$1 = $n($n($m_Lcats_parse_Parser$().string__T__Lcats_parse_Parser("in")).$times$greater__Lcats_parse_Parser0__Lcats_parse_Parser($thiz.Lateams_syntax_Parser$__f_sps)).$times$greater__Lcats_parse_Parser0__Lcats_parse_Parser($thiz.main__Lcats_parse_Parser());
+  var that$1 = $n($n($m_Lcats_parse_Parser$().string__T__Lcats_parse_Parser("init")).$times$greater__Lcats_parse_Parser0__Lcats_parse_Parser($thiz.Lateams_syntax_Parser$__f_sps)).$times$greater__Lcats_parse_Parser0__Lcats_parse_Parser($thiz.main__Lcats_parse_Parser());
   return this$9.orElse__Lcats_parse_Parser__Lcats_parse_Parser(that$1)
 }
 function $p_Lateams_syntax_Parser$__procSum__Lcats_parse_Parser__Lcats_parse_Parser($thiz, more) {
@@ -1789,10 +1789,10 @@ $c_Lateams_syntax_Parser$.prototype.parseProgram__T__Lateams_syntax_Program$ASys
 $c_Lateams_syntax_Parser$.prototype.notKw__Lcats_parse_Parser0 = (function() {
   if ((!this.Lateams_syntax_Parser$__f_notKwbitmap$1)) {
     var $$x1 = $m_Lcats_parse_Parser$();
-    var this$1 = $n($m_Lcats_parse_Parser$().string__T__Lcats_parse_Parser("in"));
-    var that = $m_Lcats_parse_Parser$().string__T__Lcats_parse_Parser("let");
+    var this$1 = $n($m_Lcats_parse_Parser$().string__T__Lcats_parse_Parser("acts"));
+    var that = $m_Lcats_parse_Parser$().string__T__Lcats_parse_Parser("proc");
     var this$2 = $n(this$1.orElse__Lcats_parse_Parser__Lcats_parse_Parser(that));
-    var that$1 = $m_Lcats_parse_Parser$().string__T__Lcats_parse_Parser("act");
+    var that$1 = $m_Lcats_parse_Parser$().string__T__Lcats_parse_Parser("init");
     this.Lateams_syntax_Parser$__f_notKw$lzy1 = $n($$x1).not__Lcats_parse_Parser0__Lcats_parse_Parser0(this$2.orElse__Lcats_parse_Parser__Lcats_parse_Parser(that$1));
     this.Lateams_syntax_Parser$__f_notKwbitmap$1 = true
   };
@@ -18190,7 +18190,7 @@ function $c_Lateams_frontend_CaosConfig$() {
   }));
   this.Lateams_frontend_CaosConfig$__f_parser = $f_F1__andThen__F1__F1(this$3, g);
   $n($m_s_package$().s_package$__f_List);
-  var elems = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lcaos_frontend_Configurator$Example.getArrayOf().constr)([new $c_Lcaos_frontend_Configurator$Example("act\n  default: sync, 1->1;\n  coin; coffee;\n  pub: 1->0;\n  // other supported examples:\n  // fifo\n  // unsorted\n  // fifo @ rcv,\n  // fifo @ snd\n  // fifo @ snd-rcv\n  // fifo @ global\n  // 1..3 -> 4...5\n  // 1 -> 0..*\n\nlet\n CM = coin!.tau.coffee?.CM\n CS = pub!.coin?.coffee!.CS\nin\n CM||CS", "coffee-sync", "Simple coffee with synchronous channels"), new $c_Lcaos_frontend_Configurator$Example("act\n  default: fifo, 1->1;\n  coin; coffee;\n  pub: 1->0;\n\nlet\n CM = coin!cs.coffee?.CM\n CS = pub!.coin?.coffee!cm.CS\nin\n cm:CM||cs:CS", "coffee-async", "Asynchronous version of the coffee machine with FIFO channels"), new $c_Lcaos_frontend_Configurator$Example("act\n\tdefault: sync;\n  start: 1->2;\n  finish: 1->1;\n  run: 1->0;\n\nlet\n Ctr = start!.finish?.finish?.Ctr\n R = start?.run!.finish!.R\nin\n Ctr || R || R", "race-sync", "Ususal runner example"), new $c_Lcaos_frontend_Configurator$Example("act\n\tdefault: sync;\n  start: 1->2;\n  finish: 2->1, fifo @ snd;\n  run: 1->0;\n\nlet\n Ctr = start!.finish?r1,r2.Ctr\n R = start?.run!.finish!.R\nin\n  Ctr || r1:R || r2:R", "race-finish@snd", "Race async experiment - finish sends asynchronously, with a buffer for each sender (runner)"), new $c_Lcaos_frontend_Configurator$Example("act\n\tdefault: sync;\n  start: 1->2;\n  finish: 2->1, fifo @ rcv;\n  run: 1->0;\n\nlet\n Ctr = start!.finish?.Ctr\n R = start?.run!.finish!c.R\nin\n  c:Ctr || R || R", "race-finish@rcv", "Race async experiment - finish sends asynchronously, with a single buffer for the receiver (controller)"), new $c_Lcaos_frontend_Configurator$Example("act\n\tdefault: fifo;\n  start: 1->2;\n  finish: 2->1;\n  run: 1->0;\n\nlet\n Ctr = start!r1,r2.finish?.Ctr\n R = start?.run!.finish!c.R\nin\n  c:Ctr || r1:R || r2:R", "race-async", "Race async - all channels are asynchronous")]));
+  var elems = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_Lcaos_frontend_Configurator$Example.getArrayOf().constr)([new $c_Lcaos_frontend_Configurator$Example("acts\n  default: sync, 1->1;\n  coin; coffee;\n  pub: 1->0;\n  // other supported examples:\n  // fifo\n  // unsorted\n  // fifo @ rcv,\n  // fifo @ snd\n  // fifo @ snd-rcv\n  // fifo @ global\n  // 1..3 -> 4...5\n  // 1 -> 0..*\n\nproc\n CM = coin!.tau.coffee?.CM\n CS = pub!.coin?.coffee!.CS\ninit\n CM||CS", "coffee-sync", "Simple coffee with synchronous channels"), new $c_Lcaos_frontend_Configurator$Example("acts\n  default: fifo, 1->1;\n  coin; coffee;\n  pub: 1->0;\n\nproc\n CM = coin!cs.coffee?.CM\n CS = pub!.coin?.coffee!cm.CS\ninit\n cm:CM||cs:CS", "coffee-async", "Asynchronous version of the coffee machine with FIFO channels"), new $c_Lcaos_frontend_Configurator$Example("acts\n\tdefault: sync;\n  start: 1->2;\n  finish: 1->1;\n  run: 1->0;\n\nproc\n Ctr = start!.finish?.finish?.Ctr\n R = start?.run!.finish!.R\ninit\n Ctr || R || R", "race-sync", "Ususal runner example"), new $c_Lcaos_frontend_Configurator$Example("acts\n\tdefault: sync;\n  start: 1->2;\n  finish: 2->1, fifo @ snd;\n  run: 1->0;\n\nproc\n Ctr = start!.finish?r1,r2.Ctr\n R = start?.run!.finish!.R\ninit\n  Ctr || r1:R || r2:R", "race-finish@snd", "Race async experiment - finish sends asynchronously, with a buffer for each sender (runner)"), new $c_Lcaos_frontend_Configurator$Example("acts\n\tdefault: sync;\n  start: 1->2;\n  finish: 2->1, fifo @ rcv;\n  run: 1->0;\n\nproc\n Ctr = start!.finish?.Ctr\n R = start?.run!.finish!c.R\ninit\n  c:Ctr || R || R", "race-finish@rcv", "Race async experiment - finish sends asynchronously, with a single buffer for the receiver (controller)"), new $c_Lcaos_frontend_Configurator$Example("acts\n\tdefault: fifo;\n  start: 1->2;\n  finish: 2->1;\n  run: 1->0;\n\nproc\n Ctr = start!r1,r2.finish?.Ctr\n R = start?.run!.finish!c.R\ninit\n  c:Ctr || r1:R || r2:R", "race-async", "Race async - all channels are asynchronous")]));
   this.Lateams_frontend_CaosConfig$__f_examples = $m_sci_Nil$().prependedAll__sc_IterableOnce__sci_List(elems);
   $n($m_s_package$().s_package$__f_List);
   var $$x8 = $m_sr_ScalaRunTime$();
