@@ -48,6 +48,7 @@ object CaosConfig extends Configurator[ASystem]:
   val widgets = List(
      "View pretty data" -> view[ASystem](Show.apply, Code("haskell")), //.moveTo(1),
 //    "View structure" -> view(Show.mermaid, Mermaid),
+     "Well-formed?" -> view[ASystem](x => ateams.backend.TypeCheck.pp(x), Text).expand,
      "Run semantics" -> steps(e=>St(e,Map()), Semantics, x=>Show/*.short*/(x), Show(_), Text).expand,
      "Build LTS" -> lts((e:ASystem)=>St(e,Map ()), Semantics, Show.showBuffers, Show(_)),
      "Local component" ->

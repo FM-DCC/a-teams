@@ -118,13 +118,15 @@ object Semantics extends SOS[Act,St]:
        (stype(s),arit(s),to.isEmpty) match
          // case 1: do not care to who, "to" exists, arity must match
          case (Async(LocInfo(locSnd,false), buff), art, false)  =>
-           println("-- case 1")
-           if !inInterval(to.size,art._2) then
-             sys.error(s"Trying to send '${Show(a)}' to {${to.mkString}} but expected # in interval {${Show.showIntrv(art._2)}}.")
-           val loc = getLoc(s, if locSnd then Some(n) else None, None)
-           var buffer = st.buffers.getOrElse[Buffer](loc, buff)
-           for _ <- to  do buffer = buffer + s
-           updateSt(a,loc,buffer,n,p)
+//           println("-- case 1")
+//           if !inInterval(to.size,art._2) then
+//             sys.error(s"Trying to send '${Show(a)}' to {${to.mkString}} but expected # in interval {${Show.showIntrv(art._2)}}.")
+//           val loc = getLoc(s, if locSnd then Some(n) else None, None)
+//           var buffer = st.buffers.getOrElse[Buffer](loc, buff)
+//           for _ <- to  do buffer = buffer + s
+//           updateSt(a,loc,buffer,n,p)
+           // UPDATED case 1: "to" should not exist
+           sys.error(s"Trying to send '${Show(a)}' to {${to.mkString}} but there is no guarantees that the receivers are the correct ones. You should either remove the explicit set of senders, or change the synchronisation type.")
 
          // case 2: do not care to who, "to" does not exists, arity must be precise
          case (Async(LocInfo(locSnd,false), buf), art, true)  =>
@@ -160,7 +162,7 @@ object Semantics extends SOS[Act,St]:
          case _ => sys.error(s"case not supported for sending ${Show(a)}")
      })
 
-  private def inInterval(n: Int, intr: Intrv): Boolean =
+  def inInterval(n: Int, intr: Intrv): Boolean =
     n >= intr._1 && (intr._2.isEmpty || n <= intr._2.get)
 
   private def getRcv(ag: String, styp: SyncType): Option[String] =
@@ -187,14 +189,16 @@ object Semantics extends SOS[Act,St]:
        (stype(s),arit(s),from.isEmpty) match {
          // case 1: do not care from who, "from" exists, arity must match
          case (Async(LocInfo(false,locRcv), buf), art, false)  =>
-           //println("-- case 1")
-           if !inInterval(from.size,art._1) then
-             sys.error(s"Trying to get '${Show(a)}' from {${from.mkString}} but expected #{${from.mkString}} ∈ {${Show.showIntrv(art._1)}}.")
-           val loc = getLoc(s, None, if locRcv then Some(n) else None)
-           var buffer: Option[Buffer] = Some(st.buffers.getOrElse[Buffer](loc, buf))
-           for _ <- from  do buffer = buffer.flatMap(_-s)
-//           getFromBuffers(a,n,p,Map(loc->buffer))
-           updateOptSt(a,loc,buffer,n,p)
+//           //println("-- case 1")
+//           if !inInterval(from.size,art._1) then
+//             sys.error(s"Trying to get '${Show(a)}' from {${from.mkString}} but expected #{${from.mkString}} ∈ {${Show.showIntrv(art._1)}}.")
+//           val loc = getLoc(s, None, if locRcv then Some(n) else None)
+//           var buffer: Option[Buffer] = Some(st.buffers.getOrElse[Buffer](loc, buf))
+//           for _ <- from  do buffer = buffer.flatMap(_-s)
+////           getFromBuffers(a,n,p,Map(loc->buffer))
+//           updateOptSt(a,loc,buffer,n,p)
+           // UPDATED case 1: "from" should not exist
+           sys.error(s"Trying to get '${Show(a)}' from {${from.mkString}} but there is no guarantees that the senders are the correct ones. You should either remove the explicit set of receivers, or change the synchronisation type.")
 
          // case 2: do not care from who, "from" does not exists, arity must be precise
          case (Async(LocInfo(false,locSnd), buf), art, true)  =>
@@ -292,8 +296,10 @@ object Semantics extends SOS[Act,St]:
     case _ => sys.error(s"Missing information for channel \"$act\": type ${Show(linfo)}, got $snd->$rcv.")
 
 
-  private def arit(act: String)(using st:St): (Intrv, Intrv) =
-    st.sys.msgs.get(act).flatMap(_.arity).getOrElse(MsgInfo.defaultArity)
+  def arit(act: String)(using st:St): (Intrv, Intrv) =
+    aritSys(act)(using st.sys)
+  def aritSys(act: String)(using s:ASystem): (Intrv, Intrv) =
+    s.msgs.get(act).flatMap(_.arity).getOrElse(MsgInfo.defaultArity)
 
   private def stype(act: String)(using st:St) =
     st.sys.msgs.get(act).flatMap(_.st).getOrElse(MsgInfo.defaultST)
