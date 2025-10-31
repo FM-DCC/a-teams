@@ -1,9 +1,8 @@
 package ateams.backend
 
 import Semantics.{St, aritSys}
-import ateams.syntax.Program
-import ateams.syntax.Program.{ASystem, Act, MsgInfo, Proc, ProcName, SyncType, LocInfo}
-import ateams.syntax.Show
+import ateams.syntax.{Program, Show}
+import ateams.syntax.Program.{ASystem, Act, ActName, Agent, LocInfo, MsgInfo, Proc, ProcName, SyncType}
 
 object TypeCheck:
   type Errors = Set[String]
@@ -21,13 +20,13 @@ object TypeCheck:
       case Proc.ProcCall(p) => Set()
       case Proc.Choice(p1, p2) => check(p1)++check(p2)
       case Proc.Par(p1, p2) => check(p1)++check(p2)
-      case Proc.Prefix(Act.In(act,from), p) => check(p) ++
+      case Proc.Prefix(Act.In(act,from), p) => check(p) ++ checkAct(act,from) ++
         (sy.msgs.get(act) match
-          case None => Set(s"[$pname] action $act not found.")
+          case None => Set()//Set(s"[$pname] action $act not found.") // already checked by checkAct
           case Some(mi:MsgInfo) => mi match
             case MsgInfo(Some((i1,i2)), Some(SyncType.Sync)) =>
               if from.nonEmpty && !Semantics.inInterval(from.size,i1) then
-                Set(s"[$pname] Trying to receive '$act' from {${from.mkString}} but expected # in interval {${Show.showIntrv(i1)}}.")
+                Set(s"[$pname] Trying to receive '$act' from {${from.mkString(",")}} but expected #{${from.mkString(",")}} ∈ {${Show.showIntrv(i1)}}.")
               else Set()
             case MsgInfo(Some((i1,i2)), Some(SyncType.Async(LocInfo(snd, rcv),_))) =>
               if from.nonEmpty && (!snd) then
@@ -35,17 +34,17 @@ object TypeCheck:
               else if from.isEmpty && snd && i1!=(0,Some(0)) then
                 Set(s"[$pname] Receiving $act with no sources, but expected some targets (in {${Show.showIntrv(i1)}}).")
               else if from.nonEmpty && snd && !Semantics.inInterval(from.size,i1) then
-                Set(s"[$pname] Trying to receive '$act' from {${from.mkString}} but expected # in interval {${Show.showIntrv(i1)}}.")
+                Set(s"[$pname] Trying to receive '$act' from {${from.mkString(",")}} but expected #{${from.mkString(",")}} ∈ {${Show.showIntrv(i1)}}.")
               else Set()
             case _ => Set(s"Unexpected message info: ${Show(mi)}")
           )
-      case Proc.Prefix(Act.Out(act,to), p) => check(p) ++
+      case Proc.Prefix(a@Act.Out(act,to), p) => check(p) ++ checkAct(act,to) ++
         (sy.msgs.get(act) match
-          case None => Set(s"[$pname] action $act not found.")
+          case None => Set() // Set(s"[$pname] action $act not found.") // already checked by checkAct
           case Some(mi:MsgInfo) => mi match
             case MsgInfo(Some((i1,i2)), Some(SyncType.Sync)) =>
               if to.nonEmpty && !Semantics.inInterval(to.size,i2) then
-                Set(s"[$pname] Trying to send '$act' to {${to.mkString}} but expected # in interval {${Show.showIntrv(i2)}}.")
+                Set(s"[$pname] Trying to send '$act' to {${to.mkString(",")}} but expected #{${to.mkString(",")}} ∈ {${Show.showIntrv(i2)}}.")
               else Set()
             case MsgInfo(Some((i1,i2)), Some(SyncType.Async(LocInfo(snd, rcv),_))) =>
               if to.nonEmpty && (!rcv) then
@@ -53,9 +52,17 @@ object TypeCheck:
               else if to.isEmpty && rcv && i2!=(0,Some(0)) then
                 Set(s"[$pname] Sending $act with no destination, but expected some targets (in ${Show.showIntrv(i2)}).")
               else if to.nonEmpty && rcv && !Semantics.inInterval(to.size,i2) then
-                Set(s"[$pname] Trying to send '$act' to {${to.mkString}} but expected # in interval {${Show.showIntrv(i2)}}.")
+                Set(s"[$pname] Trying to send '$act' to {${to.mkString(",")}} but expected #{${to.mkString(",")}} ∈ {${Show.showIntrv(i2)}}.")
               else Set()
             case _ => Set(s"Unexpected message info: ${Show(mi)}")
           )
-      case Proc.Prefix(Act.IO(_,_,_),p) => check(p)
+      case Proc.Prefix(Act.IO(a,from,to),p) => check(p) ++ checkAct(a,from++to)
     }
+
+  def checkAct(a:ActName, anames:Set[Agent])
+              (using sy:ASystem, pname:ProcName): Errors =
+    (if !sy.msgs.contains(a) && a!="tau" then
+      Set(s"[$pname] Unknown action $a.") else Set()) ++
+    (for an <- (anames) if !sy.main.contains(an) yield
+      s"[$pname] Unknown agent $an used by action $a.")
+

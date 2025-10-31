@@ -111,10 +111,10 @@ object Semantics extends SOS[Act,St]:
         //checkType(a,stype(s)) // proper runtime error if not enough information in Act
        //println(s"SENDING $a...")
        // need to send one message for each destination. Options:
-       //  - 1. we do not care to who - need to count sends (arity or to - error if not possible)
-       //  - we do care to who, but not know them (to={}) - error (not possible)
-       //  - we do care to who, and to!={}, but arity does not match "to" - error (not possible)
-       //  - we do care to who, and to!={}, and arity matches "to" - send to each "to"
+       //  1. we do not care to who - need to count sends (arity or to - error if not possible)
+       //  2. we do care to who, but not know them (to={}) - error (not possible)
+       //  3. we do care to who, and to!={}, but arity does not match "to" - error (not possible)
+       //  4. we do care to who, and to!={}, and arity matches "to" - send to each "to"
        (stype(s),arit(s),to.isEmpty) match
          // case 1: do not care to who, "to" exists, arity must match
          case (Async(LocInfo(locSnd,false), buff), art, false)  =>
@@ -150,7 +150,7 @@ object Semantics extends SOS[Act,St]:
          case (Async(LocInfo(locSnd,true), buf), art, false)  =>
            println("-- case 4")
            if !inInterval(to.size,art._2) then
-             sys.error(s"Trying to send '${Show(a)}' to {${to.mkString}} but expected # in interval {${Show.showIntrv(art._2)}}.")
+             sys.error(s"Trying to send '${Show(a)}' to {${to.mkString(",")}} but expected #{${to.mkString(",")}} ∈ {${Show.showIntrv(art._2)}}.")
            //var queues: List[(Loc,Queue[ActName])] = Nil
            val newBuffers = for ag <- to yield
              val loc = getLoc(s, if locSnd then Some(n) else None, Some(ag))

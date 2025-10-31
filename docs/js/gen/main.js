@@ -1140,143 +1140,145 @@ $c_Lateams_backend_TypeCheck$.prototype.check__Lateams_syntax_Program$ASystem__s
   return $as_sci_Set($n($$x1).flatten__F1__O(this$4.s_$less$colon$less$__f_singleton))
 });
 $c_Lateams_backend_TypeCheck$.prototype.check__Lateams_syntax_Program$Proc__Lateams_syntax_Program$ASystem__T__sci_Set = (function(p, sy, pname) {
-  var p$tailLocal1 = p;
-  while (true) {
-    var x61 = p$tailLocal1;
-    var x = $s_Lateams_syntax_Program$Proc$__End__Lateams_syntax_Program$Proc();
-    if (((x === null) ? (x61 === null) : $n(x).equals__O__Z(x61))) {
-      var this$1 = $n($m_s_Predef$().s_Predef$__f_Set);
-      var elems = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
-      return this$1.from__sc_IterableOnce__sci_Set(elems)
-    };
-    if ((x61 instanceof $c_Lateams_syntax_Program$Proc$ProcCall)) {
-      var x$1 = $as_Lateams_syntax_Program$Proc$ProcCall(x61);
-      var this$3 = $n(x$1);
-      var this$4 = $n($m_s_Predef$().s_Predef$__f_Set);
-      var elems$1 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
-      return this$4.from__sc_IterableOnce__sci_Set(elems$1)
-    };
-    if ((x61 instanceof $c_Lateams_syntax_Program$Proc$Choice)) {
-      var x$1$1 = $as_Lateams_syntax_Program$Proc$Choice(x61);
-      var this$6 = $n(x$1$1);
-      var x93 = this$6.Lateams_syntax_Program$Proc$Choice__f_p1;
-      var this$7 = $n(x$1$1);
-      var x94 = this$7.Lateams_syntax_Program$Proc$Choice__f_p2;
-      var this$8 = $n(this.check__Lateams_syntax_Program$Proc__Lateams_syntax_Program$ASystem__T__sci_Set(x93, sy, pname));
-      var that = this.check__Lateams_syntax_Program$Proc__Lateams_syntax_Program$ASystem__T__sci_Set(x94, sy, pname);
-      return $as_sci_Set(this$8.concat__sc_IterableOnce__sc_SetOps(that))
-    };
-    if ((x61 instanceof $c_Lateams_syntax_Program$Proc$Par)) {
-      var x$1$2 = $as_Lateams_syntax_Program$Proc$Par(x61);
-      var this$10 = $n(x$1$2);
-      var x89 = this$10.Lateams_syntax_Program$Proc$Par__f_p1;
-      var this$11 = $n(x$1$2);
-      var x90 = this$11.Lateams_syntax_Program$Proc$Par__f_p2;
-      var this$12 = $n(this.check__Lateams_syntax_Program$Proc__Lateams_syntax_Program$ASystem__T__sci_Set(x89, sy, pname));
-      var that$1 = this.check__Lateams_syntax_Program$Proc__Lateams_syntax_Program$ASystem__T__sci_Set(x90, sy, pname);
-      return $as_sci_Set(this$12.concat__sc_IterableOnce__sc_SetOps(that$1))
-    };
-    if ((x61 instanceof $c_Lateams_syntax_Program$Proc$Prefix)) {
-      var x$1$3 = $as_Lateams_syntax_Program$Proc$Prefix(x61);
-      var this$14 = $n(x$1$3);
-      var x81 = this$14.Lateams_syntax_Program$Proc$Prefix__f_act;
-      var this$15 = $n(x$1$3);
-      var x82 = this$15.Lateams_syntax_Program$Proc$Prefix__f_p;
-      if ((x81 instanceof $c_Lateams_syntax_Program$Act$In)) {
-        var x$1$4 = $as_Lateams_syntax_Program$Act$In(x81);
-        var this$17 = $n(x$1$4);
-        var x85 = this$17.Lateams_syntax_Program$Act$In__f_a;
-        var this$18 = $n(x$1$4);
-        var x86 = this$18.Lateams_syntax_Program$Act$In__f_from;
-        var this$44 = $n(this.check__Lateams_syntax_Program$Proc__Lateams_syntax_Program$ASystem__T__sci_Set(x82, sy, pname));
-        matchResult2: {
-          var that$2;
-          var x27 = $n($n(sy).Lateams_syntax_Program$ASystem__f_msgs).get__O__s_Option(x85);
-          var x$3 = $m_s_None$();
-          if ((x$3 === x27)) {
-            var this$19 = $n($m_s_Predef$().s_Predef$__f_Set);
-            var elems$2 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((("[" + pname) + "] action ") + x85) + " not found.")]));
-            var that$2 = this$19.from__sc_IterableOnce__sci_Set(elems$2);
-            break matchResult2
-          };
-          if ((x27 instanceof $c_s_Some)) {
-            var x29 = $as_Lateams_syntax_Program$MsgInfo($n($as_s_Some(x27)).s_Some__f_value);
+  var x = $s_Lateams_syntax_Program$Proc$__End__Lateams_syntax_Program$Proc();
+  if (((x === null) ? (p === null) : $n(x).equals__O__Z(p))) {
+    var this$1 = $n($m_s_Predef$().s_Predef$__f_Set);
+    var elems = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
+    return this$1.from__sc_IterableOnce__sci_Set(elems)
+  };
+  if ((p instanceof $c_Lateams_syntax_Program$Proc$ProcCall)) {
+    var x$1 = $as_Lateams_syntax_Program$Proc$ProcCall(p);
+    var this$3 = $n(x$1);
+    var this$4 = $n($m_s_Predef$().s_Predef$__f_Set);
+    var elems$1 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
+    return this$4.from__sc_IterableOnce__sci_Set(elems$1)
+  };
+  if ((p instanceof $c_Lateams_syntax_Program$Proc$Choice)) {
+    var x$1$1 = $as_Lateams_syntax_Program$Proc$Choice(p);
+    var this$6 = $n(x$1$1);
+    var x93 = this$6.Lateams_syntax_Program$Proc$Choice__f_p1;
+    var this$7 = $n(x$1$1);
+    var x94 = this$7.Lateams_syntax_Program$Proc$Choice__f_p2;
+    var this$8 = $n(this.check__Lateams_syntax_Program$Proc__Lateams_syntax_Program$ASystem__T__sci_Set(x93, sy, pname));
+    var that = this.check__Lateams_syntax_Program$Proc__Lateams_syntax_Program$ASystem__T__sci_Set(x94, sy, pname);
+    return $as_sci_Set(this$8.concat__sc_IterableOnce__sc_SetOps(that))
+  };
+  if ((p instanceof $c_Lateams_syntax_Program$Proc$Par)) {
+    var x$1$2 = $as_Lateams_syntax_Program$Proc$Par(p);
+    var this$10 = $n(x$1$2);
+    var x89 = this$10.Lateams_syntax_Program$Proc$Par__f_p1;
+    var this$11 = $n(x$1$2);
+    var x90 = this$11.Lateams_syntax_Program$Proc$Par__f_p2;
+    var this$12 = $n(this.check__Lateams_syntax_Program$Proc__Lateams_syntax_Program$ASystem__T__sci_Set(x89, sy, pname));
+    var that$1 = this.check__Lateams_syntax_Program$Proc__Lateams_syntax_Program$ASystem__T__sci_Set(x90, sy, pname);
+    return $as_sci_Set(this$12.concat__sc_IterableOnce__sc_SetOps(that$1))
+  };
+  if ((p instanceof $c_Lateams_syntax_Program$Proc$Prefix)) {
+    var x$1$3 = $as_Lateams_syntax_Program$Proc$Prefix(p);
+    var this$14 = $n(x$1$3);
+    var x81 = this$14.Lateams_syntax_Program$Proc$Prefix__f_act;
+    var this$15 = $n(x$1$3);
+    var x82 = this$15.Lateams_syntax_Program$Proc$Prefix__f_p;
+    if ((x81 instanceof $c_Lateams_syntax_Program$Act$In)) {
+      var x$1$4 = $as_Lateams_syntax_Program$Act$In(x81);
+      var this$17 = $n(x$1$4);
+      var x85 = this$17.Lateams_syntax_Program$Act$In__f_a;
+      var this$18 = $n(x$1$4);
+      var x86 = this$18.Lateams_syntax_Program$Act$In__f_from;
+      var this$19 = $n(this.check__Lateams_syntax_Program$Proc__Lateams_syntax_Program$ASystem__T__sci_Set(x82, sy, pname));
+      var that$2 = this.checkAct__T__sci_Set__Lateams_syntax_Program$ASystem__T__sci_Set(x85, x86, sy, pname);
+      var this$47 = $n(this$19.concat__sc_IterableOnce__sc_SetOps(that$2));
+      matchResult2: {
+        var that$3;
+        var x27 = $n($n(sy).Lateams_syntax_Program$ASystem__f_msgs).get__O__s_Option(x85);
+        var x$3 = $m_s_None$();
+        if ((x$3 === x27)) {
+          var this$20 = $n($m_s_Predef$().s_Predef$__f_Set);
+          var elems$2 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
+          var that$3 = this$20.from__sc_IterableOnce__sci_Set(elems$2);
+          break matchResult2
+        };
+        if ((x27 instanceof $c_s_Some)) {
+          var x29 = $as_Lateams_syntax_Program$MsgInfo($n($as_s_Some(x27)).s_Some__f_value);
+          if ((x29 !== null)) {
             if ((x29 !== null)) {
-              if ((x29 !== null)) {
-                $m_Lateams_syntax_Program$MsgInfo$();
-                var this$21 = $n(x29);
-                var x19 = this$21.Lateams_syntax_Program$MsgInfo__f_arity;
-                var this$22 = $n(x29);
-                var x20 = this$22.Lateams_syntax_Program$MsgInfo__f_st;
-                if ((x19 instanceof $c_s_Some)) {
-                  var x24 = $as_T2($n($as_s_Some(x19)).s_Some__f_value);
-                  if ((x24 !== null)) {
-                    var x25 = $as_T2($n(x24)._1__O());
-                    $as_T2($n(x24)._2__O());
-                    if ((x20 instanceof $c_s_Some)) {
-                      var x22 = $as_Lateams_syntax_Program$SyncType($n($as_s_Some(x20)).s_Some__f_value);
-                      var x$5 = $s_Lateams_syntax_Program$SyncType$__Sync__Lateams_syntax_Program$SyncType();
-                      if (((x$5 === null) ? (x22 === null) : $n(x$5).equals__O__Z(x22))) {
-                        var this$23 = $n(x86);
-                        if (((!this$23.isEmpty__Z()) && (!$m_Lateams_backend_Semantics$().inInterval__I__T2__Z($n(x86).size__I(), x25)))) {
-                          var this$25 = $n($m_s_Predef$().s_Predef$__f_Set);
-                          var $$x1 = $m_sr_ScalaRunTime$();
-                          var this$24 = $n(x86);
-                          var elems$3 = $n($$x1).wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((((("[" + pname) + "] Trying to receive '") + x85) + "' from {") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$24, "", "", "")) + "} but expected # in interval {") + $m_Lateams_syntax_Show$().showIntrv__T2__T(x25)) + "}.")]));
-                          var that$2 = this$25.from__sc_IterableOnce__sci_Set(elems$3);
+              $m_Lateams_syntax_Program$MsgInfo$();
+              var this$22 = $n(x29);
+              var x19 = this$22.Lateams_syntax_Program$MsgInfo__f_arity;
+              var this$23 = $n(x29);
+              var x20 = this$23.Lateams_syntax_Program$MsgInfo__f_st;
+              if ((x19 instanceof $c_s_Some)) {
+                var x24 = $as_T2($n($as_s_Some(x19)).s_Some__f_value);
+                if ((x24 !== null)) {
+                  var x25 = $as_T2($n(x24)._1__O());
+                  $as_T2($n(x24)._2__O());
+                  if ((x20 instanceof $c_s_Some)) {
+                    var x22 = $as_Lateams_syntax_Program$SyncType($n($as_s_Some(x20)).s_Some__f_value);
+                    var x$5 = $s_Lateams_syntax_Program$SyncType$__Sync__Lateams_syntax_Program$SyncType();
+                    if (((x$5 === null) ? (x22 === null) : $n(x$5).equals__O__Z(x22))) {
+                      var this$24 = $n(x86);
+                      if (((!this$24.isEmpty__Z()) && (!$m_Lateams_backend_Semantics$().inInterval__I__T2__Z($n(x86).size__I(), x25)))) {
+                        var this$27 = $n($m_s_Predef$().s_Predef$__f_Set);
+                        var $$x2 = $m_sr_ScalaRunTime$();
+                        var this$25 = $n(x86);
+                        var $$x1 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$25, "", ",", "");
+                        var this$26 = $n(x86);
+                        var elems$3 = $n($$x2).wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((((((("[" + pname) + "] Trying to receive '") + x85) + "' from {") + $$x1) + "} but expected #{") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$26, "", ",", "")) + "} \u2208 {") + $m_Lateams_syntax_Show$().showIntrv__T2__T(x25)) + "}.")]));
+                        var that$3 = this$27.from__sc_IterableOnce__sci_Set(elems$3);
+                        break matchResult2
+                      } else {
+                        var this$28 = $n($m_s_Predef$().s_Predef$__f_Set);
+                        var elems$4 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
+                        var that$3 = this$28.from__sc_IterableOnce__sci_Set(elems$4);
+                        break matchResult2
+                      }
+                    };
+                    if ((x22 instanceof $c_Lateams_syntax_Program$SyncType$Async)) {
+                      var x$1$5 = $as_Lateams_syntax_Program$SyncType$Async(x22);
+                      var this$30 = $n(x$1$5);
+                      var x9 = this$30.Lateams_syntax_Program$SyncType$Async__f_where;
+                      var this$31 = $n(x$1$5);
+                      if ((x9 !== null)) {
+                        var this$33 = $n(x9);
+                        var x12 = this$33.Lateams_syntax_Program$LocInfo__f_snd;
+                        var this$34 = $n(x9);
+                        var this$35 = $n(x86);
+                        if (((!this$35.isEmpty__Z()) && (!x12))) {
+                          var this$37 = $n($m_s_Predef$().s_Predef$__f_Set);
+                          var $$x3 = $m_sr_ScalaRunTime$();
+                          var this$36 = $n(x86);
+                          var elems$5 = $n($$x3).wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((("[" + pname) + "] Receiving ") + x85) + " from ") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$36, "", "", "")) + ", but no sources should be specified.")]));
+                          var that$3 = this$37.from__sc_IterableOnce__sci_Set(elems$5);
                           break matchResult2
                         } else {
-                          var this$26 = $n($m_s_Predef$().s_Predef$__f_Set);
-                          var elems$4 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
-                          var that$2 = this$26.from__sc_IterableOnce__sci_Set(elems$4);
-                          break matchResult2
-                        }
-                      };
-                      if ((x22 instanceof $c_Lateams_syntax_Program$SyncType$Async)) {
-                        var x$1$5 = $as_Lateams_syntax_Program$SyncType$Async(x22);
-                        var this$28 = $n(x$1$5);
-                        var x9 = this$28.Lateams_syntax_Program$SyncType$Async__f_where;
-                        var this$29 = $n(x$1$5);
-                        if ((x9 !== null)) {
-                          var this$31 = $n(x9);
-                          var x12 = this$31.Lateams_syntax_Program$LocInfo__f_snd;
-                          var this$32 = $n(x9);
-                          var this$33 = $n(x86);
-                          if (((!this$33.isEmpty__Z()) && (!x12))) {
-                            var this$35 = $n($m_s_Predef$().s_Predef$__f_Set);
-                            var $$x2 = $m_sr_ScalaRunTime$();
-                            var this$34 = $n(x86);
-                            var elems$5 = $n($$x2).wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((("[" + pname) + "] Receiving ") + x85) + " from ") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$34, "", "", "")) + ", but no sources should be specified.")]));
-                            var that$2 = this$35.from__sc_IterableOnce__sci_Set(elems$5);
+                          if (($n(x86).isEmpty__Z() && x12)) {
+                            var _2 = new $c_s_Some(0);
+                            var x$8 = new $c_T2(0, _2);
+                            var $$x4 = (!((x25 !== null) && $n(x25).equals__O__Z(x$8)))
+                          } else {
+                            var $$x4 = false
+                          };
+                          if ($$x4) {
+                            var this$40 = $n($m_s_Predef$().s_Predef$__f_Set);
+                            var elems$6 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((("[" + pname) + "] Receiving ") + x85) + " with no sources, but expected some targets (in {") + $m_Lateams_syntax_Show$().showIntrv__T2__T(x25)) + "}).")]));
+                            var that$3 = this$40.from__sc_IterableOnce__sci_Set(elems$6);
                             break matchResult2
                           } else {
-                            if (($n(x86).isEmpty__Z() && x12)) {
-                              var _2 = new $c_s_Some(0);
-                              var x$8 = new $c_T2(0, _2);
-                              var $$x3 = (!((x25 !== null) && $n(x25).equals__O__Z(x$8)))
-                            } else {
-                              var $$x3 = false
-                            };
-                            if ($$x3) {
-                              var this$38 = $n($m_s_Predef$().s_Predef$__f_Set);
-                              var elems$6 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((("[" + pname) + "] Receiving ") + x85) + " with no sources, but expected some targets (in {") + $m_Lateams_syntax_Show$().showIntrv__T2__T(x25)) + "}).")]));
-                              var that$2 = this$38.from__sc_IterableOnce__sci_Set(elems$6);
+                            var this$41 = $n(x86);
+                            if ((((!this$41.isEmpty__Z()) && x12) && (!$m_Lateams_backend_Semantics$().inInterval__I__T2__Z($n(x86).size__I(), x25)))) {
+                              var this$44 = $n($m_s_Predef$().s_Predef$__f_Set);
+                              var $$x6 = $m_sr_ScalaRunTime$();
+                              var this$42 = $n(x86);
+                              var $$x5 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$42, "", ",", "");
+                              var this$43 = $n(x86);
+                              var elems$7 = $n($$x6).wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((((((("[" + pname) + "] Trying to receive '") + x85) + "' from {") + $$x5) + "} but expected #{") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$43, "", ",", "")) + "} \u2208 {") + $m_Lateams_syntax_Show$().showIntrv__T2__T(x25)) + "}.")]));
+                              var that$3 = this$44.from__sc_IterableOnce__sci_Set(elems$7);
                               break matchResult2
                             } else {
-                              var this$39 = $n(x86);
-                              if ((((!this$39.isEmpty__Z()) && x12) && (!$m_Lateams_backend_Semantics$().inInterval__I__T2__Z($n(x86).size__I(), x25)))) {
-                                var this$41 = $n($m_s_Predef$().s_Predef$__f_Set);
-                                var $$x4 = $m_sr_ScalaRunTime$();
-                                var this$40 = $n(x86);
-                                var elems$7 = $n($$x4).wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((((("[" + pname) + "] Trying to receive '") + x85) + "' from {") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$40, "", "", "")) + "} but expected # in interval {") + $m_Lateams_syntax_Show$().showIntrv__T2__T(x25)) + "}.")]));
-                                var that$2 = this$41.from__sc_IterableOnce__sci_Set(elems$7);
-                                break matchResult2
-                              } else {
-                                var this$42 = $n($m_s_Predef$().s_Predef$__f_Set);
-                                var elems$8 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
-                                var that$2 = this$42.from__sc_IterableOnce__sci_Set(elems$8);
-                                break matchResult2
-                              }
+                              var this$45 = $n($m_s_Predef$().s_Predef$__f_Set);
+                              var elems$8 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
+                              var that$3 = this$45.from__sc_IterableOnce__sci_Set(elems$8);
+                              break matchResult2
                             }
                           }
                         }
@@ -1284,112 +1286,118 @@ $c_Lateams_backend_TypeCheck$.prototype.check__Lateams_syntax_Program$Proc__Late
                     }
                   }
                 }
-              };
-              var this$43 = $n($m_s_Predef$().s_Predef$__f_Set);
-              var elems$9 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([("Unexpected message info: " + $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$MsgInfo__T(x29))]));
-              var that$2 = this$43.from__sc_IterableOnce__sci_Set(elems$9);
-              break matchResult2
-            }
-          };
-          throw new $c_s_MatchError(x27)
+              }
+            };
+            var this$46 = $n($m_s_Predef$().s_Predef$__f_Set);
+            var elems$9 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([("Unexpected message info: " + $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$MsgInfo__T(x29))]));
+            var that$3 = this$46.from__sc_IterableOnce__sci_Set(elems$9);
+            break matchResult2
+          }
         };
-        return $as_sci_Set(this$44.concat__sc_IterableOnce__sc_SetOps(that$2))
+        throw new $c_s_MatchError(x27)
       };
-      if ((x81 instanceof $c_Lateams_syntax_Program$Act$Out)) {
-        var x$1$6 = $as_Lateams_syntax_Program$Act$Out(x81);
-        var this$46 = $n(x$1$6);
-        var x77 = this$46.Lateams_syntax_Program$Act$Out__f_a;
-        var this$47 = $n(x$1$6);
-        var x78 = this$47.Lateams_syntax_Program$Act$Out__f_to;
-        var this$73 = $n(this.check__Lateams_syntax_Program$Proc__Lateams_syntax_Program$ASystem__T__sci_Set(x82, sy, pname));
-        matchResult4: {
-          var that$3;
-          var x57 = $n($n(sy).Lateams_syntax_Program$ASystem__f_msgs).get__O__s_Option(x77);
-          var x$9 = $m_s_None$();
-          if ((x$9 === x57)) {
-            var this$48 = $n($m_s_Predef$().s_Predef$__f_Set);
-            var elems$10 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((("[" + pname) + "] action ") + x77) + " not found.")]));
-            var that$3 = this$48.from__sc_IterableOnce__sci_Set(elems$10);
-            break matchResult4
-          };
-          if ((x57 instanceof $c_s_Some)) {
-            var x59 = $as_Lateams_syntax_Program$MsgInfo($n($as_s_Some(x57)).s_Some__f_value);
+      return $as_sci_Set(this$47.concat__sc_IterableOnce__sc_SetOps(that$3))
+    };
+    if ((x81 instanceof $c_Lateams_syntax_Program$Act$Out)) {
+      var x75 = $as_Lateams_syntax_Program$Act$Out(x81);
+      var this$49 = $n(x75);
+      var x77 = this$49.Lateams_syntax_Program$Act$Out__f_a;
+      var this$50 = $n(x75);
+      var x78 = this$50.Lateams_syntax_Program$Act$Out__f_to;
+      var this$51 = $n(this.check__Lateams_syntax_Program$Proc__Lateams_syntax_Program$ASystem__T__sci_Set(x82, sy, pname));
+      var that$4 = this.checkAct__T__sci_Set__Lateams_syntax_Program$ASystem__T__sci_Set(x77, x78, sy, pname);
+      var this$79 = $n(this$51.concat__sc_IterableOnce__sc_SetOps(that$4));
+      matchResult4: {
+        var that$5;
+        var x57 = $n($n(sy).Lateams_syntax_Program$ASystem__f_msgs).get__O__s_Option(x77);
+        var x$9 = $m_s_None$();
+        if ((x$9 === x57)) {
+          var this$52 = $n($m_s_Predef$().s_Predef$__f_Set);
+          var elems$10 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
+          var that$5 = this$52.from__sc_IterableOnce__sci_Set(elems$10);
+          break matchResult4
+        };
+        if ((x57 instanceof $c_s_Some)) {
+          var x59 = $as_Lateams_syntax_Program$MsgInfo($n($as_s_Some(x57)).s_Some__f_value);
+          if ((x59 !== null)) {
             if ((x59 !== null)) {
-              if ((x59 !== null)) {
-                $m_Lateams_syntax_Program$MsgInfo$();
-                var this$50 = $n(x59);
-                var x49 = this$50.Lateams_syntax_Program$MsgInfo__f_arity;
-                var this$51 = $n(x59);
-                var x50 = this$51.Lateams_syntax_Program$MsgInfo__f_st;
-                if ((x49 instanceof $c_s_Some)) {
-                  var x54 = $as_T2($n($as_s_Some(x49)).s_Some__f_value);
-                  if ((x54 !== null)) {
-                    $as_T2($n(x54)._1__O());
-                    var x56 = $as_T2($n(x54)._2__O());
-                    if ((x50 instanceof $c_s_Some)) {
-                      var x52 = $as_Lateams_syntax_Program$SyncType($n($as_s_Some(x50)).s_Some__f_value);
-                      var x$11 = $s_Lateams_syntax_Program$SyncType$__Sync__Lateams_syntax_Program$SyncType();
-                      if (((x$11 === null) ? (x52 === null) : $n(x$11).equals__O__Z(x52))) {
-                        var this$52 = $n(x78);
-                        if (((!this$52.isEmpty__Z()) && (!$m_Lateams_backend_Semantics$().inInterval__I__T2__Z($n(x78).size__I(), x56)))) {
-                          var this$54 = $n($m_s_Predef$().s_Predef$__f_Set);
-                          var $$x5 = $m_sr_ScalaRunTime$();
-                          var this$53 = $n(x78);
-                          var elems$11 = $n($$x5).wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((((("[" + pname) + "] Trying to send '") + x77) + "' to {") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$53, "", "", "")) + "} but expected # in interval {") + $m_Lateams_syntax_Show$().showIntrv__T2__T(x56)) + "}.")]));
-                          var that$3 = this$54.from__sc_IterableOnce__sci_Set(elems$11);
+              $m_Lateams_syntax_Program$MsgInfo$();
+              var this$54 = $n(x59);
+              var x49 = this$54.Lateams_syntax_Program$MsgInfo__f_arity;
+              var this$55 = $n(x59);
+              var x50 = this$55.Lateams_syntax_Program$MsgInfo__f_st;
+              if ((x49 instanceof $c_s_Some)) {
+                var x54 = $as_T2($n($as_s_Some(x49)).s_Some__f_value);
+                if ((x54 !== null)) {
+                  $as_T2($n(x54)._1__O());
+                  var x56 = $as_T2($n(x54)._2__O());
+                  if ((x50 instanceof $c_s_Some)) {
+                    var x52 = $as_Lateams_syntax_Program$SyncType($n($as_s_Some(x50)).s_Some__f_value);
+                    var x$11 = $s_Lateams_syntax_Program$SyncType$__Sync__Lateams_syntax_Program$SyncType();
+                    if (((x$11 === null) ? (x52 === null) : $n(x$11).equals__O__Z(x52))) {
+                      var this$56 = $n(x78);
+                      if (((!this$56.isEmpty__Z()) && (!$m_Lateams_backend_Semantics$().inInterval__I__T2__Z($n(x78).size__I(), x56)))) {
+                        var this$59 = $n($m_s_Predef$().s_Predef$__f_Set);
+                        var $$x8 = $m_sr_ScalaRunTime$();
+                        var this$57 = $n(x78);
+                        var $$x7 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$57, "", ",", "");
+                        var this$58 = $n(x78);
+                        var elems$11 = $n($$x8).wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((((((("[" + pname) + "] Trying to send '") + x77) + "' to {") + $$x7) + "} but expected #{") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$58, "", ",", "")) + "} \u2208 {") + $m_Lateams_syntax_Show$().showIntrv__T2__T(x56)) + "}.")]));
+                        var that$5 = this$59.from__sc_IterableOnce__sci_Set(elems$11);
+                        break matchResult4
+                      } else {
+                        var this$60 = $n($m_s_Predef$().s_Predef$__f_Set);
+                        var elems$12 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
+                        var that$5 = this$60.from__sc_IterableOnce__sci_Set(elems$12);
+                        break matchResult4
+                      }
+                    };
+                    if ((x52 instanceof $c_Lateams_syntax_Program$SyncType$Async)) {
+                      var x$1$6 = $as_Lateams_syntax_Program$SyncType$Async(x52);
+                      var this$62 = $n(x$1$6);
+                      var x39 = this$62.Lateams_syntax_Program$SyncType$Async__f_where;
+                      var this$63 = $n(x$1$6);
+                      if ((x39 !== null)) {
+                        var this$65 = $n(x39);
+                        var this$66 = $n(x39);
+                        var x43 = this$66.Lateams_syntax_Program$LocInfo__f_rcv;
+                        var this$67 = $n(x78);
+                        if (((!this$67.isEmpty__Z()) && (!x43))) {
+                          var this$69 = $n($m_s_Predef$().s_Predef$__f_Set);
+                          var $$x9 = $m_sr_ScalaRunTime$();
+                          var this$68 = $n(x78);
+                          var elems$13 = $n($$x9).wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((("[" + pname) + "] Sending ") + x77) + " to ") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$68, "", "", "")) + ", but no destination should be specified.")]));
+                          var that$5 = this$69.from__sc_IterableOnce__sci_Set(elems$13);
                           break matchResult4
                         } else {
-                          var this$55 = $n($m_s_Predef$().s_Predef$__f_Set);
-                          var elems$12 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
-                          var that$3 = this$55.from__sc_IterableOnce__sci_Set(elems$12);
-                          break matchResult4
-                        }
-                      };
-                      if ((x52 instanceof $c_Lateams_syntax_Program$SyncType$Async)) {
-                        var x$1$7 = $as_Lateams_syntax_Program$SyncType$Async(x52);
-                        var this$57 = $n(x$1$7);
-                        var x39 = this$57.Lateams_syntax_Program$SyncType$Async__f_where;
-                        var this$58 = $n(x$1$7);
-                        if ((x39 !== null)) {
-                          var this$60 = $n(x39);
-                          var this$61 = $n(x39);
-                          var x43 = this$61.Lateams_syntax_Program$LocInfo__f_rcv;
-                          var this$62 = $n(x78);
-                          if (((!this$62.isEmpty__Z()) && (!x43))) {
-                            var this$64 = $n($m_s_Predef$().s_Predef$__f_Set);
-                            var $$x6 = $m_sr_ScalaRunTime$();
-                            var this$63 = $n(x78);
-                            var elems$13 = $n($$x6).wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((("[" + pname) + "] Sending ") + x77) + " to ") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$63, "", "", "")) + ", but no destination should be specified.")]));
-                            var that$3 = this$64.from__sc_IterableOnce__sci_Set(elems$13);
+                          if (($n(x78).isEmpty__Z() && x43)) {
+                            var _2$1 = new $c_s_Some(0);
+                            var x$14 = new $c_T2(0, _2$1);
+                            var $$x10 = (!((x56 !== null) && $n(x56).equals__O__Z(x$14)))
+                          } else {
+                            var $$x10 = false
+                          };
+                          if ($$x10) {
+                            var this$72 = $n($m_s_Predef$().s_Predef$__f_Set);
+                            var elems$14 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((("[" + pname) + "] Sending ") + x77) + " with no destination, but expected some targets (in ") + $m_Lateams_syntax_Show$().showIntrv__T2__T(x56)) + ").")]));
+                            var that$5 = this$72.from__sc_IterableOnce__sci_Set(elems$14);
                             break matchResult4
                           } else {
-                            if (($n(x78).isEmpty__Z() && x43)) {
-                              var _2$1 = new $c_s_Some(0);
-                              var x$14 = new $c_T2(0, _2$1);
-                              var $$x7 = (!((x56 !== null) && $n(x56).equals__O__Z(x$14)))
-                            } else {
-                              var $$x7 = false
-                            };
-                            if ($$x7) {
-                              var this$67 = $n($m_s_Predef$().s_Predef$__f_Set);
-                              var elems$14 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((("[" + pname) + "] Sending ") + x77) + " with no destination, but expected some targets (in ") + $m_Lateams_syntax_Show$().showIntrv__T2__T(x56)) + ").")]));
-                              var that$3 = this$67.from__sc_IterableOnce__sci_Set(elems$14);
+                            var this$73 = $n(x78);
+                            if ((((!this$73.isEmpty__Z()) && x43) && (!$m_Lateams_backend_Semantics$().inInterval__I__T2__Z($n(x78).size__I(), x56)))) {
+                              var this$76 = $n($m_s_Predef$().s_Predef$__f_Set);
+                              var $$x12 = $m_sr_ScalaRunTime$();
+                              var this$74 = $n(x78);
+                              var $$x11 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$74, "", ",", "");
+                              var this$75 = $n(x78);
+                              var elems$15 = $n($$x12).wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((((((("[" + pname) + "] Trying to send '") + x77) + "' to {") + $$x11) + "} but expected #{") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$75, "", ",", "")) + "} \u2208 {") + $m_Lateams_syntax_Show$().showIntrv__T2__T(x56)) + "}.")]));
+                              var that$5 = this$76.from__sc_IterableOnce__sci_Set(elems$15);
                               break matchResult4
                             } else {
-                              var this$68 = $n(x78);
-                              if ((((!this$68.isEmpty__Z()) && x43) && (!$m_Lateams_backend_Semantics$().inInterval__I__T2__Z($n(x78).size__I(), x56)))) {
-                                var this$70 = $n($m_s_Predef$().s_Predef$__f_Set);
-                                var $$x8 = $m_sr_ScalaRunTime$();
-                                var this$69 = $n(x78);
-                                var elems$15 = $n($$x8).wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((((((("[" + pname) + "] Trying to send '") + x77) + "' to {") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$69, "", "", "")) + "} but expected # in interval {") + $m_Lateams_syntax_Show$().showIntrv__T2__T(x56)) + "}.")]));
-                                var that$3 = this$70.from__sc_IterableOnce__sci_Set(elems$15);
-                                break matchResult4
-                              } else {
-                                var this$71 = $n($m_s_Predef$().s_Predef$__f_Set);
-                                var elems$16 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
-                                var that$3 = this$71.from__sc_IterableOnce__sci_Set(elems$16);
-                                break matchResult4
-                              }
+                              var this$77 = $n($m_s_Predef$().s_Predef$__f_Set);
+                              var elems$16 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
+                              var that$5 = this$77.from__sc_IterableOnce__sci_Set(elems$16);
+                              break matchResult4
                             }
                           }
                         }
@@ -1397,28 +1405,53 @@ $c_Lateams_backend_TypeCheck$.prototype.check__Lateams_syntax_Program$Proc__Late
                     }
                   }
                 }
-              };
-              var this$72 = $n($m_s_Predef$().s_Predef$__f_Set);
-              var elems$17 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([("Unexpected message info: " + $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$MsgInfo__T(x59))]));
-              var that$3 = this$72.from__sc_IterableOnce__sci_Set(elems$17);
-              break matchResult4
-            }
-          };
-          throw new $c_s_MatchError(x57)
+              }
+            };
+            var this$78 = $n($m_s_Predef$().s_Predef$__f_Set);
+            var elems$17 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([("Unexpected message info: " + $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$MsgInfo__T(x59))]));
+            var that$5 = this$78.from__sc_IterableOnce__sci_Set(elems$17);
+            break matchResult4
+          }
         };
-        return $as_sci_Set(this$73.concat__sc_IterableOnce__sc_SetOps(that$3))
+        throw new $c_s_MatchError(x57)
       };
-      if ((x81 instanceof $c_Lateams_syntax_Program$Act$IO)) {
-        var x$1$8 = $as_Lateams_syntax_Program$Act$IO(x81);
-        var this$75 = $n(x$1$8);
-        var this$76 = $n(x$1$8);
-        var this$77 = $n(x$1$8);
-        p$tailLocal1 = x82;
-        continue
-      }
+      return $as_sci_Set(this$79.concat__sc_IterableOnce__sc_SetOps(that$5))
     };
-    throw new $c_s_MatchError(x61)
-  }
+    if ((x81 instanceof $c_Lateams_syntax_Program$Act$IO)) {
+      var x$1$7 = $as_Lateams_syntax_Program$Act$IO(x81);
+      var this$81 = $n(x$1$7);
+      var x68 = this$81.Lateams_syntax_Program$Act$IO__f_a;
+      var this$82 = $n(x$1$7);
+      var x69 = this$82.Lateams_syntax_Program$Act$IO__f_from;
+      var this$83 = $n(x$1$7);
+      var x70 = this$83.Lateams_syntax_Program$Act$IO__f_to;
+      var this$85 = $n(this.check__Lateams_syntax_Program$Proc__Lateams_syntax_Program$ASystem__T__sci_Set(x82, sy, pname));
+      var this$84 = $n(x69);
+      var that$6 = this.checkAct__T__sci_Set__Lateams_syntax_Program$ASystem__T__sci_Set(x68, $as_sci_Set(this$84.concat__sc_IterableOnce__sc_SetOps(x70)), sy, pname);
+      return $as_sci_Set(this$85.concat__sc_IterableOnce__sc_SetOps(that$6))
+    }
+  };
+  throw new $c_s_MatchError(p)
+});
+$c_Lateams_backend_TypeCheck$.prototype.checkAct__T__sci_Set__Lateams_syntax_Program$ASystem__T__sci_Set = (function(a, anames, sy, pname) {
+  if (((!$n($n(sy).Lateams_syntax_Program$ASystem__f_msgs).contains__O__Z(a)) && (a !== "tau"))) {
+    var this$1 = $n($m_s_Predef$().s_Predef$__f_Set);
+    var elems = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([(((("[" + pname) + "] Unknown action ") + a) + ".")]));
+    var $$x1 = this$1.from__sc_IterableOnce__sci_Set(elems)
+  } else {
+    var this$2 = $n($m_s_Predef$().s_Predef$__f_Set);
+    var elems$1 = $m_sr_ScalaRunTime$().wrapRefArray__AO__sci_ArraySeq(new ($d_T.getArrayOf().constr)([]));
+    var $$x1 = this$2.from__sc_IterableOnce__sci_Set(elems$1)
+  };
+  var this$4 = $n($$x1);
+  var that = $as_sc_IterableOnce($n($n(anames).withFilter__F1__sc_WithFilter(new $c_sjsr_AnonFunction1(((an) => {
+    var an$1 = $as_T(an);
+    return (!$n($n(sy).Lateams_syntax_Program$ASystem__f_main).contains__O__Z(an$1))
+  })))).map__F1__O(new $c_sjsr_AnonFunction1(((an$2) => {
+    var an$3 = $as_T(an$2);
+    return (((((("[" + pname) + "] Unknown agent ") + an$3) + " used by action ") + a) + ".")
+  }))));
+  return $as_sci_Set(this$4.concat__sc_IterableOnce__sc_SetOps(that))
 });
 var $d_Lateams_backend_TypeCheck$ = new $TypeData().initClass({
   Lateams_backend_TypeCheck$: 0
@@ -17857,10 +17890,12 @@ $c_Lateams_backend_Semantics$.prototype.nextSend__sci_Set__Lateams_backend_Seman
                   var this$49 = $n(this$48.out__Ljava_io_PrintStream());
                   this$49.java$lang$JSConsoleBasedPrintStream$$printString__T__V("-- case 4\n");
                   if ((!this.inInterval__I__T2__Z($n(x160).size__I(), $as_T2($n(_2)._2__O())))) {
-                    var $$x5 = $m_s_sys_package$();
-                    var $$x4 = $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$Act__T(x157);
+                    var $$x6 = $m_s_sys_package$();
+                    var $$x5 = $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$Act__T(x157);
                     var this$50 = $n(x160);
-                    $n($$x5).error__T__E((((((("Trying to send '" + $$x4) + "' to {") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$50, "", "", "")) + "} but expected # in interval {") + $m_Lateams_syntax_Show$().showIntrv__T2__T($as_T2($n(_2)._2__O()))) + "}."))
+                    var $$x4 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$50, "", ",", "");
+                    var this$51 = $n(x160);
+                    $n($$x6).error__T__E((((((((("Trying to send '" + $$x5) + "' to {") + $$x4) + "} but expected #{") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$51, "", ",", "")) + "} \u2208 {") + $m_Lateams_syntax_Show$().showIntrv__T2__T($as_T2($n(_2)._2__O()))) + "}."))
                   };
                   var newBuffers = $as_sci_Set($n(x160).map__F1__O(new $c_sjsr_AnonFunction1(((ag$1) => {
                     var ag$2 = $as_T(ag$1);
