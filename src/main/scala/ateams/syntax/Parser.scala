@@ -28,8 +28,7 @@ object Parser :
     val pos = loc.toLineCol(err.failedAtOffset) match
       case Some((x,y)) =>
         s"""at ($x,$y):
-           |"${loc.getLine(x).getOrElse("-")}"
-           |${("-" * (y+1))+"^\n"}""".stripMargin
+           |<pre>${loc.getLine(x).getOrElse("-")}</br>${("-" * y)+"^\n"}</pre>""".stripMargin
       case _ => ""
     s"${pos}expected: ${err.expected.toList.mkString(", ")}\noffsets: ${
       err.failedAtOffset};${err.offsets.toList.mkString(",")}"

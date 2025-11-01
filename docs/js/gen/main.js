@@ -1497,7 +1497,7 @@ function $p_Lateams_syntax_Parser$__prettyError__T__Lcats_parse_Parser$Error__T(
         var y = $uI($n(x13)._2__O());
         $m_sc_StringOps$();
         var this$2 = $n(loc.getLine__I__s_Option(x));
-        var x$1 = (((((((("at (" + x) + ",") + y) + "):\n           |\"") + (this$2.isEmpty__Z() ? "-" : this$2.get__O())) + "\"\n           |") + $m_sc_StringOps$().$times$extension__T__I__T("-", ((1 + y) | 0))) + "^\n");
+        var x$1 = (((((((("at (" + x) + ",") + y) + "):\n           |<pre>") + (this$2.isEmpty__Z() ? "-" : this$2.get__O())) + "</br>") + $m_sc_StringOps$().$times$extension__T__I__T("-", y)) + "^\n</pre>");
         var pos = $m_sc_StringOps$().stripMargin$extension__T__C__T(x$1, 124);
         break matchResult3
       }
@@ -19137,7 +19137,7 @@ function $p_Lcaos_frontend_widgets_OutputArea__addBox__T__T__V($thiz, msg, style
   $m_sc_ArrayOps$();
   var f = ((s) => {
     var s$1 = $as_T(s);
-    return $n($n($n(out).append__T__Lcaos_frontend_widgets_DomElem("p")).attr__T__T__Lcaos_frontend_widgets_DomElem("style", "margin-top: 0px;")).text__T__Lcaos_frontend_widgets_DomNode(s$1)
+    return $n($n($n(out).append__T__Lcaos_frontend_widgets_DomElem("p")).attr__T__T__Lcaos_frontend_widgets_DomElem("style", "margin-top: 0px;")).html__T__Lcaos_frontend_widgets_DomElem(s$1)
   });
   var len = $n(xs).u.length;
   var i = 0;
