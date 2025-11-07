@@ -49,9 +49,10 @@ object CaosConfig extends Configurator[ASystem]:
      "View pretty data" -> view[ASystem](Show.apply, Code("haskell")), //.moveTo(1),
 //    "View structure" -> view(Show.mermaid, Mermaid),
      "Well-formed?" -> view[ASystem](x => ateams.backend.TypeCheck.pp(x), Text).expand,
+     "Well-behaved?" -> view[ASystem](x => ateams.backend.BehaviourCheck.randomWalk(St(x,Map()))._3.mkString("\n"), Text).expand,
      "Run semantics" -> steps(e=>St(e,Map()), Semantics, x=>Show/*.short*/(x), Show(_), Text).expand,
      "Build LTS" -> lts((e:ASystem)=>St(e,Map ()), Semantics, Show.showBuffers, Show(_)),
-     "Local component" ->
+     "Local components" ->
        viewMerms((sy: ASystem) =>
           for (nm,proc) <- sy.main.toList yield
               s"$nm:${Show(proc)}" -> SOS.toMermaid[Program.Act,Program.Proc](

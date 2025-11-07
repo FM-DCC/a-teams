@@ -28,6 +28,11 @@ object Show:
     (for (nm, p) <- s.main yield s"$nm: ${apply(p)}")
       .mkString("\n")
 
+  def oneLine(st: St): String =
+    ((for (nm, p) <- st.sys.main yield s"$nm: ${apply(p)}") ++
+    (for (loc, buf) <- st.buffers yield s"${apply(loc)}=>${showBuf(buf)}"))
+        .mkString("{",", ","}")
+
   def showMsgs(msgs: Map[String,MsgInfo]): String =
     (for (m,info)<-msgs if m!="default" yield s"  $m: ${apply(info)}")
       .mkString("\n")

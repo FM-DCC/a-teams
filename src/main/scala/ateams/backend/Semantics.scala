@@ -275,7 +275,7 @@ object Semantics extends SOS[Act,St]:
   // Auxiliarly functions //
   //////////////////////////
 
-  private implicit def getActName(a:Act): String = a match
+  implicit def getActName(a:Act): String = a match
     case Act.In(s,_) => s
     case Act.Out(s,_) => s
     case Act.IO(s,_,_) => s
