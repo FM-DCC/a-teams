@@ -299,10 +299,12 @@ object Semantics extends SOS[Act,St]:
   def arit(act: String)(using st:St): (Intrv, Intrv) =
     aritSys(act)(using st.sys)
   def aritSys(act: String)(using s:ASystem): (Intrv, Intrv) =
-    s.msgs.get(act).flatMap(_.arity).getOrElse(MsgInfo.defaultArity)
+//    s.msgs.get(act).flatMap(_.arity).getOrElse(MsgInfo.defaultArity)
+    s.msgs.get(act).flatMap(_.arity).getOrElse(sys.error(s"Unknown action $act."))
 
   private def stype(act: String)(using st:St) =
-    st.sys.msgs.get(act).flatMap(_.st).getOrElse(MsgInfo.defaultST)
+//    st.sys.msgs.get(act).flatMap(_.st).getOrElse(MsgInfo.defaultST)
+    st.sys.msgs.get(act).flatMap(_.st).getOrElse(sys.error(s"Unknown action $act."))
 
   private def isAsync(syncType: Program.SyncType): Boolean =
     syncType match

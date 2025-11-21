@@ -82,8 +82,9 @@ object Program:
         sys.copy(msgs =
           sys.msgs.map((k,v) => (k, v.copy(
             arity = v.arity.orElse(mi.arity).orElse(Some(MsgInfo.defaultArity)),
-            st = v.st.orElse(mi.st).orElse(Some(MsgInfo.defaultST))),
-          )))
+            st = v.st.orElse(mi.st).orElse(Some(MsgInfo.defaultST)),
+          ))) + ("tau" -> MsgInfo(None,None))
+        )
       case None => sys
 
 

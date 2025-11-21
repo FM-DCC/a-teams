@@ -53,6 +53,8 @@ object TypeCheck:
                 Set(s"[$pname] Sending $act with no destination, but expected some targets (in ${Show.showIntrv(i2)}).")
               else if to.nonEmpty && rcv && !Semantics.inInterval(to.size,i2) then
                 Set(s"[$pname] Trying to send '$act' to {${to.mkString(",")}} but expected #{${to.mkString(",")}} ∈ {${Show.showIntrv(i2)}}.")
+              else if to.isEmpty && snd && !i2._2.contains(i2._1) then
+                Set(s"[$pname] Sending $act with no destination, but the *precise* number of receivers is not known (it is ${Show.showIntrv(i2)}).")
               else Set()
             case _ => Set(s"Unexpected message info: ${Show(mi)}")
           )
