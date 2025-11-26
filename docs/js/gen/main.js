@@ -18414,7 +18414,7 @@ function $c_Lateams_frontend_CaosConfig$() {
   this.Lateams_frontend_CaosConfig$__f_documentation = null;
   $n_Lateams_frontend_CaosConfig$ = this;
   $f_Lcaos_frontend_Configurator__$init$__V(this);
-  this.Lateams_frontend_CaosConfig$__f_name = "Animator of A-Teams";
+  this.Lateams_frontend_CaosConfig$__f_name = "A-Team: Animator of Team Automata with asynchronous actions";
   this.Lateams_frontend_CaosConfig$__f_languageName = "Input program";
   var this$3 = new $c_sjsr_AnonFunction1(((str) => {
     var str$1 = $as_T(str);
@@ -18541,7 +18541,7 @@ function $c_Lateams_frontend_CaosConfig$() {
   })), $m_Lcaos_view_Text$());
   var elems$5 = $n($$x10).wrapRefArray__AO__sci_ArraySeq(new ($d_T2.getArrayOf().constr)([$$x9, $$x8, $$x7, $$x5, $$x4, $$x3, new $c_T2("Number of states and edges", y$7)]));
   this.Lateams_frontend_CaosConfig$__f_widgets = $m_sci_Nil$().prependedAll__sc_IterableOnce__sci_List(elems$5);
-  this.Lateams_frontend_CaosConfig$__f_footer = ($m_sc_StringOps$(), $m_sc_StringOps$().stripMargin$extension__T__C__T("Simple animator of A-Teams, using the\n      | CAOS libraries. Source code available online:\n      | <a target=\"_blank\" href=\"https://github.com/FM-DCC/a-teams\">\n      | https://github.com/FM-DCC/a-teams</a>.", 124));
+  this.Lateams_frontend_CaosConfig$__f_footer = ($m_sc_StringOps$(), $m_sc_StringOps$().stripMargin$extension__T__C__T("Simple animator of A-Teams, using the\n      | CAOS libraries. Source code available online:\n      | <a target=\"_blank\" href=\"https://github.com/FM-DCC/a-teams\">\n      | https://github.com/FM-DCC/a-team</a>.", 124));
   var $$x11 = $m_Lcaos_frontend_Configurator$();
   $n($m_s_package$().s_package$__f_List);
   var elems$6 = $m_sr_ScalaRunTime$().genericWrapArray__O__sci_ArraySeq(new ($d_sr_Nothing$.getArrayOf().constr)([]));

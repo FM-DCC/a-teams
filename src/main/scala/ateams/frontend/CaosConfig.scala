@@ -11,7 +11,7 @@ import caos.sos.SOS
 
 /** Object used to configure which analysis appear in the browser */
 object CaosConfig extends Configurator[ASystem]:
-  val name = "Animator of A-Teams"
+  val name = "A-Team: Animator of Team Automata with asynchronous actions"
   override val languageName: String = "Input program"
 
   /** Parser, converting a string into a System in A-Teams */
@@ -90,7 +90,7 @@ object CaosConfig extends Configurator[ASystem]:
     """Simple animator of A-Teams, using the
       | CAOS libraries. Source code available online:
       | <a target="_blank" href="https://github.com/FM-DCC/a-teams">
-      | https://github.com/FM-DCC/a-teams</a>.""".stripMargin
+      | https://github.com/FM-DCC/a-team</a>.""".stripMargin
 
 
   override val documentation: Documentation = List(
