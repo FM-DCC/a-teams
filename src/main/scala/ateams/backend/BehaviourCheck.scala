@@ -63,8 +63,16 @@ object BehaviourCheck:
           case SyncType.Sync <- mi.st.toSet        yield (agName,aName)
     val badSyncRespo = for (agName,aName) <- canRecv if !acts.contains(aName) yield
       s"[strong-responsiveness] $agName can receive $aName, but the system cannot (yet) send it: ${Show.oneLine(st)}."
+    // async responsiveness
+    val canARecv =
+      for (agName,proc) <- st.sys.main
+          case (Act.In(aName,_),_) <- nextProc(proc)(using st)
+          mi <- st.sys.msgs.get(aName).toSet
+          case SyncType.Async(_,_) <- mi.st.toSet        yield (agName,aName)
+    val badAsyncRespo = for (agName,aName) <- canARecv if !acts.contains(aName) yield
+      s"[strong-responsiveness] $agName can receive $aName, but the system cannot (yet) send it: ${Show.oneLine(st)}."
 
-    badSyncRecep.toList ::: badSyncRespo.toList
+    badSyncRecep.toList ::: badSyncRespo.toList ::: badAsyncRespo.toList
   }
 
 

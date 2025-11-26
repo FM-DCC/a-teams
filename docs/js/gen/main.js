@@ -1339,8 +1339,90 @@ $c_Lateams_backend_BehaviourCheck$.prototype.checkState__Lateams_backend_Semanti
     };
     throw new $c_s_MatchError(x$1$25)
   }))));
-  var prefix$2 = $n(badSyncRecep).toList__sci_List();
-  return $n($n(badSyncRespo).toList__sci_List()).$colon$colon$colon__sci_List__sci_List(prefix$2)
+  var canARecv = $as_sci_Map($n($n($n($n(st).Lateams_backend_Semantics$St__f_sys).Lateams_syntax_Program$ASystem__f_main).withFilter__F1__sc_MapOps$WithFilter(new $c_sjsr_AnonFunction1(((x$1$11$1) => {
+    var x$1$26 = $as_T2(x$1$11$1);
+    return ((x$1$26 !== null) && ($as_T($n(x$1$26)._1__O()), $as_Lateams_syntax_Program$Proc($n(x$1$26)._2__O()), true))
+  })))).flatMap__F1__sc_IterableOps(new $c_sjsr_AnonFunction1(((x$1$12$1) => {
+    var x$1$27 = $as_T2(x$1$12$1);
+    if ((x$1$27 !== null)) {
+      var agName$11 = $as_T($n(x$1$27)._1__O());
+      var proc$5 = $as_Lateams_syntax_Program$Proc($n(x$1$27)._2__O());
+      return $as_sci_Set($n($n($m_Lateams_backend_Semantics$().nextProc__Lateams_syntax_Program$Proc__Lateams_backend_Semantics$St__sci_Set(proc$5, st)).withFilter__F1__sc_WithFilter(new $c_sjsr_AnonFunction1(((x$1$2$6) => {
+        var x$1$28 = $as_T2(x$1$2$6);
+        if ((x$1$28 !== null)) {
+          var x72 = $as_Lateams_syntax_Program$Act($n(x$1$28)._1__O());
+          if ((x72 instanceof $c_Lateams_syntax_Program$Act$In)) {
+            var x$1$29 = $as_Lateams_syntax_Program$Act$In(x72);
+            var this$23 = $n(x$1$29);
+            var this$24 = $n(x$1$29);
+            return true
+          }
+        };
+        return false
+      })))).flatMap__F1__O(new $c_sjsr_AnonFunction1(((x$1$3$4) => {
+        var x$1$30 = $as_T2(x$1$3$4);
+        if ((x$1$30 !== null)) {
+          var x89 = $as_Lateams_syntax_Program$Act($n(x$1$30)._1__O());
+          if ((x89 instanceof $c_Lateams_syntax_Program$Act$In)) {
+            var x$1$31 = $as_Lateams_syntax_Program$Act$In(x89);
+            var this$26 = $n(x$1$31);
+            var x93 = this$26.Lateams_syntax_Program$Act$In__f_a;
+            var this$27 = $n(x$1$31);
+            var this$28 = $n($m_s_Option$().option2Iterable__s_Option__sc_Iterable($n($n($n(st).Lateams_backend_Semantics$St__f_sys).Lateams_syntax_Program$ASystem__f_msgs).get__O__s_Option(x93)));
+            return $as_sci_Set($n($m_sci_Set$().from__sc_IterableOnce__sci_Set(this$28)).flatMap__F1__O(new $c_sjsr_AnonFunction1(((mi$4) => {
+              var mi$5 = $as_Lateams_syntax_Program$MsgInfo(mi$4);
+              var this$29 = $n($m_s_Option$().option2Iterable__s_Option__sc_Iterable($n(mi$5).Lateams_syntax_Program$MsgInfo__f_st));
+              return $as_sc_IterableOnce($n($n($m_sci_Set$().from__sc_IterableOnce__sci_Set(this$29)).withFilter__F1__sc_WithFilter(new $c_sjsr_AnonFunction1(((x$1$32) => {
+                var x$1$33 = $as_Lateams_syntax_Program$SyncType(x$1$32);
+                if ((x$1$33 instanceof $c_Lateams_syntax_Program$SyncType$Async)) {
+                  var x$1$34 = $as_Lateams_syntax_Program$SyncType$Async(x$1$33);
+                  var this$31 = $n(x$1$34);
+                  var this$32 = $n(x$1$34);
+                  return true
+                } else {
+                  return false
+                }
+              })))).map__F1__O(new $c_sjsr_AnonFunction1(((x$1$2$7) => {
+                var x$1$35 = $as_Lateams_syntax_Program$SyncType(x$1$2$7);
+                if ((x$1$35 instanceof $c_Lateams_syntax_Program$SyncType$Async)) {
+                  var x$1$36 = $as_Lateams_syntax_Program$SyncType$Async(x$1$35);
+                  var this$34 = $n(x$1$36);
+                  var this$35 = $n(x$1$36);
+                  return new $c_T2(agName$11, x93)
+                };
+                throw new $c_s_MatchError(x$1$35)
+              }))))
+            }))))
+          }
+        };
+        throw new $c_s_MatchError(x$1$30)
+      }))))
+    };
+    throw new $c_s_MatchError(x$1$27)
+  }))));
+  var badAsyncRespo = $as_sci_Iterable($n($n($n(canARecv).withFilter__F1__sc_MapOps$WithFilter(new $c_sjsr_AnonFunction1(((x$1$13$1) => {
+    var x$1$37 = $as_T2(x$1$13$1);
+    return ((x$1$37 !== null) && ($as_T($n(x$1$37)._1__O()), $as_T($n(x$1$37)._2__O()), true))
+  })))).withFilter__F1__sc_MapOps$WithFilter(new $c_sjsr_AnonFunction1(((x$1$14$1) => {
+    var x$1$38 = $as_T2(x$1$14$1);
+    if ((x$1$38 !== null)) {
+      $as_T($n(x$1$38)._1__O());
+      var aName$7 = $as_T($n(x$1$38)._2__O());
+      return (!$n(acts).contains__O__Z(aName$7))
+    };
+    throw new $c_s_MatchError(x$1$38)
+  })))).map__F1__O(new $c_sjsr_AnonFunction1(((x$1$15$1) => {
+    var x$1$39 = $as_T2(x$1$15$1);
+    if ((x$1$39 !== null)) {
+      var agName$14 = $as_T($n(x$1$39)._1__O());
+      var aName$8 = $as_T($n(x$1$39)._2__O());
+      return (((((("[strong-responsiveness] " + agName$14) + " can receive ") + aName$8) + ", but the system cannot (yet) send it: ") + $m_Lateams_syntax_Show$().oneLine__Lateams_backend_Semantics$St__T(st)) + ".")
+    };
+    throw new $c_s_MatchError(x$1$39)
+  }))));
+  var prefix$3 = $n(badSyncRecep).toList__sci_List();
+  var prefix$2 = $n(badSyncRespo).toList__sci_List();
+  return $n($n($n(badAsyncRespo).toList__sci_List()).$colon$colon$colon__sci_List__sci_List(prefix$2)).$colon$colon$colon__sci_List__sci_List(prefix$3)
 });
 var $d_Lateams_backend_BehaviourCheck$ = new $TypeData().initClass({
   Lateams_backend_BehaviourCheck$: 0
