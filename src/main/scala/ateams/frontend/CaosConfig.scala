@@ -31,27 +31,28 @@ object CaosConfig extends Configurator[ASystem]:
       -> "acts\n  default: fifo, 1->1;\n  coin; coffee;\n  pub: 1->0;\n\nproc\n CM = coin!cs.coffee?.CM\n CS = pub!.coin?.coffee!cm.CS\ninit\n cm:CM||cs:CS"
       -> "Asynchronous version of the coffee machine with FIFO channels",
     "race-sync"
-      -> "acts\n\tdefault: sync;\n  start: 1->2;\n  finish: 1->1;\n  run: 1->0;\n\nproc\n Ctr = start!.finish?.finish?.Ctr\n R = start?.run!.finish!.R\ninit\n Ctr || R || R"
-      -> "Ususal runner example",
-    "race-finish@snd"
-      -> "acts\n\tdefault: sync;\n  start: 1->2;\n  finish: 2->1, fifo @ snd;\n  run: 1->0;\n\nproc\n Ctr = start!.finish?r1,r2.Ctr\n R = start?.run!.finish!.R\ninit\n  Ctr || r1:R || r2:R"
-      -> "Race async experiment - finish sends asynchronously, with a buffer for each sender (runner)",
-    "race-finish@rcv"
-      -> "acts\n\tdefault: sync;\n  start: 1->2;\n  finish: 2->1, fifo @ rcv;\n  run: 1->0;\n\nproc\n Ctr = start!.finish?.Ctr\n R = start?.run!.finish!c.R\ninit\n  c:Ctr || R || R"
-      -> "Race async experiment - finish sends asynchronously, with a single buffer for the receiver (controller)",
-    "race-async"
-      -> "acts\n\tdefault: fifo;\n  start: 1->2;\n  finish: 2->1;\n  run: 1->0;\n\nproc\n Ctr = start!r1,r2.finish?.Ctr\n R = start?.run!.finish!c.R\ninit\n  c:Ctr || r1:R || r2:R"
-      -> "Race async - all channels are asynchronous",
+      -> "acts\n  start:  1->2, sync;\n  finish: 1->1, sync;\nproc\n Ctr = start!.finish?.finish?.Ctr\n R = start?.finish!.R\ninit\n Ctr || R || R"
+      -> "Synchronous runner example, without internal actions",
+    "race@rcv"
+      -> "acts\n  start:  1->2, fifo@rcv;\n  finish: 2->1, fifo@rcv;\nproc\n Ctr = start!r1,r2.finish?.Ctr\n R = start?.finish!c.R\ninit\n c:Ctr || r1:R || r2:R"
+      -> "Race async - both actions sends asynchronously, with a buffer for each receiver. This results in more states (10) than the synchronous version (2).",
+    "race@snd"
+      -> "acts\n  start:  1->2, fifo@snd;\n  finish: 2->1, fifo@snd;\nproc\n Ctr = start!.finish?r1,r2.Ctr\n R = start?c.finish!.R\ninit\n c:Ctr || r1:R || r2:R"
+      -> "Race async - both actions sends asynchronously, with a buffer for each sender. This is problematic because a runner can start, finish, and start again, consuming a start message that was meant to the other runner (causing a deadlock).",
+    "race@global"
+      -> "acts\n  start:  1->2, fifo@global;\n  finish: 2->1, fifo@global;\nproc\n Ctr = start!.finish?.Ctr\n R = start?.finish!.R\ninit\n c:Ctr || r1:R || r2:R"
+      -> "Race async - both actions sends asynchronously, with a single shared FIFO buffer for eveyone. This results in more states (9) than the synchronous version (2), and one less than the receiver."
   )
 
   /** Description of the widgets that appear in the dashboard. */
   val widgets = List(
+     "check well-formed" -> check(x => ateams.backend.TypeCheck.check(x).toSeq),
      "View pretty data" -> view[ASystem](Show.apply, Code("haskell")), //.moveTo(1),
 //    "View structure" -> view(Show.mermaid, Mermaid),
-     "Well-formed?" -> view[ASystem](x => ateams.backend.TypeCheck.pp(x), Text).expand,
+//     "Well-formed?" -> view[ASystem](x => ateams.backend.TypeCheck.pp(x), Text).expand,
      "Well-behaved?" -> view[ASystem](x => ateams.backend.BehaviourCheck.randomWalk(St(x,Map()))._3.mkString("\n"), Text).expand,
      "Run semantics" -> steps(e=>St(e,Map()), Semantics, x=>Show/*.short*/(x), Show(_), Text).expand,
-     "Build LTS" -> lts((e:ASystem)=>St(e,Map ()), Semantics, Show.showBuffers, Show(_)),
+     "Build LTS" -> lts((e:ASystem)=>St(e,Map ()), Semantics, Show.showBuffers, Show(_)).moveTo(1),
      "Local components" ->
        viewMerms((sy: ASystem) =>
           for (nm,proc) <- sy.main.toList yield

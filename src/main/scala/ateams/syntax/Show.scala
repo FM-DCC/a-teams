@@ -45,6 +45,7 @@ object Show:
       case Program.SyncType.Sync => "sync"
       case Program.SyncType.Async(where,buf:Fifo) => s"Fifo @ ${apply(where)}"
       case Program.SyncType.Async(where,_:Unsorted) => s"Unsorted @ ${apply(where)}"
+      case Program.SyncType.Internal => "internal"
     }
   }
 
@@ -75,7 +76,10 @@ object Show:
     case Act.In(s,from) => s"$s?${from.mkString(",")}"
     case Act.Out(s,to) => s"$s!${to.mkString(",")}"
     case Act.IO("tau",_,_) => s"τ"
-    case Act.IO(s,from,to) => s"${from.mkString(",")}→${to.mkString(",")}:$s"
+    case Act.IO(s,from,to) if from.isEmpty && to.isEmpty => s
+    case Act.IO(s,from,to) => s"${agSet(from)}→${agSet(to)}:$s"
+  private def agSet(s:Set[_]): String =
+    if s.isEmpty then "∅" else s.mkString(",")
 
   def apply(l:LocInfo): String = (l.snd,l.rcv) match
     case (false,false) => "globally"

@@ -7,7 +7,7 @@ import ateams.syntax.{Program, Show}
 import Program.*
 import Proc.*
 import ateams.syntax.Program.Act.Out
-import ateams.syntax.Program.SyncType.{Async, Sync}
+import ateams.syntax.Program.SyncType.{Async, Internal, Sync}
 
 //import scala.collection.{immutable, mutable}
 import scala.collection.immutable.Queue
@@ -33,7 +33,7 @@ object Semantics extends SOS[Act,St]:
     val canGo =
       for (n,p) <- procs.toSet; (a,p2) <- nextProc(p)
       yield a -> (n->p2)
-    updateSt(nextTau(canGo)) ++
+    updateSt(nextIO(canGo)) ++
     updateSt(nextSync(canGo)) ++
     nextSend(canGo) ++
     nextRcv(canGo)
@@ -47,8 +47,8 @@ object Semantics extends SOS[Act,St]:
   // Semantics of the "tau" action //
   ///////////////////////////////////
 
-  def nextTau(canGo: Set[(Act,(String,Proc))])(using st:St): Set[(Act,Procs)] =
-    for (a,(n,p)) <- canGo if a == Act.IO("tau",Set(),Set())
+  def nextIO(canGo: Set[(Act,(String,Proc))])(using st:St): Set[(Act,Procs)] =
+    for case (a@Act.IO(_,_,_),(n,p)) <- canGo
       yield  a -> Map(n->p) // just the updates
 
   ///////////////////////////////////////
@@ -282,8 +282,9 @@ object Semantics extends SOS[Act,St]:
 
   private def getLoc(act: String, snd:Option[String], rcv: Option[String])(using st:St): Loc =
     stype(act) match
-      case Sync => sys.error(s"Cannot get buffer of sync message \"$act\"")
+      case Sync => sys.error(s"Cannot get buffers of sync message \"$act\"")
       case Async(locInfo,_)     => getLocInfo(locInfo,act,snd,rcv)
+      case Internal => sys.error(s"Cannot get buffers of internal messages")
 //      case SyncType.Unsorted(locInfo) => getLocInfo(locInfo,act,snd,rcv)
 
   private def getLocInfo(linfo: LocInfo, act:String,
@@ -300,16 +301,16 @@ object Semantics extends SOS[Act,St]:
     aritSys(act)(using st.sys)
   def aritSys(act: String)(using s:ASystem): (Intrv, Intrv) =
 //    s.msgs.get(act).flatMap(_.arity).getOrElse(MsgInfo.defaultArity)
-    s.msgs.get(act).flatMap(_.arity).getOrElse(sys.error(s"Unknown action $act."))
+    s.msgs.get(act).flatMap(_.arity).getOrElse(sys.error(s"[ar] Unknown action $act."))
 
-  private def stype(act: String)(using st:St) =
+  private def stype(act: String)(using st:St): SyncType =
 //    st.sys.msgs.get(act).flatMap(_.st).getOrElse(MsgInfo.defaultST)
-    st.sys.msgs.get(act).flatMap(_.st).getOrElse(sys.error(s"Unknown action $act."))
+    st.sys.msgs.get(act).flatMap(_.st).getOrElse(Internal)//sys.error(s"[st] Unknown action $act."))
 
   private def isAsync(syncType: Program.SyncType): Boolean =
     syncType match
       case SyncType.Async(_, _) => true
-      case SyncType.Sync => false
+      case _ => false
 
 //  private def isUnsorted(syncType: Program.SyncType): Boolean =
 //    syncType match

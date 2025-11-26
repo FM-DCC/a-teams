@@ -45,6 +45,7 @@ object Program:
   enum SyncType:
     case Sync
     case Async(where:LocInfo, buf: Buffer)
+    case Internal
     // case Fifo(where:LocInfo)
     // case Unsorted(where: LocInfo)
 
@@ -83,7 +84,7 @@ object Program:
           sys.msgs.map((k,v) => (k, v.copy(
             arity = v.arity.orElse(mi.arity).orElse(Some(MsgInfo.defaultArity)),
             st = v.st.orElse(mi.st).orElse(Some(MsgInfo.defaultST)),
-          ))) + ("tau" -> MsgInfo(None,None))
+          ))) // + ("tau" -> MsgInfo(None,None))
         )
       case None => sys
 

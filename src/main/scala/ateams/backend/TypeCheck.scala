@@ -58,12 +58,12 @@ object TypeCheck:
               else Set()
             case _ => Set(s"Unexpected message info: ${Show(mi)}")
           )
-      case Proc.Prefix(Act.IO(a,from,to),p) => check(p) ++ checkAct(a,from++to)
+      case Proc.Prefix(Act.IO(a,from,to),p) => check(p) // ++ checkAct(a,from++to) // IO actions do not need to be declared
     }
 
   def checkAct(a:ActName, anames:Set[Agent])
               (using sy:ASystem, pname:ProcName): Errors =
-    (if !sy.msgs.contains(a) && a!="tau" then
+    (if !sy.msgs.contains(a) then
       Set(s"[$pname] Unknown action $a.") else Set()) ++
     (for an <- (anames) if !sy.main.contains(an) yield
       s"[$pname] Unknown agent $an used by action $a.")

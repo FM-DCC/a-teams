@@ -150,8 +150,12 @@ object Parser :
       .map(x => Proc.Prefix(x._1,x._2.getOrElse(Proc.End)))
 
   private def action: P[Act] =
-    string("tau").as(Act.IO("tau",Set(),Set())) |
-    ((varName <* sps) ~ inOut).map(vi => vi._2(vi._1))
+    ((varName <* sps) ~ inOut.?).map {
+      case (v, Some(io)) => io(v)
+      case (v, None) => Act.IO(v,Set(),Set())
+    }
+//    string("tau").as(Act.IO("tau",Set(),Set())) |
+//    ((varName <* sps) ~ inOut).map(vi => vi._2(vi._1))
 
   private def inOut: P[String => Act] =
     char('?') *> varName.repSep0(char(',')).map(lst => (a:String) => Act.In(a,lst.toList.toSet)) |
