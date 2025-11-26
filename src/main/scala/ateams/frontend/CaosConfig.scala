@@ -52,7 +52,7 @@ object CaosConfig extends Configurator[ASystem]:
 //     "Well-formed?" -> view[ASystem](x => ateams.backend.TypeCheck.pp(x), Text).expand,
      "Well-behaved?" -> view[ASystem](x => ateams.backend.BehaviourCheck.randomWalk(St(x,Map()))._3.mkString("\n"), Text).expand,
      "Run semantics" -> steps(e=>St(e,Map()), Semantics, x=>Show/*.short*/(x), Show(_), Text).expand,
-     "Build LTS" -> lts((e:ASystem)=>St(e,Map ()), Semantics, Show.showBuffers, Show(_)).moveTo(1),
+     "Build LTS" -> lts((e:ASystem)=>St(e,Map ()), Semantics, Show.showBuffers, Show(_)), //.moveTo(1),
      "Local components" ->
        viewMerms((sy: ASystem) =>
           for (nm,proc) <- sy.main.toList yield
