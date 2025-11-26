@@ -1,7 +1,7 @@
 package ateams.backend
 
 import Semantics.{St, nextProc}
-import ateams.syntax.Program.Act
+import ateams.syntax.Program.{Act, SyncType}
 import ateams.syntax.Show
 
 object BehaviourCheck:
@@ -48,11 +48,23 @@ object BehaviourCheck:
     val acts = next.map(x => Semantics.getActName(x._1))
     // sync receptiveness
     val canSend =
-      for (agName,proc) <- st.sys.main; case (Act.Out(aName,to),_) <- nextProc(proc)(using st)
+      for (agName,proc) <- st.sys.main
+          case (Act.Out(aName,_),_) <- nextProc(proc)(using st)
+          mi <- st.sys.msgs.get(aName).toSet
+          case SyncType.Sync <- mi.st.toSet
       yield (agName,aName)
     val badSyncRecep = for (agName,aName) <- canSend if !acts.contains(aName) yield
-      s"[strong-receptiveness] $agName can send $aName, but the system cannot send it: ${Show.oneLine(st)}."
-    badSyncRecep.toList
+      s"[strong-receptiveness] $agName can send $aName, but the system cannot (yet) receive it: ${Show.oneLine(st)}."
+    // sync responsiveness
+    val canRecv =
+      for (agName,proc) <- st.sys.main
+          case (Act.In(aName,_),_) <- nextProc(proc)(using st)
+          mi <- st.sys.msgs.get(aName).toSet
+          case SyncType.Sync <- mi.st.toSet        yield (agName,aName)
+    val badSyncRespo = for (agName,aName) <- canRecv if !acts.contains(aName) yield
+      s"[strong-responsiveness] $agName can receive $aName, but the system cannot (yet) send it: ${Show.oneLine(st)}."
+
+    badSyncRecep.toList ::: badSyncRespo.toList
   }
 
 
