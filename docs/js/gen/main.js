@@ -17534,6 +17534,18 @@ function $p_Lateams_backend_Semantics$__isAsync__Lateams_syntax_Program$SyncType
     return false
   }
 }
+function $p_Lateams_backend_Semantics$__checkBuffType__Lateams_syntax_Program$Buffer__Lateams_syntax_Program$Buffer__T__V($thiz, b1, b2, msg) {
+  var this$1 = $n(b1);
+  var x = $objectGetClass(this$1);
+  var this$2 = $n(b2);
+  var x$2 = $objectGetClass(this$2);
+  if ((!(x === x$2))) {
+    var $$x1 = $m_s_sys_package$();
+    var this$3 = $n(b1);
+    var this$4 = $n(b2);
+    $n($$x1).error__T__E((((((("Conflicting buffer types when " + msg) + ": had ") + $objectGetClass(this$3)) + " and now has ") + $objectGetClass(this$4)) + "."))
+  }
+}
 /** @constructor */
 function $c_Lateams_backend_Semantics$() {
   /*<skip>*/
@@ -18185,6 +18197,7 @@ $c_Lateams_backend_Semantics$.prototype.nextSend__sci_Set__Lateams_backend_Seman
                   var elem = $as_Lateams_syntax_Program$Buffer($n($n(st).Lateams_backend_Semantics$St__f_buffers).getOrElse__O__F0__O(loc, new $c_sjsr_AnonFunction0((() => x153))));
                   var elem$1 = null;
                   elem$1 = elem;
+                  $p_Lateams_backend_Semantics$__checkBuffType__Lateams_syntax_Program$Buffer__Lateams_syntax_Program$Buffer__T__V(this, $as_Lateams_syntax_Program$Buffer(elem$1), x153, ("sending " + $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$Act__T(x162)));
                   var end = $uI($n($as_T2($n(_2)._2__O()))._1__O());
                   var isEmpty = (end < 1);
                   if ((!isEmpty)) {
@@ -18247,6 +18260,7 @@ $c_Lateams_backend_Semantics$.prototype.nextSend__sci_Set__Lateams_backend_Seman
                     var ag$2 = $as_T(ag$1);
                     var loc$1 = $p_Lateams_backend_Semantics$__getLoc__T__s_Option__s_Option__Lateams_backend_Semantics$St__Lateams_backend_Semantics$Loc(this, x164, (x155 ? new $c_s_Some(n$2) : $m_s_None$()), new $c_s_Some(ag$2), st);
                     var buffer = $n($as_Lateams_syntax_Program$Buffer($n($n(st).Lateams_backend_Semantics$St__f_buffers).getOrElse__O__F0__O(loc$1, new $c_sjsr_AnonFunction0((() => x153))))).$plus__T__Lateams_syntax_Program$Buffer(x164);
+                    $p_Lateams_backend_Semantics$__checkBuffType__Lateams_syntax_Program$Buffer__Lateams_syntax_Program$Buffer__T__V(this, buffer, x153, ("sending " + $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$Act__T(x162)));
                     return new $c_T2(loc$1, buffer)
                   }))));
                   return $p_Lateams_backend_Semantics$__updateSt__Lateams_syntax_Program$Act__sci_Set__T__Lateams_syntax_Program$Proc__Lateams_backend_Semantics$St__T2(this, x162, newBuffers, n$2, p$2, st)
@@ -18344,17 +18358,23 @@ $c_Lateams_backend_Semantics$.prototype.nextRcv__sci_Set__Lateams_backend_Semant
                   var elem = new $c_s_Some(value);
                   var elem$1 = null;
                   elem$1 = elem;
+                  var this$22 = $n($as_s_Option(elem$1));
+                  if ((!this$22.isEmpty__Z())) {
+                    var arg1 = this$22.get__O();
+                    var b = $as_Lateams_syntax_Program$Buffer(arg1);
+                    $p_Lateams_backend_Semantics$__checkBuffType__Lateams_syntax_Program$Buffer__Lateams_syntax_Program$Buffer__T__V(this, b, x230, ("getting " + $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$Act__T(x239)))
+                  };
                   var end = $uI($n($as_T2($n(_2)._1__O()))._1__O());
                   var isEmpty = (end < 1);
                   if ((!isEmpty)) {
                     var i = 1;
                     while (true) {
-                      var this$28 = $n($as_s_Option(elem$1));
-                      if (this$28.isEmpty__Z()) {
+                      var this$29 = $n($as_s_Option(elem$1));
+                      if (this$29.isEmpty__Z()) {
                         var ev$30 = $m_s_None$()
                       } else {
-                        var arg1$1 = this$28.get__O();
-                        var _$13 = $as_Lateams_syntax_Program$Buffer(arg1$1);
+                        var arg1$2 = this$29.get__O();
+                        var _$13 = $as_Lateams_syntax_Program$Buffer(arg1$2);
                         var ev$30 = $n(_$13).$minus__T__s_Option(x241)
                       };
                       elem$1 = ev$30;
@@ -18378,21 +18398,21 @@ $c_Lateams_backend_Semantics$.prototype.nextRcv__sci_Set__Lateams_backend_Semant
                     var $$x4 = false
                   };
                   if ($$x4) {
-                    var this$39 = $n($m_s_Predef$().s_Predef$__f_Set);
+                    var this$40 = $n($m_s_Predef$().s_Predef$__f_Set);
                     var $$x5 = $m_sr_ScalaRunTime$();
                     $n(st);
                     var main$3 = $as_sci_Map($n($n($n(st).Lateams_backend_Semantics$St__f_sys).Lateams_syntax_Program$ASystem__f_main).$plus__T2__sci_MapOps(new $c_T2(n$2, p$2)));
-                    var this$33 = $n($n(st).Lateams_backend_Semantics$St__f_sys);
-                    var msgs$3 = this$33.Lateams_syntax_Program$ASystem__f_msgs;
                     var this$34 = $n($n(st).Lateams_backend_Semantics$St__f_sys);
-                    var defs$3 = this$34.Lateams_syntax_Program$ASystem__f_defs;
+                    var msgs$3 = this$34.Lateams_syntax_Program$ASystem__f_msgs;
+                    var this$35 = $n($n(st).Lateams_backend_Semantics$St__f_sys);
+                    var defs$3 = this$35.Lateams_syntax_Program$ASystem__f_defs;
                     $n($n(st).Lateams_backend_Semantics$St__f_sys);
                     var sys = new $c_Lateams_syntax_Program$ASystem(msgs$3, defs$3, main$3);
-                    var this$36 = $n(st);
-                    var buffers = this$36.Lateams_backend_Semantics$St__f_buffers;
+                    var this$37 = $n(st);
+                    var buffers = this$37.Lateams_backend_Semantics$St__f_buffers;
                     var y = new $c_Lateams_backend_Semantics$St(sys, buffers);
                     var elems = $n($$x5).wrapRefArray__AO__sci_ArraySeq(new ($d_T2.getArrayOf().constr)([new $c_T2(x239, y)]));
-                    return this$39.from__sc_IterableOnce__sci_Set(elems)
+                    return this$40.from__sc_IterableOnce__sci_Set(elems)
                   } else {
                     $m_s_sys_package$().error__T__E((((("Trying to get '" + $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$Act__T(x239)) + "' from {") + $m_Lateams_syntax_Show$().showIntrv__T2__T($as_T2($n(_2)._1__O()))) + "} - missing precise sources"))
                   }
@@ -18401,29 +18421,35 @@ $c_Lateams_backend_Semantics$.prototype.nextRcv__sci_Set__Lateams_backend_Semant
                   if ((!this.inInterval__I__T2__Z($n(x242).size__I(), $as_T2($n(_2)._1__O())))) {
                     var $$x8 = $m_s_sys_package$();
                     var $$x7 = $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$Act__T(x239);
-                    var this$40 = $n(x242);
-                    var $$x6 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$40, "", "", "");
                     var this$41 = $n(x242);
-                    $n($$x8).error__T__E((((((((("Trying to get '" + $$x7) + "' from {") + $$x6) + "} but expected #{") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$41, "", "", "")) + "} \u2208 {") + $m_Lateams_syntax_Show$().showIntrv__T2__T($as_T2($n(_2)._1__O()))) + "}."))
+                    var $$x6 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$41, "", "", "");
+                    var this$42 = $n(x242);
+                    $n($$x8).error__T__E((((((((("Trying to get '" + $$x7) + "' from {") + $$x6) + "} but expected #{") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$42, "", "", "")) + "} \u2208 {") + $m_Lateams_syntax_Show$().showIntrv__T2__T($as_T2($n(_2)._1__O()))) + "}."))
                   };
                   var newBuffers = $as_sci_Set($n(x242).map__F1__O(new $c_sjsr_AnonFunction1(((ag) => {
                     var ag$1 = $as_T(ag);
                     var loc$1 = $p_Lateams_backend_Semantics$__getLoc__T__s_Option__s_Option__Lateams_backend_Semantics$St__Lateams_backend_Semantics$Loc(this, x241, new $c_s_Some(ag$1), (x233 ? new $c_s_Some(n$2) : $m_s_None$()), st);
                     var value$1 = $n($n(st).Lateams_backend_Semantics$St__f_buffers).getOrElse__O__F0__O(loc$1, new $c_sjsr_AnonFunction0((() => x230)));
-                    var this$45 = new $c_s_Some(value$1);
-                    if (this$45.isEmpty__Z()) {
+                    var this$46 = new $c_s_Some(value$1);
+                    if (this$46.isEmpty__Z()) {
                       var buffer = $m_s_None$()
                     } else {
-                      var arg1$2 = this$45.s_Some__f_value;
-                      var _$14 = $as_Lateams_syntax_Program$Buffer(arg1$2);
+                      var arg1$3 = this$46.s_Some__f_value;
+                      var _$14 = $as_Lateams_syntax_Program$Buffer(arg1$3);
                       var buffer = $n(_$14).$minus__T__s_Option(x241)
                     };
-                    var this$46 = $n(buffer);
-                    if (this$46.isEmpty__Z()) {
+                    var this$47 = $n(buffer);
+                    if ((!this$47.isEmpty__Z())) {
+                      var arg1$4 = this$47.get__O();
+                      var b$1 = $as_Lateams_syntax_Program$Buffer(arg1$4);
+                      $p_Lateams_backend_Semantics$__checkBuffType__Lateams_syntax_Program$Buffer__Lateams_syntax_Program$Buffer__T__V(this, b$1, x230, ("getting " + $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$Act__T(x239)))
+                    };
+                    var this$48 = $n(buffer);
+                    if (this$48.isEmpty__Z()) {
                       return $m_s_None$()
                     } else {
-                      var arg1$3 = this$46.get__O();
-                      var _$15 = $as_Lateams_syntax_Program$Buffer(arg1$3);
+                      var arg1$5 = this$48.get__O();
+                      var _$15 = $as_Lateams_syntax_Program$Buffer(arg1$5);
                       return new $c_s_Some(new $c_T2(loc$1, _$15))
                     }
                   }))));
@@ -18438,8 +18464,8 @@ $c_Lateams_backend_Semantics$.prototype.nextRcv__sci_Set__Lateams_backend_Semant
     };
     throw new $c_s_MatchError(x$1$4)
   }))));
-  var this$50 = $m_s_$less$colon$less$();
-  return $as_sci_Set($n($$x1).flatten__F1__O(this$50.s_$less$colon$less$__f_singleton))
+  var this$52 = $m_s_$less$colon$less$();
+  return $as_sci_Set($n($$x1).flatten__F1__O(this$52.s_$less$colon$less$__f_singleton))
 });
 $c_Lateams_backend_Semantics$.prototype.nextProc__Lateams_syntax_Program$Proc__Lateams_backend_Semantics$St__sci_Set = (function(p, st) {
   var p$tailLocal1 = p;

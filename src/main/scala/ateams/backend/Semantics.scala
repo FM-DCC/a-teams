@@ -135,6 +135,7 @@ object Semantics extends SOS[Act,St]:
              sys.error(s"Trying to send '${Show(a)}' to {${Show.showIntrv(art._2)}} without having a single number of destinations (${Show.showIntrv(art._2)}).")
            val loc = getLoc(s, if locSnd then Some(n) else None, None)
            var buffer = st.buffers.getOrElse(loc, buf)
+           checkBuffType(buffer,buf,s"sending ${Show(a)}")
            for _ <- 1 to art._2._1 do buffer = buffer + s
            updateSt(a,loc,buffer,n,p)
 
@@ -155,6 +156,7 @@ object Semantics extends SOS[Act,St]:
            val newBuffers = for ag <- to yield
              val loc = getLoc(s, if locSnd then Some(n) else None, Some(ag))
              val buffer = st.buffers.getOrElse(loc, buf) + s
+             checkBuffType(buffer,buf,s"sending ${Show(a)}")
              loc -> buffer
            updateSt(a,newBuffers,n,p)
 
@@ -207,6 +209,7 @@ object Semantics extends SOS[Act,St]:
              sys.error(s"Trying to get '${Show(a)}' from {${Show.showIntrv(art._1)}} without having a single number of sources (${Show.showIntrv(art._1)}).")
            val loc = getLoc(s, None, if locSnd then Some(n) else None)
            var buffer: Option[Buffer] = Some(st.buffers.getOrElse(loc, buf))
+           for (b<-buffer) do checkBuffType(b,buf,s"getting ${Show(a)}")
            for _ <- 1 to art._1._1 do buffer = buffer.flatMap(_ - s)
            updateOptSt(a,loc,buffer,n,p)
 
@@ -226,6 +229,7 @@ object Semantics extends SOS[Act,St]:
            val newBuffers = for ag <- from yield
              val loc = getLoc(s, Some(ag), if locSnd then Some(n) else None)
              val buffer = Some(st.buffers.getOrElse(loc, buf)).flatMap(_ - s)
+             for (b<-buffer) do checkBuffType(b,buf,s"getting ${Show(a)}")
              buffer.map(loc -> _)
            //println(s"!!! new buffers: ${newBuffers}")
            updateOptSt(a,newBuffers,n,p)
@@ -311,6 +315,10 @@ object Semantics extends SOS[Act,St]:
     syncType match
       case SyncType.Async(_, _) => true
       case _ => false
+
+  private def checkBuffType(b1: Buffer, b2: Buffer, msg: String): Unit =
+    if b1.getClass != b2.getClass then
+      sys.error(s"Conflicting buffer types when $msg: had ${b1.getClass} and now has ${b2.getClass}.")
 
 //  private def isUnsorted(syncType: Program.SyncType): Boolean =
 //    syncType match
