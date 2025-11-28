@@ -307,11 +307,11 @@ object Semantics extends SOS[Act,St]:
 //    s.msgs.get(act).flatMap(_.arity).getOrElse(MsgInfo.defaultArity)
     s.msgs.get(act).flatMap(_.arity).getOrElse(sys.error(s"[ar] Unknown action $act."))
 
-  private def stype(act: String)(using st:St): SyncType =
+  def stype(act: String)(using st:St): SyncType =
 //    st.sys.msgs.get(act).flatMap(_.st).getOrElse(MsgInfo.defaultST)
     st.sys.msgs.get(act).flatMap(_.st).getOrElse(Internal)//sys.error(s"[st] Unknown action $act."))
 
-  private def isAsync(syncType: Program.SyncType): Boolean =
+  def isAsync(syncType: Program.SyncType): Boolean =
     syncType match
       case SyncType.Async(_, _) => true
       case _ => false

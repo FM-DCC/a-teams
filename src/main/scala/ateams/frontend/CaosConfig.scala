@@ -30,6 +30,9 @@ object CaosConfig extends Configurator[ASystem]:
     "coffee-async"
       -> "acts\n  default: fifo, 1->1;\n  coin; coffee;\n  pub: 1->0;\n\nproc\n CM = coin!cs.coffee?.CM\n CS = pub!.coin?.coffee!cm.CS\ninit\n cm:CM||cs:CS"
       -> "Asynchronous version of the coffee machine with FIFO channels",
+    "coffee-async-off"
+      -> "acts\n  default: fifo@rcv, 1->1;\n  coin; coffee;\n\nproc\n // Coffee machine may turn off\n CM = coin!cs.coffee?.(off+CM)\n CS = coin?.coffee!cm.CS\n // start with a coin\n CM2 = coin!cs.CM\ninit\n cm:CM2||cs:CS"
+      -> "Variation of the asynchronous coffee machine with an extra coin and a terminating option, to create orphan messages.",
     "race-sync"
       -> "acts\n  start:  1->2, sync;\n  finish: 1->1, sync;\nproc\n Ctr = start!.finish?.finish?.Ctr\n R = start?.finish!.R\ninit\n Ctr || R || R"
       -> "Synchronous runner example, without internal actions",
@@ -50,7 +53,7 @@ object CaosConfig extends Configurator[ASystem]:
   /** Description of the widgets that appear in the dashboard. */
   val widgets = List(
      "check well-formed" -> check(x => ateams.backend.TypeCheck.check(x).toSeq),
-     "View pretty data" -> view[ASystem](Show.apply, Code("haskell")), //.moveTo(1),
+     "View pretty data" -> view[ASystem](Show.apply, Code("haskell")).moveTo(1),
 //    "View structure" -> view(Show.mermaid, Mermaid),
 //     "Well-formed?" -> view[ASystem](x => ateams.backend.TypeCheck.pp(x), Text).expand,
      "Well-behaved?" -> view[ASystem](x => ateams.backend.BehaviourCheck.randomWalk(St(x,Map()))._3.mkString("\n"), Text).expand,
@@ -97,6 +100,11 @@ object CaosConfig extends Configurator[ASystem]:
 
 
   override val documentation: Documentation = List(
-//    languageName -> "More information on the syntax of A-Teams" ->
-//      "...",
+    languageName -> "More information on the syntax of A-Team" ->
+      ("A program in A-Team consists of <ul><li> [acts] a set of action declarations with their associated synchronisation types," +
+      "</li><li> [proc] a set of process definitions, and</li><li> [init] a set of processes in parallel.</li></ul>" +
+      "The grammar for processes is given by:\n" +
+      "<pre>P := K |0 |α.P |P + P\nα:= a! |a? |a!n |a?n</pre>" +
+      "\n Possible syncronisation types are \"sync\", \"fifo\", or \"unsorted\", and can also have a bound on the number" +
+      "of receiving and sending agents, and a location type for the buffers (@snd, @rcv, @snd-rcv, or @global).")
   )

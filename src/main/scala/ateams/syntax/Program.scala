@@ -55,6 +55,7 @@ object Program:
     def +(el:ActName): Buffer
     def -(el:ActName): Option[Buffer]
     def isEmpty: Boolean
+    def contains(el:ActName): Boolean
 
   case class Fifo(q:Queue[ActName]) extends Buffer:
     def +(el:ActName) = Fifo(q.enqueue(el))
@@ -62,6 +63,7 @@ object Program:
       case Some((a,q2)) if a==el => Some(Fifo(q2))
       case _ => None
     def isEmpty = q.isEmpty
+    def contains(el:ActName) = q.contains(el)
   object Fifo:
     def apply():Fifo = Fifo(Queue[ActName]())
 
@@ -70,6 +72,7 @@ object Program:
     def -(el:ActName): Option[Buffer] =
       if m.contains(el) then Some(Unsorted(m-el)) else None
     def isEmpty = m.isEmpty
+    def contains(el: ActName) = m.contains(el)
   object Unsorted:
     def apply():Unsorted = Unsorted(MSet[ActName]())
 
