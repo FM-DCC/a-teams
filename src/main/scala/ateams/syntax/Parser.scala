@@ -46,6 +46,8 @@ object Parser :
     (charIn('a' to 'z') ~ alphaDigit.rep0).string
   private def procName: P[String] =
     (charIn('A' to 'Z') ~ alphaDigit.rep0).string
+  private def anyName: P[String] =
+    ((charIn('A' to 'Z') | P.charIn('a' to 'z')) ~ alphaDigit.rep0).string
   private def symbols: P[String] =
     // symbols starting with "--" are meant for syntactic sugar of arrows, and ignored as symbols of terms
     P.not(string("--")).with1 *>
@@ -146,7 +148,7 @@ object Parser :
     procName.map(Proc.ProcCall.apply)
 
   private def pref(t2:P[Proc]): P[Proc] =
-    ((action <* sps) ~ ((char('.') *> t2)?))
+    ((action <* sps) ~ ((char('.') *> sps *> t2)?))
       .map(x => Proc.Prefix(x._1,x._2.getOrElse(Proc.End)))
 
   private def action: P[Act] =
@@ -158,8 +160,8 @@ object Parser :
 //    ((varName <* sps) ~ inOut).map(vi => vi._2(vi._1))
 
   private def inOut: P[String => Act] =
-    char('?') *> varName.repSep0(char(',')).map(lst => (a:String) => Act.In(a,lst.toList.toSet)) |
-    char('!') *> varName.repSep0(char(',')).map(lst => (a:String) => Act.Out(a,lst.toList.toSet))
+    char('?') *> anyName.repSep0(char(',')).map(lst => (a:String) => Act.In(a,lst.toList.toSet)) |
+    char('!') *> anyName.repSep0(char(',')).map(lst => (a:String) => Act.Out(a,lst.toList.toSet))
 
   //  private def system: P[CCSSystem] =
 //    string("let") *> sps *>

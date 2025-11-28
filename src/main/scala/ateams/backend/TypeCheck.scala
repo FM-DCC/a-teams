@@ -17,7 +17,8 @@ object TypeCheck:
   def check(p:Proc)(using sy:ASystem, pname:ProcName): Errors =
     p match {
       case Proc.End => Set()
-      case Proc.ProcCall(p) => Set()
+      case Proc.ProcCall(p) => if sy.defs.contains(p) then Set() else
+        Set(s"[$pname] Unknown process call to $p.")
       case Proc.Choice(p1, p2) => check(p1)++check(p2)
       case Proc.Par(p1, p2) => check(p1)++check(p2)
       case Proc.Prefix(Act.In(act,from), p) => check(p) ++ checkAct(act,from) ++
