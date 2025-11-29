@@ -104,7 +104,7 @@ object Semantics extends SOS[Act,St]:
   //////////////////////////////////////////
 
   def nextSend(canGo: Set[(Act,(Agent,Proc))])(using st:St): Set[(Act,St)] =
-    println(s"## can send? ${canGo.map((a,ag)=>s"\n  - ${Show(a)} @ ${ag._1}").mkString}") //\nstype(${canGo.tail.head._1}) = ${stype(canGo.tail.head._1)}")
+    //println(s"## can send? ${canGo.map((a,ag)=>s"\n  - ${Show(a)} @ ${ag._1}").mkString}") //\nstype(${canGo.tail.head._1}) = ${stype(canGo.tail.head._1)}")
     (for case (a@Act.Out(s,to), (n, p)) <- canGo
         if isAsync(stype(s)) //  List(SyncType.Fifo,SyncType.Unsorted) contains stype(a)
      yield {
@@ -130,7 +130,7 @@ object Semantics extends SOS[Act,St]:
 
          // case 2: do not care to who, "to" does not exists, arity must be precise
          case (Async(LocInfo(locSnd,false), buf), art, true)  =>
-           println("-- case 2")
+           //println("-- case 2")
            if !art._2._2.contains(art._2._1) then
              sys.error(s"Trying to send '${Show(a)}' to {${Show.showIntrv(art._2)}} without having a single number of destinations (${Show.showIntrv(art._2)}).")
            val loc = getLoc(s, if locSnd then Some(n) else None, None)
@@ -141,7 +141,7 @@ object Semantics extends SOS[Act,St]:
 
          // case 3: care to who, but "to" does not exists - error unless it is meant to send to none (state unchanged)
          case (Async(LocInfo(locSnd,true), buf), art, true)  =>
-           println("-- case 3")
+           //println("-- case 3")
            if art._2._1 == 0 && art._2._2 == Some(0) then
              a -> st.copy( sys = st.sys.copy( main = st.sys.main + (n->p)) )
            else
@@ -149,7 +149,7 @@ object Semantics extends SOS[Act,St]:
 
          // case 4: care to who, and "to" exists, arity must match
          case (Async(LocInfo(locSnd,true), buf), art, false)  =>
-           println("-- case 4")
+           //println("-- case 4")
            if !inInterval(to.size,art._2) then
              sys.error(s"Trying to send '${Show(a)}' to {${to.mkString(",")}} but expected #{${to.mkString(",")}} ∈ {${Show.showIntrv(art._2)}}.")
            //var queues: List[(Loc,Queue[ActName])] = Nil

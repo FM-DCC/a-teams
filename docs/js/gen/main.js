@@ -1150,21 +1150,46 @@ function $p_Lateams_backend_BehaviourCheck$__aux$1__I__sci_Set__sci_Set__I__sci_
         var this$7 = $n(newProbs);
         newProbs = new $c_sci_$colon$colon(elem$2, this$7)
       };
-      var this$8 = $n(next$tailLocal1);
-      var this$9 = $n(this$8.excl__O__sci_SetOps(x5));
-      var next$tailLocal1$tmp1 = $as_sci_Set(this$9.concat__sc_IterableOnce__sc_SetOps(moreSts));
-      var this$10 = $n(done$tailLocal1);
-      var done$tailLocal1$tmp1 = $as_sci_Set(this$10.incl__O__sci_SetOps(x5));
-      var nEdges$tailLocal1$tmp1 = ((nEdges$tailLocal1 + nNewEdges) | 0);
-      var prefix$1 = newProbs;
-      var probs$tailLocal1$tmp1 = $n(probs$tailLocal1).$colon$colon$colon__sci_List__sci_List(prefix$1);
-      var limit$tailLocal1$tmp1 = ((limit$tailLocal1 - nNewEdges) | 0);
-      next$tailLocal1 = next$tailLocal1$tmp1;
-      done$tailLocal1 = done$tailLocal1$tmp1;
-      nEdges$tailLocal1 = nEdges$tailLocal1$tmp1;
-      probs$tailLocal1 = probs$tailLocal1$tmp1;
-      limit$tailLocal1 = limit$tailLocal1$tmp1;
-      continue
+      var this$8 = $n(newProbs);
+      _return$1: {
+        var these = this$8;
+        while ((!$n(these).isEmpty__Z())) {
+          var arg1 = $n(these).head__O();
+          var pr = $as_T(arg1);
+          var this$9 = $n(pr);
+          if (((this$9.length >= 0) && ($as_T(this$9.substring(0, 16)) === "[unbounded-loop]"))) {
+            var $$x1 = true;
+            break _return$1
+          };
+          these = $as_sci_List($n(these).tail__O())
+        };
+        var $$x1 = false
+      };
+      if ($$x1) {
+        var this$10 = $n(done$tailLocal1);
+        var _1$2 = this$10.incl__O__sci_SetOps(x5);
+        var _2$2 = ((nEdges$tailLocal1 + nNewEdges) | 0);
+        var prefix$1 = newProbs;
+        var this$11 = $n($n(probs$tailLocal1).$colon$colon$colon__sci_List__sci_List(prefix$1));
+        var _3$2 = new $c_sci_$colon$colon("Stopped searching after an unbounded loop.", this$11);
+        return new $c_T3(_1$2, _2$2, _3$2)
+      } else {
+        var this$13 = $n(next$tailLocal1);
+        var this$14 = $n(this$13.excl__O__sci_SetOps(x5));
+        var next$tailLocal1$tmp1 = $as_sci_Set(this$14.concat__sc_IterableOnce__sc_SetOps(moreSts));
+        var this$15 = $n(done$tailLocal1);
+        var done$tailLocal1$tmp1 = $as_sci_Set(this$15.incl__O__sci_SetOps(x5));
+        var nEdges$tailLocal1$tmp1 = ((nEdges$tailLocal1 + nNewEdges) | 0);
+        var prefix$2 = newProbs;
+        var probs$tailLocal1$tmp1 = $n(probs$tailLocal1).$colon$colon$colon__sci_List__sci_List(prefix$2);
+        var limit$tailLocal1$tmp1 = ((limit$tailLocal1 - nNewEdges) | 0);
+        next$tailLocal1 = next$tailLocal1$tmp1;
+        done$tailLocal1 = done$tailLocal1$tmp1;
+        nEdges$tailLocal1 = nEdges$tailLocal1$tmp1;
+        probs$tailLocal1 = probs$tailLocal1$tmp1;
+        limit$tailLocal1 = limit$tailLocal1$tmp1;
+        continue
+      }
     };
     throw new $c_s_MatchError(x1)
   }
@@ -1522,11 +1547,11 @@ $c_Lateams_backend_BehaviourCheck$.prototype.checkState__Lateams_backend_Semanti
     var x$1 = $as_T2(x);
     return $m_Lateams_backend_Semantics$().getActName__Lateams_syntax_Program$Act__T($as_Lateams_syntax_Program$Act($n(x$1)._1__O()))
   }))));
-  var prefix$5 = $n(this.checkOrphansTerminated__Lateams_backend_Semantics$St__sc_Iterable(st)).toList__sci_List();
-  var prefix$4 = $n(this.checkOnceUnboundedSends__Lateams_backend_Semantics$St__sci_Set__sc_Iterable(st, next)).toList__sci_List();
-  var prefix$3 = $n(this.checkBadSyncRecp__Lateams_backend_Semantics$St__sci_Set__sc_Iterable(st, acts)).toList__sci_List();
-  var prefix$2 = $n(this.checkBadSyncResp__Lateams_backend_Semantics$St__sci_Set__sc_Iterable(st, acts)).toList__sci_List();
-  return $n($n($n($n($n(this.checkBadAsyncResp__Lateams_backend_Semantics$St__sci_Set__sc_Iterable(st, acts)).toList__sci_List()).$colon$colon$colon__sci_List__sci_List(prefix$2)).$colon$colon$colon__sci_List__sci_List(prefix$3)).$colon$colon$colon__sci_List__sci_List(prefix$4)).$colon$colon$colon__sci_List__sci_List(prefix$5)
+  var prefix$6 = $n(this.checkOrphansTerminated__Lateams_backend_Semantics$St__sc_Iterable(st)).toList__sci_List();
+  var prefix$5 = $n(this.checkOnceUnboundedSends__Lateams_backend_Semantics$St__sci_Set__sc_Iterable(st, next)).toList__sci_List();
+  var prefix$4 = $n(this.checkBadSyncRecp__Lateams_backend_Semantics$St__sci_Set__sc_Iterable(st, acts)).toList__sci_List();
+  var prefix$3 = $n(this.checkBadSyncResp__Lateams_backend_Semantics$St__sci_Set__sc_Iterable(st, acts)).toList__sci_List();
+  return $n($n($n($n($n(this.checkBadAsyncResp__Lateams_backend_Semantics$St__sci_Set__sc_Iterable(st, acts)).toList__sci_List()).$colon$colon$colon__sci_List__sci_List(prefix$3)).$colon$colon$colon__sci_List__sci_List(prefix$4)).$colon$colon$colon__sci_List__sci_List(prefix$5)).$colon$colon$colon__sci_List__sci_List(prefix$6)
 });
 var $d_Lateams_backend_BehaviourCheck$ = new $TypeData().initClass({
   Lateams_backend_BehaviourCheck$: 0
@@ -3248,8 +3273,8 @@ $c_Lcaos_frontend_Site$.prototype.initSite__Lcaos_frontend_Configurator__V = (fu
   $n(this.Lcaos_frontend_Site$__f_errorArea).init__Lcaos_frontend_widgets_DomElem__V(this.Lcaos_frontend_Site$__f_leftColumn);
   var title = $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("title");
   var toolTitle = $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("tool-title");
-  title.textContent = $n(config).name__T();
-  toolTitle.textContent = $n(config).name__T();
+  title.innerHTML = "A-Team";
+  toolTitle.innerHTML = $n(config).name__T();
   var $$x3 = new $c_sjsr_AnonFunction0((() => {
     this.globalReload__V()
   }));
@@ -7811,35 +7836,6 @@ function $m_jl_StackTrace$StringRE$() {
     $n_jl_StackTrace$StringRE$ = new $c_jl_StackTrace$StringRE$()
   };
   return $n_jl_StackTrace$StringRE$
-}
-/** @constructor */
-function $c_jl_System$Streams$() {
-  this.jl_System$Streams$__f_out = null;
-  this.jl_System$Streams$__f_err = null;
-  $n_jl_System$Streams$ = this;
-  this.jl_System$Streams$__f_out = new $c_jl_JSConsoleBasedPrintStream(false);
-  this.jl_System$Streams$__f_err = new $c_jl_JSConsoleBasedPrintStream(true)
-}
-$c_jl_System$Streams$.prototype = new $h_O();
-$c_jl_System$Streams$.prototype.constructor = $c_jl_System$Streams$;
-/** @constructor */
-function $h_jl_System$Streams$() {
-  /*<skip>*/
-}
-$h_jl_System$Streams$.prototype = $c_jl_System$Streams$.prototype;
-var $d_jl_System$Streams$ = new $TypeData().initClass({
-  jl_System$Streams$: 0
-}, false, "java.lang.System$Streams$", {
-  jl_System$Streams$: 1,
-  O: 1
-});
-$c_jl_System$Streams$.prototype.$classData = $d_jl_System$Streams$;
-var $n_jl_System$Streams$;
-function $m_jl_System$Streams$() {
-  if ((!$n_jl_System$Streams$)) {
-    $n_jl_System$Streams$ = new $c_jl_System$Streams$()
-  };
-  return $n_jl_System$Streams$
 }
 function $p_jl_System$SystemProperties$__loadSystemProperties__O($thiz) {
   var result = {};
@@ -16504,28 +16500,6 @@ function $m_s_sys_package$() {
   return $n_s_sys_package$
 }
 /** @constructor */
-function $c_s_util_DynamicVariable(init) {
-  this.s_util_DynamicVariable__f_v = null;
-  this.s_util_DynamicVariable__f_v = init
-}
-$c_s_util_DynamicVariable.prototype = new $h_O();
-$c_s_util_DynamicVariable.prototype.constructor = $c_s_util_DynamicVariable;
-/** @constructor */
-function $h_s_util_DynamicVariable() {
-  /*<skip>*/
-}
-$h_s_util_DynamicVariable.prototype = $c_s_util_DynamicVariable.prototype;
-$c_s_util_DynamicVariable.prototype.toString__T = (function() {
-  return (("DynamicVariable(" + this.s_util_DynamicVariable__f_v) + ")")
-});
-var $d_s_util_DynamicVariable = new $TypeData().initClass({
-  s_util_DynamicVariable: 0
-}, false, "scala.util.DynamicVariable", {
-  s_util_DynamicVariable: 1,
-  O: 1
-});
-$c_s_util_DynamicVariable.prototype.$classData = $d_s_util_DynamicVariable;
-/** @constructor */
 function $c_s_util_Sorting$() {
   /*<skip>*/
 }
@@ -18212,25 +18186,15 @@ $c_Lateams_backend_Semantics$.prototype.nextSync__sci_Set__Lateams_backend_Seman
   }))))
 });
 $c_Lateams_backend_Semantics$.prototype.nextSend__sci_Set__Lateams_backend_Semantics$St__sci_Set = (function(canGo, st) {
-  var this$2 = $n($as_sc_IterableOnceOps($n(canGo).map__F1__O(new $c_sjsr_AnonFunction1(((x$1) => {
+  return $as_sci_Set($n($n($n(canGo).withFilter__F1__sc_WithFilter(new $c_sjsr_AnonFunction1(((x$1) => {
     var x$1$1 = $as_T2(x$1);
-    var a = $as_Lateams_syntax_Program$Act($n(x$1$1)._1__O());
-    var ag = $as_T2($n(x$1$1)._2__O());
-    return ((("\n  - " + $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$Act__T(a)) + " @ ") + $n(ag)._1__O())
-  })))));
-  var x = ("## can send? " + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$2, "", "", ""));
-  var this$4 = $m_s_Console$();
-  var this$5 = $n(this$4.out__Ljava_io_PrintStream());
-  this$5.java$lang$JSConsoleBasedPrintStream$$printString__T__V((x + "\n"));
-  return $as_sci_Set($n($n($n(canGo).withFilter__F1__sc_WithFilter(new $c_sjsr_AnonFunction1(((x$1$2) => {
-    var x$1$3 = $as_T2(x$1$2);
-    if ((x$1$3 !== null)) {
-      var x98 = $as_Lateams_syntax_Program$Act($n(x$1$3)._1__O());
-      var x99 = $as_T2($n(x$1$3)._2__O());
+    if ((x$1$1 !== null)) {
+      var x98 = $as_Lateams_syntax_Program$Act($n(x$1$1)._1__O());
+      var x99 = $as_T2($n(x$1$1)._2__O());
       if ((x98 instanceof $c_Lateams_syntax_Program$Act$Out)) {
         var x102 = $as_Lateams_syntax_Program$Act$Out(x98);
-        var this$7 = $n(x102);
-        var this$8 = $n(x102);
+        var this$3 = $n(x102);
+        var this$4 = $n(x102);
         if ((x99 !== null)) {
           $as_T($n(x99)._1__O());
           $as_Lateams_syntax_Program$Proc($n(x99)._2__O());
@@ -18239,16 +18203,16 @@ $c_Lateams_backend_Semantics$.prototype.nextSend__sci_Set__Lateams_backend_Seman
       }
     };
     return false
-  })))).withFilter__F1__sc_WithFilter(new $c_sjsr_AnonFunction1(((x$1$3$1) => {
-    var x$1$4 = $as_T2(x$1$3$1);
-    if ((x$1$4 !== null)) {
-      var x107 = $as_Lateams_syntax_Program$Act($n(x$1$4)._1__O());
-      var x108 = $as_T2($n(x$1$4)._2__O());
+  })))).withFilter__F1__sc_WithFilter(new $c_sjsr_AnonFunction1(((x$1$2) => {
+    var x$1$3 = $as_T2(x$1$2);
+    if ((x$1$3 !== null)) {
+      var x107 = $as_Lateams_syntax_Program$Act($n(x$1$3)._1__O());
+      var x108 = $as_T2($n(x$1$3)._2__O());
       if ((x107 instanceof $c_Lateams_syntax_Program$Act$Out)) {
         var x111 = $as_Lateams_syntax_Program$Act$Out(x107);
-        var this$10 = $n(x111);
-        var x113 = this$10.Lateams_syntax_Program$Act$Out__f_a;
-        var this$11 = $n(x111);
+        var this$6 = $n(x111);
+        var x113 = this$6.Lateams_syntax_Program$Act$Out__f_a;
+        var this$7 = $n(x111);
         if ((x108 !== null)) {
           $as_T($n(x108)._1__O());
           $as_Lateams_syntax_Program$Proc($n(x108)._2__O());
@@ -18256,18 +18220,18 @@ $c_Lateams_backend_Semantics$.prototype.nextSend__sci_Set__Lateams_backend_Seman
         }
       }
     };
-    throw new $c_s_MatchError(x$1$4)
-  })))).map__F1__O(new $c_sjsr_AnonFunction1(((x$1$4$1) => {
-    var x$1$5 = $as_T2(x$1$4$1);
-    if ((x$1$5 !== null)) {
-      var x158 = $as_Lateams_syntax_Program$Act($n(x$1$5)._1__O());
-      var x159 = $as_T2($n(x$1$5)._2__O());
+    throw new $c_s_MatchError(x$1$3)
+  })))).map__F1__O(new $c_sjsr_AnonFunction1(((x$1$3$1) => {
+    var x$1$4 = $as_T2(x$1$3$1);
+    if ((x$1$4 !== null)) {
+      var x158 = $as_Lateams_syntax_Program$Act($n(x$1$4)._1__O());
+      var x159 = $as_T2($n(x$1$4)._2__O());
       if ((x158 instanceof $c_Lateams_syntax_Program$Act$Out)) {
         var x162 = $as_Lateams_syntax_Program$Act$Out(x158);
-        var this$13 = $n(x162);
-        var x164 = this$13.Lateams_syntax_Program$Act$Out__f_a;
-        var this$14 = $n(x162);
-        var x165 = this$14.Lateams_syntax_Program$Act$Out__f_to;
+        var this$9 = $n(x162);
+        var x164 = this$9.Lateams_syntax_Program$Act$Out__f_a;
+        var this$10 = $n(x162);
+        var x165 = this$10.Lateams_syntax_Program$Act$Out__f_to;
         if ((x159 !== null)) {
           var n$2 = $as_T($n(x159)._1__O());
           var p$2 = $as_Lateams_syntax_Program$Proc($n(x159)._2__O());
@@ -18275,27 +18239,24 @@ $c_Lateams_backend_Semantics$.prototype.nextSend__sci_Set__Lateams_backend_Seman
           var _2 = this.aritSys__T__Lateams_syntax_Program$ASystem__T2(x164, $n(st).Lateams_backend_Semantics$St__f_sys);
           var _3 = $n(x165).isEmpty__Z();
           if ((_1 instanceof $c_Lateams_syntax_Program$SyncType$Async)) {
-            var x$1$6 = $as_Lateams_syntax_Program$SyncType$Async(_1);
-            var this$17 = $n(x$1$6);
-            var x152 = this$17.Lateams_syntax_Program$SyncType$Async__f_where;
-            var this$18 = $n(x$1$6);
-            var x153 = this$18.Lateams_syntax_Program$SyncType$Async__f_buf;
+            var x$1$5 = $as_Lateams_syntax_Program$SyncType$Async(_1);
+            var this$13 = $n(x$1$5);
+            var x152 = this$13.Lateams_syntax_Program$SyncType$Async__f_where;
+            var this$14 = $n(x$1$5);
+            var x153 = this$14.Lateams_syntax_Program$SyncType$Async__f_buf;
             if ((x152 !== null)) {
-              var this$20 = $n(x152);
-              var x155 = this$20.Lateams_syntax_Program$LocInfo__f_snd;
-              var this$21 = $n(x152);
-              var x156 = this$21.Lateams_syntax_Program$LocInfo__f_rcv;
+              var this$16 = $n(x152);
+              var x155 = this$16.Lateams_syntax_Program$LocInfo__f_snd;
+              var this$17 = $n(x152);
+              var x156 = this$17.Lateams_syntax_Program$LocInfo__f_rcv;
               if ((x156 === false)) {
                 if ((_3 === false)) {
                   var $$x2 = $m_s_sys_package$();
                   var $$x1 = $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$Act__T(x162);
-                  var this$22 = $n(x165);
-                  $n($$x2).error__T__E((((("Trying to send '" + $$x1) + "' to {") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$22, "", "", "")) + "} but there is no guarantees that the receivers are the correct ones. You should either remove the explicit set of senders, or change the synchronisation type."))
+                  var this$18 = $n(x165);
+                  $n($$x2).error__T__E((((("Trying to send '" + $$x1) + "' to {") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$18, "", "", "")) + "} but there is no guarantees that the receivers are the correct ones. You should either remove the explicit set of senders, or change the synchronisation type."))
                 };
                 if ((_3 === true)) {
-                  var this$24 = $m_s_Console$();
-                  var this$25 = $n(this$24.out__Ljava_io_PrintStream());
-                  this$25.java$lang$JSConsoleBasedPrintStream$$printString__T__V("-- case 2\n");
                   if ((!$n($as_s_Option($n($as_T2($n(_2)._2__O()))._2__O())).contains__O__Z($n($as_T2($n(_2)._2__O()))._1__O()))) {
                     $m_s_sys_package$().error__T__E((((((("Trying to send '" + $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$Act__T(x162)) + "' to {") + $m_Lateams_syntax_Show$().showIntrv__T2__T($as_T2($n(_2)._2__O()))) + "} without having a single number of destinations (") + $m_Lateams_syntax_Show$().showIntrv__T2__T($as_T2($n(_2)._2__O()))) + ")."))
                   };
@@ -18323,27 +18284,24 @@ $c_Lateams_backend_Semantics$.prototype.nextSend__sci_Set__Lateams_backend_Seman
               };
               if ((x156 === true)) {
                 if ((_3 === true)) {
-                  var this$35 = $m_s_Console$();
-                  var this$36 = $n(this$35.out__Ljava_io_PrintStream());
-                  this$36.java$lang$JSConsoleBasedPrintStream$$printString__T__V("-- case 3\n");
                   if (($uI($n($as_T2($n(_2)._2__O()))._1__O()) === 0)) {
-                    var x$2 = $n($as_T2($n(_2)._2__O()))._2__O();
-                    var x$2$1 = new $c_s_Some(0);
-                    var $$x3 = ((x$2 !== null) && $dp_equals__O__Z($n(x$2), x$2$1))
+                    var x = $n($as_T2($n(_2)._2__O()))._2__O();
+                    var x$2 = new $c_s_Some(0);
+                    var $$x3 = ((x !== null) && $dp_equals__O__Z($n(x), x$2))
                   } else {
                     var $$x3 = false
                   };
                   if ($$x3) {
                     $n(st);
                     var main$2 = $as_sci_Map($n($n($n(st).Lateams_backend_Semantics$St__f_sys).Lateams_syntax_Program$ASystem__f_main).$plus__T2__sci_MapOps(new $c_T2(n$2, p$2)));
-                    var this$41 = $n($n(st).Lateams_backend_Semantics$St__f_sys);
-                    var msgs$2 = this$41.Lateams_syntax_Program$ASystem__f_msgs;
-                    var this$42 = $n($n(st).Lateams_backend_Semantics$St__f_sys);
-                    var defs$2 = this$42.Lateams_syntax_Program$ASystem__f_defs;
+                    var this$31 = $n($n(st).Lateams_backend_Semantics$St__f_sys);
+                    var msgs$2 = this$31.Lateams_syntax_Program$ASystem__f_msgs;
+                    var this$32 = $n($n(st).Lateams_backend_Semantics$St__f_sys);
+                    var defs$2 = this$32.Lateams_syntax_Program$ASystem__f_defs;
                     $n($n(st).Lateams_backend_Semantics$St__f_sys);
                     var sys = new $c_Lateams_syntax_Program$ASystem(msgs$2, defs$2, main$2);
-                    var this$44 = $n(st);
-                    var buffers = this$44.Lateams_backend_Semantics$St__f_buffers;
+                    var this$34 = $n(st);
+                    var buffers = this$34.Lateams_backend_Semantics$St__f_buffers;
                     var y = new $c_Lateams_backend_Semantics$St(sys, buffers);
                     return new $c_T2(x162, y)
                   } else {
@@ -18351,20 +18309,17 @@ $c_Lateams_backend_Semantics$.prototype.nextSend__sci_Set__Lateams_backend_Seman
                   }
                 };
                 if ((_3 === false)) {
-                  var this$48 = $m_s_Console$();
-                  var this$49 = $n(this$48.out__Ljava_io_PrintStream());
-                  this$49.java$lang$JSConsoleBasedPrintStream$$printString__T__V("-- case 4\n");
                   if ((!this.inInterval__I__T2__Z($n(x165).size__I(), $as_T2($n(_2)._2__O())))) {
                     var $$x6 = $m_s_sys_package$();
                     var $$x5 = $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$Act__T(x162);
-                    var this$50 = $n(x165);
-                    var $$x4 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$50, "", ",", "");
-                    var this$51 = $n(x165);
-                    $n($$x6).error__T__E((((((((("Trying to send '" + $$x5) + "' to {") + $$x4) + "} but expected #{") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$51, "", ",", "")) + "} \u2208 {") + $m_Lateams_syntax_Show$().showIntrv__T2__T($as_T2($n(_2)._2__O()))) + "}."))
+                    var this$37 = $n(x165);
+                    var $$x4 = $f_sc_IterableOnceOps__mkString__T__T__T__T(this$37, "", ",", "");
+                    var this$38 = $n(x165);
+                    $n($$x6).error__T__E((((((((("Trying to send '" + $$x5) + "' to {") + $$x4) + "} but expected #{") + $f_sc_IterableOnceOps__mkString__T__T__T__T(this$38, "", ",", "")) + "} \u2208 {") + $m_Lateams_syntax_Show$().showIntrv__T2__T($as_T2($n(_2)._2__O()))) + "}."))
                   };
-                  var newBuffers = $as_sci_Set($n(x165).map__F1__O(new $c_sjsr_AnonFunction1(((ag$1) => {
-                    var ag$2 = $as_T(ag$1);
-                    var loc$1 = $p_Lateams_backend_Semantics$__getLoc__T__s_Option__s_Option__Lateams_backend_Semantics$St__Lateams_backend_Semantics$Loc(this, x164, (x155 ? new $c_s_Some(n$2) : $m_s_None$()), new $c_s_Some(ag$2), st);
+                  var newBuffers = $as_sci_Set($n(x165).map__F1__O(new $c_sjsr_AnonFunction1(((ag) => {
+                    var ag$1 = $as_T(ag);
+                    var loc$1 = $p_Lateams_backend_Semantics$__getLoc__T__s_Option__s_Option__Lateams_backend_Semantics$St__Lateams_backend_Semantics$Loc(this, x164, (x155 ? new $c_s_Some(n$2) : $m_s_None$()), new $c_s_Some(ag$1), st);
                     var buffer = $n($as_Lateams_syntax_Program$Buffer($n($n(st).Lateams_backend_Semantics$St__f_buffers).getOrElse__O__F0__O(loc$1, new $c_sjsr_AnonFunction0((() => x153))))).$plus__T__Lateams_syntax_Program$Buffer(x164);
                     $p_Lateams_backend_Semantics$__checkBuffType__Lateams_syntax_Program$Buffer__Lateams_syntax_Program$Buffer__T__V(this, buffer, x153, ("sending " + $m_Lateams_syntax_Show$().apply__Lateams_syntax_Program$Act__T(x162)));
                     return new $c_T2(loc$1, buffer)
@@ -18378,7 +18333,7 @@ $c_Lateams_backend_Semantics$.prototype.nextSend__sci_Set__Lateams_backend_Seman
         }
       }
     };
-    throw new $c_s_MatchError(x$1$5)
+    throw new $c_s_MatchError(x$1$4)
   }))))
 });
 $c_Lateams_backend_Semantics$.prototype.inInterval__I__T2__Z = (function(n, intr) {
@@ -18741,7 +18696,7 @@ function $c_Lateams_frontend_CaosConfig$() {
   this.Lateams_frontend_CaosConfig$__f_documentation = null;
   $n_Lateams_frontend_CaosConfig$ = this;
   $f_Lcaos_frontend_Configurator__$init$__V(this);
-  this.Lateams_frontend_CaosConfig$__f_name = "A-Team: Animator of Team Automata with asynchronous actions";
+  this.Lateams_frontend_CaosConfig$__f_name = "<span class=\"ateam\">A-Team</span> \u2013 Animator of Team Automata with asynchronous actions";
   this.Lateams_frontend_CaosConfig$__f_languageName = "Input program";
   var this$3 = new $c_sjsr_AnonFunction1(((str) => {
     var str$1 = $as_T(str);
@@ -23145,39 +23100,6 @@ function $m_s_Array$() {
     $n_s_Array$ = new $c_s_Array$()
   };
   return $n_s_Array$
-}
-/** @constructor */
-function $c_s_Console$() {
-  this.s_Console$__f_outVar = null;
-  $n_s_Console$ = this;
-  this.s_Console$__f_outVar = new $c_s_util_DynamicVariable($m_jl_System$Streams$().jl_System$Streams$__f_out);
-  new $c_s_util_DynamicVariable($m_jl_System$Streams$().jl_System$Streams$__f_err);
-  new $c_s_util_DynamicVariable(null)
-}
-$c_s_Console$.prototype = new $h_O();
-$c_s_Console$.prototype.constructor = $c_s_Console$;
-/** @constructor */
-function $h_s_Console$() {
-  /*<skip>*/
-}
-$h_s_Console$.prototype = $c_s_Console$.prototype;
-$c_s_Console$.prototype.out__Ljava_io_PrintStream = (function() {
-  return $as_Ljava_io_PrintStream($n(this.s_Console$__f_outVar).s_util_DynamicVariable__f_v)
-});
-var $d_s_Console$ = new $TypeData().initClass({
-  s_Console$: 0
-}, false, "scala.Console$", {
-  s_Console$: 1,
-  O: 1,
-  s_io_AnsiColor: 1
-});
-$c_s_Console$.prototype.$classData = $d_s_Console$;
-var $n_s_Console$;
-function $m_s_Console$() {
-  if ((!$n_s_Console$)) {
-    $n_s_Console$ = new $c_s_Console$()
-  };
-  return $n_s_Console$
 }
 /** @constructor */
 function $c_s_LowPriorityImplicits() {
@@ -31350,17 +31272,6 @@ var $d_Lcats_parse_Parser$Error = new $TypeData().initClass({
   Ljava_io_Serializable: 1
 });
 $c_Lcats_parse_Parser$Error.prototype.$classData = $d_Lcats_parse_Parser$Error;
-/** @constructor */
-function $c_Ljava_io_OutputStream() {
-  /*<skip>*/
-}
-$c_Ljava_io_OutputStream.prototype = new $h_O();
-$c_Ljava_io_OutputStream.prototype.constructor = $c_Ljava_io_OutputStream;
-/** @constructor */
-function $h_Ljava_io_OutputStream() {
-  /*<skip>*/
-}
-$h_Ljava_io_OutputStream.prototype = $c_Ljava_io_OutputStream.prototype;
 class $c_jl_AssertionError extends $c_jl_Error {
   constructor(detailMessage) {
     super();
@@ -38526,20 +38437,6 @@ var $d_Lcats_parse_Parser$Impl$WithContextP0 = new $TypeData().initClass({
   Ljava_io_Serializable: 1
 });
 $c_Lcats_parse_Parser$Impl$WithContextP0.prototype.$classData = $d_Lcats_parse_Parser$Impl$WithContextP0;
-function $ct_Ljava_io_FilterOutputStream__Ljava_io_OutputStream__($thiz, out) {
-  return $thiz
-}
-/** @constructor */
-function $c_Ljava_io_FilterOutputStream() {
-  /*<skip>*/
-}
-$c_Ljava_io_FilterOutputStream.prototype = new $h_Ljava_io_OutputStream();
-$c_Ljava_io_FilterOutputStream.prototype.constructor = $c_Ljava_io_FilterOutputStream;
-/** @constructor */
-function $h_Ljava_io_FilterOutputStream() {
-  /*<skip>*/
-}
-$h_Ljava_io_FilterOutputStream.prototype = $c_Ljava_io_FilterOutputStream.prototype;
 class $c_jl_ArithmeticException extends $c_jl_RuntimeException {
   constructor(s) {
     super();
@@ -38701,28 +38598,6 @@ var $d_jl_IndexOutOfBoundsException = new $TypeData().initClass({
   Ljava_io_Serializable: 1
 });
 $c_jl_IndexOutOfBoundsException.prototype.$classData = $d_jl_IndexOutOfBoundsException;
-/** @constructor */
-function $c_jl_JSConsoleBasedPrintStream$DummyOutputStream() {
-  /*<skip>*/
-}
-$c_jl_JSConsoleBasedPrintStream$DummyOutputStream.prototype = new $h_Ljava_io_OutputStream();
-$c_jl_JSConsoleBasedPrintStream$DummyOutputStream.prototype.constructor = $c_jl_JSConsoleBasedPrintStream$DummyOutputStream;
-/** @constructor */
-function $h_jl_JSConsoleBasedPrintStream$DummyOutputStream() {
-  /*<skip>*/
-}
-$h_jl_JSConsoleBasedPrintStream$DummyOutputStream.prototype = $c_jl_JSConsoleBasedPrintStream$DummyOutputStream.prototype;
-var $d_jl_JSConsoleBasedPrintStream$DummyOutputStream = new $TypeData().initClass({
-  jl_JSConsoleBasedPrintStream$DummyOutputStream: 0
-}, false, "java.lang.JSConsoleBasedPrintStream$DummyOutputStream", {
-  jl_JSConsoleBasedPrintStream$DummyOutputStream: 1,
-  Ljava_io_OutputStream: 1,
-  O: 1,
-  Ljava_io_Closeable: 1,
-  jl_AutoCloseable: 1,
-  Ljava_io_Flushable: 1
-});
-$c_jl_JSConsoleBasedPrintStream$DummyOutputStream.prototype.$classData = $d_jl_JSConsoleBasedPrintStream$DummyOutputStream;
 class $c_jl_NegativeArraySizeException extends $c_jl_RuntimeException {
   constructor() {
     super();
@@ -49705,30 +49580,6 @@ function $m_Lcats_instances_package$option$() {
   };
   return $n_Lcats_instances_package$option$
 }
-function $ct_Ljava_io_PrintStream__Ljava_io_OutputStream__Z__Ljava_nio_charset_Charset__($thiz, _out, autoFlush, charset) {
-  $ct_Ljava_io_FilterOutputStream__Ljava_io_OutputStream__($thiz, _out);
-  return $thiz
-}
-/** @constructor */
-function $c_Ljava_io_PrintStream() {
-  /*<skip>*/
-}
-$c_Ljava_io_PrintStream.prototype = new $h_Ljava_io_FilterOutputStream();
-$c_Ljava_io_PrintStream.prototype.constructor = $c_Ljava_io_PrintStream;
-/** @constructor */
-function $h_Ljava_io_PrintStream() {
-  /*<skip>*/
-}
-$h_Ljava_io_PrintStream.prototype = $c_Ljava_io_PrintStream.prototype;
-function $as_Ljava_io_PrintStream(obj) {
-  return (((obj instanceof $c_Ljava_io_PrintStream) || (obj === null)) ? obj : $throwClassCastException(obj, "java.io.PrintStream"))
-}
-function $isArrayOf_Ljava_io_PrintStream(obj, depth) {
-  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Ljava_io_PrintStream)))
-}
-function $asArrayOf_Ljava_io_PrintStream(obj, depth) {
-  return (($isArrayOf_Ljava_io_PrintStream(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ljava.io.PrintStream;", depth))
-}
 /** @constructor */
 function $c_sc_ArrayOps$ArrayIterator$mcB$sp(xs$mcB$sp) {
   this.sc_ArrayOps$ArrayIterator__f_xs = null;
@@ -51844,73 +51695,6 @@ function $m_Lcats_parse_Parser$Impl$StartParser$() {
   };
   return $n_Lcats_parse_Parser$Impl$StartParser$
 }
-function $p_jl_JSConsoleBasedPrintStream__doWriteLine__T__V($thiz, line) {
-  if (($as_T((typeof console)) !== "undefined")) {
-    if (($thiz.jl_JSConsoleBasedPrintStream__f_isErr && $uZ((!(!console.error))))) {
-      console.error(line)
-    } else {
-      console.log(line)
-    }
-  }
-}
-/** @constructor */
-function $c_jl_JSConsoleBasedPrintStream(isErr) {
-  this.jl_JSConsoleBasedPrintStream__f_isErr = false;
-  this.jl_JSConsoleBasedPrintStream__f_buffer = null;
-  this.jl_JSConsoleBasedPrintStream__f_isErr = isErr;
-  var out = new $c_jl_JSConsoleBasedPrintStream$DummyOutputStream();
-  $ct_Ljava_io_PrintStream__Ljava_io_OutputStream__Z__Ljava_nio_charset_Charset__(this, out, false, null);
-  this.jl_JSConsoleBasedPrintStream__f_buffer = ""
-}
-$c_jl_JSConsoleBasedPrintStream.prototype = new $h_Ljava_io_PrintStream();
-$c_jl_JSConsoleBasedPrintStream.prototype.constructor = $c_jl_JSConsoleBasedPrintStream;
-/** @constructor */
-function $h_jl_JSConsoleBasedPrintStream() {
-  /*<skip>*/
-}
-$h_jl_JSConsoleBasedPrintStream.prototype = $c_jl_JSConsoleBasedPrintStream.prototype;
-$c_jl_JSConsoleBasedPrintStream.prototype.java$lang$JSConsoleBasedPrintStream$$printString__T__V = (function(s) {
-  var rest = s;
-  while ((rest !== "")) {
-    var this$1 = $n(rest);
-    var nlPos = $uI(this$1.indexOf("\n"));
-    if ((nlPos < 0)) {
-      this.jl_JSConsoleBasedPrintStream__f_buffer = (("" + this.jl_JSConsoleBasedPrintStream__f_buffer) + rest);
-      rest = ""
-    } else {
-      var $$x1 = this.jl_JSConsoleBasedPrintStream__f_buffer;
-      var this$2 = $n(rest);
-      if ((nlPos > this$2.length)) {
-        $charAt(this$2, nlPos)
-      };
-      if ((nlPos < 0)) {
-        $charAt(this$2, (-1))
-      };
-      $p_jl_JSConsoleBasedPrintStream__doWriteLine__T__V(this, (("" + $$x1) + $as_T(this$2.substring(0, nlPos))));
-      this.jl_JSConsoleBasedPrintStream__f_buffer = "";
-      var this$3 = $n(rest);
-      var beginIndex = ((1 + nlPos) | 0);
-      if (((beginIndex < 0) || (beginIndex > this$3.length))) {
-        $charAt(this$3, beginIndex)
-      };
-      rest = $as_T(this$3.substring(beginIndex))
-    }
-  }
-});
-var $d_jl_JSConsoleBasedPrintStream = new $TypeData().initClass({
-  jl_JSConsoleBasedPrintStream: 0
-}, false, "java.lang.JSConsoleBasedPrintStream", {
-  jl_JSConsoleBasedPrintStream: 1,
-  Ljava_io_PrintStream: 1,
-  Ljava_io_FilterOutputStream: 1,
-  Ljava_io_OutputStream: 1,
-  O: 1,
-  Ljava_io_Closeable: 1,
-  jl_AutoCloseable: 1,
-  Ljava_io_Flushable: 1,
-  jl_Appendable: 1
-});
-$c_jl_JSConsoleBasedPrintStream.prototype.$classData = $d_jl_JSConsoleBasedPrintStream;
 function $f_sc_BitSetOps__contains__I__Z($thiz, elem) {
   if ((elem >= 0)) {
     var this$1 = $thiz.word__I__J((elem >> 6));

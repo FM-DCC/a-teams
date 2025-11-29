@@ -36,8 +36,10 @@ object BehaviourCheck:
           val moreSts = next2.map(_._2)
           val nNewEdges = moreSts.size
           if moreSts.isEmpty then newProbs =  s"Deadlock found: ${Show.oneLine(st)}" :: newProbs
-
-          aux((next-st)++moreSts,
+          if newProbs.exists(pr => pr.startsWith("[unbounded-loop]")) then
+            (done+st,nEdges+nNewEdges,"Stopped searching after an unbounded loop."::newProbs:::probs)
+          else
+            aux((next-st)++moreSts,
               done+st,
               nEdges+nNewEdges,
               newProbs ::: probs,

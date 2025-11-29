@@ -11,7 +11,7 @@ import caos.sos.SOS
 
 /** Object used to configure which analysis appear in the browser */
 object CaosConfig extends Configurator[ASystem]:
-  val name = "A-Team: Animator of Team Automata with asynchronous actions"
+  val name = "<span class=\"ateam\">A-Team</span> – Animator of Team Automata with asynchronous actions"
   override val languageName: String = "Input program"
 
   /** Parser, converting a string into a System in A-Teams */
